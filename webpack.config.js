@@ -18,7 +18,7 @@ module.exports = {
                 loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
             },
             {
-                test: /\.(png|jpg|gif|woff|woff2)$/,
+                test: /\.(png|jpg|gif|woff|woff2|svg|ttf|eot)$/,
                 loader: 'url-loader?limit=8192'
             }
         ],
