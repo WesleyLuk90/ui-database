@@ -22,7 +22,6 @@ module.exports = class Document {
     }
 
     setId(id) {
-        assert.ok(id);
         this.id = id;
         return this;
     }
@@ -32,7 +31,6 @@ module.exports = class Document {
     }
 
     setData(data) {
-        assert.ok(data);
         this.data = data;
         return this;
     }
