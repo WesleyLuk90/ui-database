@@ -25,4 +25,24 @@ describe('DocumentStorage', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should not find invalid documents', (done) => {
+        documentStorage.get(DocumentReference.create(testSchema, 'abc'))
+            .then(found => expect(found).toBeNull())
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should update documents', (done) => {
+        const doc = Document.create(testSchema, null, { some: 'data' });
+        documentStorage.create(doc)
+            .then(() => {
+                doc.setData({ other: 'data' });
+                return documentStorage.update(doc);
+            })
+            .then(() => documentStorage.get(DocumentReference.create(testSchema, doc.getId())))
+            .then(foundDocument => expect(foundDocument).toEqual(doc))
+            .catch(fail)
+            .then(done);
+    });
 });

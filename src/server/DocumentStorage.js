@@ -51,6 +51,15 @@ module.exports = class DocumentStorage {
             });
     }
 
+    update(doc) {
+        assert.ok(doc instanceof Document);
+        assert.ok(doc.getId());
+
+        return this.getCollection(doc.getSchema())
+            .then(col => col.updateOne({ _id: doc.getId() }, { $set: { data: doc.getData() } }))
+            .then(res => assert.ok(res.result.nModified, 'Expected one document to be updated'));
+    }
+
     toObject(doc) {
         assert.ok(doc instanceof Document);
 
