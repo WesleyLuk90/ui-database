@@ -14,8 +14,7 @@ describe('SchemaStorage', () => {
     });
 
     it('should create schemas', (done) => {
-        const schema = new Schema();
-        schema.setName('my-schema');
+        const schema = Schema.create('my-schema', 'my_schema');
         schemaStorage.create(schema)
             .then(() => expect(schema.getId()).toBeTruthy())
             .then(() => schemaStorage.get('my-schema'))
@@ -25,7 +24,7 @@ describe('SchemaStorage', () => {
     });
 
     it('should fail inserting a duplicate schema', (done) => {
-        const schema = new Schema();
+        const schema = Schema.create('my-schema', 'my_schema');
         schema.setName('my-schema');
         schemaStorage.create(schema)
             .then(() => schemaStorage.create(schema))
@@ -43,7 +42,7 @@ describe('SchemaStorage', () => {
     });
 
     it('should update schemas', (done) => {
-        const schema = new Schema();
+        const schema = Schema.create('my-schema', 'my_schema');
         schema.setName('my-schema');
         schemaStorage.create(schema)
             .then(() => {

@@ -29,6 +29,7 @@ module.exports = class SchemaStorage {
     create(schema) {
         assert.ok(schema instanceof Schema);
         assert.ok(schema.getName());
+        assert.ok(schema.getId());
         const toInsert = this.toObject(schema);
         return this.getCollection()
             .then(col => col.insert(toInsert))
@@ -68,7 +69,7 @@ module.exports = class SchemaStorage {
     toObject(schema) {
         assert.ok(schema instanceof Schema);
         return {
-            _id: schema.id || uuid(),
+            _id: schema.id,
             name: schema.name,
             fields: schema.fields,
         };

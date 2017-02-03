@@ -1,6 +1,9 @@
 const assert = require('assert');
 
 module.exports = class Schema {
+    static create(name, id) {
+        return new Schema().setName(name).setId(id).setFields([]);
+    }
     constructor() {
         this.name = null;
         this.fields = null;
@@ -11,8 +14,9 @@ module.exports = class Schema {
     }
 
     setId(id) {
-        assert.ok(id);
+        assert.ok(id && /^[a-z_]+$/.test(id));
         this.id = id;
+        return this;
     }
 
     getName() {
@@ -22,11 +26,13 @@ module.exports = class Schema {
     setName(name) {
         assert.ok(name);
         this.name = name;
+        return this;
     }
 
     setFields(fields) {
         assert.ok(Array.isArray(fields));
 
         this.fields = fields;
+        return this;
     }
 };
