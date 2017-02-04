@@ -29,7 +29,8 @@
     },
     "scripts": {
         "dev": "webpack --watch --config webpack.config.js",
-        "test": "jasmine"
+        "test": "jasmine",
+        "start": "node src/server/index.js"
     },
     "dependencies": {
         "body-parser": "^1.16.0",
