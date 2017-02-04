@@ -24,6 +24,7 @@ module.exports = class RoutesProvider {
         const app = server.getApp();
         app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
         app.put('/api/schema/', schemaController.getRouteHandler('create'));
+        app.get('/api/schema/', schemaController.getRouteHandler('list'));
     }
 
     provide(server) {

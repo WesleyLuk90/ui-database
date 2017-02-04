@@ -105,5 +105,14 @@ describe('SchemaController', () => {
                 .catch(fail)
                 .then(done);
         });
+
+        it('should expose list', (done) => {
+            superagent.get(`${server.getBaseUrl()}/api/schema/`)
+                .then((res) => {
+                    expect(res.body.result).toEqual([]);
+                })
+                .catch(fail)
+                .then(done);
+        });
     });
 });
