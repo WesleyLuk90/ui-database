@@ -1,6 +1,7 @@
 const assert = require('assert');
 const DocumentStorage = require('./DocumentStorage');
 const Document = require('./Document');
+const DocumentReference = require('./DocumentReference');
 
 module.exports = class DocumentController {
     constructor(documentStorage) {
@@ -21,5 +22,13 @@ module.exports = class DocumentController {
 
         return this.documentStorage
             .update(Document.create(request.params.schema, request.params.id, request.body.data));
+    }
+
+    get(request) {
+        assert(request.params.schema);
+        assert(request.params.id);
+
+        return this.documentStorage
+            .get(DocumentReference.create(request.params.schema, request.params.id));
     }
 };

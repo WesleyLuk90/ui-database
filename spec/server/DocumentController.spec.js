@@ -67,21 +67,25 @@ describe('DocumentController', () => {
             .then(done);
     });
 
-    // it('should get', (done) => {
-    //     const request = {
-    //         params: {
-    //             id: 'my_document',
-    //         },
-    //     };
-    //     documentStorage.create(Document.create('my document', 'my_document'))
-    //         .then(() => controller.get(request))
-    //         .then((document) => {
-    //             expect(document.getId()).toBe('my_document');
-    //             expect(document.getName()).toBe('my document');
-    //         })
-    //         .catch(fail)
-    //         .then(done);
-    // });
+    it('should get', (done) => {
+        documentStorage.create(Document.create(testSchema, null, { other: 'data' }))
+            .then((newDocument) => {
+                const request = {
+                    params: {
+                        id: newDocument.getId(),
+                        schema: testSchema,
+                    },
+                };
+                return controller.get(request);
+            })
+            .then((document) => {
+                expect(document.getId()).toBeTruthy();
+                expect(document.getSchema()).toBe(testSchema);
+                expect(document.getData()).toEqual({ other: 'data' });
+            })
+            .catch(fail)
+            .then(done);
+    });
     //
     // it('should list', (done) => {
     //     const request = {};
