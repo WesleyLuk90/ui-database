@@ -5,6 +5,7 @@ const Document = require('./Document');
 const uuid = require('./uuid');
 const DocumentReference = require('./DocumentReference');
 const NotFoundError = require('./errors/NotFoundError');
+const CursorVisitor = require('./CursorVisitor');
 
 module.exports = class DocumentStorage {
     constructor(database) {
@@ -72,6 +73,18 @@ module.exports = class DocumentStorage {
                     throw new NotFoundError('document', doc.getId());
                 }
                 return this.get(doc.toReference());
+            });
+    }
+
+    list(schema) {
+        assert(typeof schema === 'string' && schema);
+
+        return this.getCollection(schema)
+            .then((col) => {
+                const results = [];
+                const visitor = new CursorVisitor(col.find({}));
+                return visitor.visit(doc => results.push(this.fromObject(doc)))
+                    .then(() => results);
             });
     }
 

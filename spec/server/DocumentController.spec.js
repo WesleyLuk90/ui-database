@@ -86,20 +86,19 @@ describe('DocumentController', () => {
             .catch(fail)
             .then(done);
     });
-    //
-    // it('should list', (done) => {
-    //     const request = {};
-    //     documentStorage.create(Document.create('my document', 'my_document'))
-    //         .then(() => controller.list(request))
-    //         .then((documents) => {
-    //             expect(Array.isArray(documents)).toBe(true);
-    //             expect(documents.length).toBe(1);
-    //             expect(documents[0].getId()).toBe('my_document');
-    //             expect(documents[0].getName()).toBe('my document');
-    //         })
-    //         .catch(fail)
-    //         .then(done);
-    // });
+
+    it('should list', (done) => {
+        documentStorage.create(Document.create(testSchema, null, { more: 'data' }))
+            .then(() => controller.list({ params: { schema: testSchema } }))
+            .then((documents) => {
+                expect(Array.isArray(documents)).toBe(true);
+                expect(documents.length).toBe(1);
+                expect(documents[0].getId()).toBeTruthy();
+                expect(documents[0].getSchema()).toBe(testSchema);
+            })
+            .catch(fail)
+            .then(done);
+    });
     //
     // describe('api', () => {
     //     const server = ServerToolkit.createServer();

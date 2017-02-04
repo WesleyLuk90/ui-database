@@ -53,4 +53,16 @@ describe('DocumentStorage', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should list documents', (done) => {
+        documentStorage.create(Document.create(testSchema, null, { some: 'data' }))
+            .then(() => documentStorage.create(Document.create(testSchema, null, { some: 'data' })))
+            .then(() => documentStorage.list(testSchema))
+            .then((results) => {
+                expect(results.length).toBe(2);
+                results.forEach(doc => expect(doc instanceof Document).toBe(true));
+            })
+            .catch(fail)
+            .then(done);
+    });
 });

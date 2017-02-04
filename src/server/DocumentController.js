@@ -31,4 +31,11 @@ module.exports = class DocumentController {
         return this.documentStorage
             .get(DocumentReference.create(request.params.schema, request.params.id));
     }
+
+    list(request) {
+        assert(request.params.schema);
+
+        return this.documentStorage
+            .list(request.params.schema);
+    }
 };
