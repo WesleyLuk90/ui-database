@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const SchemaController = require('./SchemaController');
 const SchemaStorage = require('./SchemaStorage');
 const RequestError = require('./errors/RequestError');
+const DocumentController = require('./DocumentController');
+const DocumentStorage = require('./DocumentStorage');
 
 module.exports = class RoutesProvider {
     constructor(database) {
@@ -28,6 +30,12 @@ module.exports = class RoutesProvider {
         app.put('/api/schema/', schemaController.getRouteHandler('create'));
         app.get('/api/schema/', schemaController.getRouteHandler('list'));
         app.post('/api/schema/', schemaController.getRouteHandler('update'));
+
+        const documentController = new DocumentController(new DocumentStorage(this.database));
+        app.get('/api/document/:schema/:id', documentController.getRouteHandler('get'));
+        app.put('/api/document/:schema/', documentController.getRouteHandler('create'));
+        app.get('/api/document/:schema/', documentController.getRouteHandler('list'));
+        app.post('/api/document/:schema/:id', documentController.getRouteHandler('update'));
     }
 
     loadErrorHandlers(server) {

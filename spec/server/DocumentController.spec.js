@@ -4,6 +4,8 @@ const Database = require('../../src/server/Database');
 const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
 const Document = require('../../src/server/Document');
+const ServerToolkit = require('./ServerToolkit');
+const superagent = require('superagent');
 
 describe('DocumentController', () => {
     let controller;
@@ -99,49 +101,57 @@ describe('DocumentController', () => {
             .catch(fail)
             .then(done);
     });
-    //
-    // describe('api', () => {
-    //     const server = ServerToolkit.createServer();
-    //     it('should expose get', (done) => {
-    //         superagent.get(`${server.getBaseUrl()}/api/document/invalid-document-id`)
-    //             .then((res) => {
-    //                 expect(res.body).toEqual({
-    //                     result: null,
-    //                 });
-    //             })
-    //             .catch(fail)
-    //             .then(done);
-    //     });
-    //
-    //     it('should expose create', (done) => {
-    //         superagent.put(`${server.getBaseUrl()}/api/document/`, { name: 'My Document', id: 'my_document' })
-    //             .then((res) => {
-    //                 const document = res.body.result;
-    //                 expect(document.name).toBe('My Document');
-    //                 expect(document.id).toBe('my_document');
-    //                 expect(document.fields).toEqual([]);
-    //             })
-    //             .catch(fail)
-    //             .then(done);
-    //     });
-    //
-    //     it('should expose list', (done) => {
-    //         superagent.get(`${server.getBaseUrl()}/api/document/`)
-    //             .then((res) => {
-    //                 expect(res.body.result).toEqual([]);
-    //             })
-    //             .catch(fail)
-    //             .then(done);
-    //     });
-    //
-    //     it('should update', (done) => {
-    //         documentStorage.create(Document.create('My Document', 'my_document'))
-    //             .then(() => superagent.post(`${server.getBaseUrl()}/api/document/`, { id: 'my_document', name: 'New Document name', fields: [] }))
-    //             .then((res) => {
-    //                 expect(res.body.result).toEqual({ id: 'my_document', name: 'New Document name', fields: [] });
-    //             })
-    //             .catch(fail)
-    //             .then(done);
-    //     });
-    // });
+
+    describe('api', () => {
+        const server = ServerToolkit.createServer();
+        it('should expose get', (done) => {
+            superagent.get(`${server.getBaseUrl()}/api/document/test_schema/id123`)
+                .then((res) => {
+                    expect(res.body).toEqual({
+                        result: null,
+                    });
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should expose create', (done) => {
+            superagent.put(`${server.getBaseUrl()}/api/document/test_schema`, { data: { more: 'data' } })
+                .then((res) => {
+                    const document = res.body.result;
+                    expect(document.schema).toBe('test_schema');
+                    expect(document.id).toBeTruthy();
+                    expect(document.createdAt).toBeTruthy();
+                    expect(document.updatedAt).toBeTruthy();
+                    expect(document.data).toEqual({ more: 'data' });
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should expose list', (done) => {
+            superagent.get(`${server.getBaseUrl()}/api/document/test_schema`)
+                .then((res) => {
+                    expect(res.body.result).toEqual([]);
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should update', (done) => {
+            documentStorage.create(Document.create(testSchema, null, { much: 'data' }))
+                .then(newDoc => superagent.post(
+                    `${server.getBaseUrl()}/api/document/test_schema/${newDoc.getId()}`, { data: { much: 'more data' } }))
+                .then((res) => {
+                    const doc = res.body.result;
+                    expect(doc.schema).toEqual(testSchema);
+                    expect(doc.id).toBeTruthy();
+                    expect(doc.createdAt).toBeTruthy();
+                    expect(doc.updatedAt).toBeTruthy();
+                    expect(doc.data).toBeTruthy({ much: 'more data' });
+                })
+                .catch(fail)
+                .then(done);
+        });
+    });
 });

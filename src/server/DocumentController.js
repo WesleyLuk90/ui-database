@@ -2,9 +2,11 @@ const assert = require('assert');
 const DocumentStorage = require('./DocumentStorage');
 const Document = require('./Document');
 const DocumentReference = require('./DocumentReference');
+const BaseController = require('./BaseController');
 
-module.exports = class DocumentController {
+module.exports = class DocumentController extends BaseController {
     constructor(documentStorage) {
+        super();
         assert(documentStorage instanceof DocumentStorage);
         this.documentStorage = documentStorage;
     }
