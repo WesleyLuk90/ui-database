@@ -1,6 +1,7 @@
 const Database = require('./Database');
 const assert = require('assert');
 const Schema = require('./Schema');
+const CursorVisitor = require('./CursorVisitor');
 
 module.exports = class SchemaStorage {
     constructor(database) {
@@ -16,11 +17,11 @@ module.exports = class SchemaStorage {
         return this.database.getCollection('schemas');
     }
 
-    get(name) {
-        assert.ok(typeof name === 'string' && name);
+    get(_id) {
+        assert.ok(typeof _id === 'string' && _id);
 
         return this.getCollection()
-            .then(col => col.findOne({ name }))
+            .then(col => col.findOne({ _id }))
             .then(data => (data ? this.fromObject(data) : null));
     }
 
@@ -53,10 +54,20 @@ module.exports = class SchemaStorage {
         return this.getCollection()
             .then(col => col.updateOne({ name: dataToUpdate.name }, { $set: dataToUpdate }))
             .then((res) => {
-                if (res.result.nModified !== 1) {
-                    throw new Error(`Expected one document to be updated but was ${res.result.nModified}`);
-                }
+                assert(res.result.nModified === 1, `Expected one document to be updated but was ${res.result.nModified}`);
+                return schema;
             });
+    }
+
+    list() {
+        return this.getCollection()
+            .then((collection) => {
+                const visitor = new CursorVisitor(collection.find({}));
+                const schemaData = [];
+                return visitor.visit(data => schemaData.push(data))
+                    .then(() => schemaData);
+            })
+            .then(res => res.map(d => this.fromObject(d)));
     }
 
     clear() {

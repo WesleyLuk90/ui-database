@@ -1,3 +1,4 @@
 {
-    "e4x": true
+    "e4x": true,
+    "keep_array_indentation": true
 }

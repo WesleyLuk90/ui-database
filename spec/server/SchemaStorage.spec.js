@@ -17,7 +17,7 @@ describe('SchemaStorage', () => {
         const schema = Schema.create('my-schema', 'my_schema');
         schemaStorage.create(schema)
             .then(() => expect(schema.getId()).toBeTruthy())
-            .then(() => schemaStorage.get('my-schema'))
+            .then(() => schemaStorage.get('my_schema'))
             .then(foundSchema => expect(foundSchema).toEqual(schema))
             .catch(fail)
             .then(done);
@@ -43,14 +43,23 @@ describe('SchemaStorage', () => {
 
     it('should update schemas', (done) => {
         const schema = Schema.create('my-schema', 'my_schema');
-        schema.setName('my-schema');
         schemaStorage.create(schema)
             .then(() => {
                 schema.setFields([{ type: 'String' }]);
                 return schemaStorage.update(schema);
             })
-            .then(() => schemaStorage.get(schema.getName()))
+            .then(updatedSchema => expect(updatedSchema instanceof Schema).toBe(true))
+            .then(() => schemaStorage.get(schema.getId()))
             .then(foundSchema => expect(foundSchema).toEqual(schema))
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should list schemas', (done) => {
+        schemaStorage.create(Schema.create('my-schema', 'my_schema'))
+            .then(() => schemaStorage.create(Schema.create('my-schema2', 'my_schema2')))
+            .then(() => schemaStorage.list())
+            .then(schemas => expect(schemas.length).toBe(2))
             .catch(fail)
             .then(done);
     });
