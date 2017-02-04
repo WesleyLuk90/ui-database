@@ -16,6 +16,12 @@ module.exports = class Config {
     getDbPort() {
         return this.env('DB_PORT', '27015');
     }
+    getListenPort() {
+        return this.env('LISTEN_PORT', 80);
+    }
+    getHostname() {
+        return this.env('HOSTNAME', 80);
+    }
 
     env(key, defaultValue) {
         if (process.env[key] != null) {
