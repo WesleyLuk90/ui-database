@@ -1,11 +1,16 @@
-const express = require('express');
-const path = require('path');
+const Config = require('./Config');
+const RoutesProvider = require('./RoutesProvider');
+const Database = require('./Database');
+const Server = require('./Server');
 
-const app = express();
+function main() {
+    const config = new Config();
+    const routesProvider = new RoutesProvider(new Database(config));
+    const server = new Server(config);
 
-app.use('/', express.static(path.join(__dirname, '../../public')));
+    routesProvider.provide(server);
 
-/* eslint-disable no-console */
-app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
-});
+    server.start();
+}
+
+main();

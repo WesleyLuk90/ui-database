@@ -17,10 +17,10 @@ module.exports = class Config {
         return this.env('DB_PORT', '27015');
     }
     getListenPort() {
-        return this.env('LISTEN_PORT', 80);
+        return this.env('LISTEN_PORT', 3000);
     }
     getHostname() {
-        return this.env('HOSTNAME', 80);
+        return this.env('HOSTNAME', 'localhost');
     }
 
     env(key, defaultValue) {
