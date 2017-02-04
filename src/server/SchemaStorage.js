@@ -1,8 +1,6 @@
 const Database = require('./Database');
 const assert = require('assert');
 const Schema = require('./Schema');
-const uuid = require('./uuid');
-
 
 module.exports = class SchemaStorage {
     constructor(database) {

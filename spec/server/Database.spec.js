@@ -9,10 +9,10 @@ describe('Database', () => {
             .then((col) => {
                 col.insert({ abc: 123 })
                     .then(() => col.findOne({}))
-                    .then((val) => expect(val.abc).toBe(123))
+                    .then(val => expect(val.abc).toBe(123))
                     .then(() => col.remove({}));
             })
             .catch(fail)
             .then(done);
     });
-});;
+});
