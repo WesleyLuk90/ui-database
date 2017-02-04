@@ -4,6 +4,7 @@ const Schema = require('./Schema');
 const Document = require('./Document');
 const uuid = require('./uuid');
 const DocumentReference = require('./DocumentReference');
+const NotFoundError = require('./errors/NotFoundError');
 
 module.exports = class DocumentStorage {
     constructor(database) {
@@ -28,12 +29,16 @@ module.exports = class DocumentStorage {
         assert(!doc.getId(), 'Document already has an id');
 
         const objectToInsert = this.toObject(doc);
+        objectToInsert.updatedAt = new Date().toJSON();
+        objectToInsert.createdAt = new Date().toJSON();
 
         return this.getCollection(doc.getSchema())
             .then(col => col.insert(objectToInsert))
             .then(() => {
                 const documentToReturn = doc;
                 documentToReturn.setId(objectToInsert._id);
+                documentToReturn.setCreatedAt(new Date(objectToInsert.createdAt));
+                documentToReturn.setUpdatedAt(new Date(objectToInsert.updatedAt));
                 return documentToReturn;
             });
     }
@@ -55,9 +60,19 @@ module.exports = class DocumentStorage {
         assert(doc instanceof Document);
         assert(doc.getId());
 
+        const toUpdate = {
+            data: doc.getData(),
+            updatedAt: new Date().toJSON(),
+        };
+
         return this.getCollection(doc.getSchema())
-            .then(col => col.updateOne({ _id: doc.getId() }, { $set: { data: doc.getData() } }))
-            .then(res => assert(res.result.nModified, 'Expected one document to be updated'));
+            .then(col => col.updateOne({ _id: doc.getId() }, { $set: toUpdate }))
+            .then((res) => {
+                if (res.result.nModified !== 1) {
+                    throw new NotFoundError('document', doc.getId());
+                }
+                return this.get(doc.toReference());
+            });
     }
 
     toObject(doc) {
@@ -71,6 +86,8 @@ module.exports = class DocumentStorage {
     }
 
     fromObject(data) {
-        return Document.create(data.schema, data._id, data.data);
+        return Document.create(data.schema, data._id, data.data)
+            .setUpdatedAt(new Date(data.updatedAt))
+            .setCreatedAt(new Date(data.createdAt));
     }
 };

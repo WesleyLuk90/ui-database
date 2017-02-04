@@ -28,10 +28,10 @@ describe('DocumentController', () => {
         controller.create(request)
             .then((document) => {
                 expect(document.getId()).toBeTruthy();
+                expect(document.getSchema()).toBe(testSchema);
                 expect(document.getCreatedAt()).toBeTruthy();
                 expect(document.getUpdatedAt()).toBeTruthy();
                 expect(document.getData()).toEqual({ some: 'data' });
-                expect(document.getName()).toBe('my document');
             })
             .catch(fail)
             .then(done);
