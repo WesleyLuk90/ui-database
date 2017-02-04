@@ -15,8 +15,9 @@ module.exports = class RoutesProvider {
     }
 
     loadMiddleware(server) {
-        server.getApp().use(bodyParser.json());
-        server.getApp().use('/', express.static(path.join(__dirname, '../../public')));
+        const app = server.getApp();
+        app.use(bodyParser.json());
+        app.use('/', express.static(path.join(__dirname, '../../public')));
     }
 
     loadRoutes(server) {
@@ -25,6 +26,17 @@ module.exports = class RoutesProvider {
         app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
         app.put('/api/schema/', schemaController.getRouteHandler('create'));
         app.get('/api/schema/', schemaController.getRouteHandler('list'));
+        app.post('/api/schema/', schemaController.getRouteHandler('update'));
+    }
+
+    loadErrorHandlers(server) {
+        const app = server.getApp();
+        app.use((err, req, res, next) => {
+            if (res.headersSent) {
+                return next(err);
+            }
+            res.status(400).send({ error: err });
+        });
     }
 
     provide(server) {
@@ -32,5 +44,6 @@ module.exports = class RoutesProvider {
 
         this.loadMiddleware(server);
         this.loadRoutes(server);
+        this.loadErrorHandlers(server);
     }
 };

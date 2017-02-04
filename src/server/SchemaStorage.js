@@ -54,7 +54,7 @@ module.exports = class SchemaStorage {
         return this.getCollection()
             .then(col => col.updateOne({ name: dataToUpdate.name }, { $set: dataToUpdate }))
             .then((res) => {
-                assert(res.result.nModified === 1, `Expected one document to be updated but was ${res.result.nModified}`);
+                assert(res.result.nModified === 1, `No schema with id '${schema.getId()}' found`);
                 return schema;
             });
     }

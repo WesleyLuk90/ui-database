@@ -114,5 +114,16 @@ describe('SchemaController', () => {
                 .catch(fail)
                 .then(done);
         });
+
+        it('should handle errors', (done) => {
+            superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'invalid_id', name: 'thing', fields: [] })
+                .then(fail)
+                .catch((e) => {
+                    expect(e.status).toBe(400);
+                    expect(e.response.body.error.message).toMatch(/No schema with id 'invalid_id' found/);
+                })
+                .catch(fail)
+                .then(done);
+        });
     });
 });
