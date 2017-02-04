@@ -9,6 +9,8 @@ module.exports = class Document {
         this.schema = null;
         this.id = null;
         this.data = null;
+        this.createdAt = null;
+        this.updatedAt = null;
     }
 
     setSchema(schema) {
@@ -37,5 +39,26 @@ module.exports = class Document {
 
     getData() {
         return this.data;
+    }
+
+    setCreatedAt(date) {
+        assert.ok(date instanceof Date);
+
+        this.createdAt = date;
+        return this;
+    }
+
+    getCreatedAt() {
+        return this.createdAt;
+    }
+
+    setUpdatedAt(date) {
+        assert.ok(date instanceof Date);
+        this.updatedAt = date;
+        return this;
+    }
+
+    getUpdatedAt() {
+        return this.updatedAt;
     }
 };

@@ -28,12 +28,16 @@ module.exports = class DocumentStorage {
         assert.ok(!doc.getId(), 'Document already has an id');
 
         const objectToInsert = this.toObject(doc);
+        objectToInsert.updatedAt = new Date().toJSON();
+        objectToInsert.createdAt = new Date().toJSON();
 
         return this.getCollection(doc.getSchema())
             .then(col => col.insert(objectToInsert))
             .then(() => {
                 const documentToReturn = doc;
                 documentToReturn.setId(objectToInsert._id);
+                documentToReturn.setCreatedAt(new Date(objectToInsert.createdAt));
+                documentToReturn.setUpdatedAt(new Date(objectToInsert.updatedAt));
                 return documentToReturn;
             });
     }
@@ -55,8 +59,13 @@ module.exports = class DocumentStorage {
         assert.ok(doc instanceof Document);
         assert.ok(doc.getId());
 
+        const toUpdate = {
+            data: doc.getData(),
+            updatedAt: new Date().toJSON(),
+        };
+
         return this.getCollection(doc.getSchema())
-            .then(col => col.updateOne({ _id: doc.getId() }, { $set: { data: doc.getData() } }))
+            .then(col => col.updateOne({ _id: doc.getId() }, { $set: toUpdate }))
             .then(res => assert.ok(res.result.nModified, 'Expected one document to be updated'));
     }
 
@@ -71,6 +80,8 @@ module.exports = class DocumentStorage {
     }
 
     fromObject(data) {
-        return Document.create(data.schema, data._id, data.data);
+        return Document.create(data.schema, data._id, data.data)
+            .setUpdatedAt(new Date(data.updatedAt))
+            .setCreatedAt(new Date(data.createdAt));
     }
 };

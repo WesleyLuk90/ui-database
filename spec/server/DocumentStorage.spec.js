@@ -20,6 +20,10 @@ describe('DocumentStorage', () => {
     it('should create documents', (done) => {
         const doc = Document.create(testSchema, null, { some: 'data' });
         documentStorage.create(doc)
+            .then(() => {
+                expect(doc.getCreatedAt() instanceof Date).toBe(true);
+                expect(doc.getUpdatedAt() instanceof Date).toBe(true);
+            })
             .then(() => documentStorage.get(DocumentReference.create(testSchema, doc.getId())))
             .then(foundDocument => expect(foundDocument).toEqual(doc))
             .catch(fail)
@@ -41,7 +45,11 @@ describe('DocumentStorage', () => {
                 return documentStorage.update(doc);
             })
             .then(() => documentStorage.get(DocumentReference.create(testSchema, doc.getId())))
-            .then(foundDocument => expect(foundDocument).toEqual(doc))
+            .then(foundDocument => {
+                expect(foundDocument.getUpdatedAt()).not.toBe(doc.getUpdatedAt());
+                expect(foundDocument.getCreatedAt()).toEqual(doc.getCreatedAt());
+                expect(foundDocument.getData()).toEqual(doc.getData());
+            })
             .catch(fail)
             .then(done);
     });
