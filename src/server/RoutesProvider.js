@@ -4,6 +4,8 @@ const express = require('express');
 const path = require('path');
 const Database = require('./Database');
 const bodyParser = require('body-parser');
+const SchemaController = require('./SchemaController');
+const SchemaStorage = require('./SchemaStorage');
 
 module.exports = class RoutesProvider {
     constructor(database) {
@@ -18,7 +20,10 @@ module.exports = class RoutesProvider {
     }
 
     loadRoutes(server) {
-
+        const schemaController = new SchemaController(new SchemaStorage(this.database));
+        const app = server.getApp();
+        app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
+        app.put('/api/schema/', schemaController.getRouteHandler('create'));
     }
 
     provide(server) {

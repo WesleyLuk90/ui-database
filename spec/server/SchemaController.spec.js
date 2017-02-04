@@ -3,6 +3,8 @@ const SchemaStorage = require('../../src/server/SchemaStorage');
 const Database = require('../../src/server/Database');
 const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
+const ServerToolkit = require('./ServerToolkit');
+const superagent = require('superagent');
 
 describe('SchemaController', () => {
     let controller;
@@ -77,5 +79,31 @@ describe('SchemaController', () => {
             })
             .catch(fail)
             .then(done);
+    });
+
+    describe('api', () => {
+        const server = ServerToolkit.createServer();
+        it('should expose get', (done) => {
+            superagent.get(`${server.getBaseUrl()}/api/schema/invalid-schema-id`)
+                .then((res) => {
+                    expect(res.body).toEqual({
+                        result: null,
+                    });
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should expose create', (done) => {
+            superagent.put(`${server.getBaseUrl()}/api/schema/`, { name: 'My Schema', id: 'my_schema' })
+                .then((res) => {
+                    const schema = res.body.result;
+                    expect(schema.name).toBe('My Schema');
+                    expect(schema.id).toBe('my_schema');
+                    expect(schema.fields).toEqual([]);
+                })
+                .catch(fail)
+                .then(done);
+        });
     });
 });

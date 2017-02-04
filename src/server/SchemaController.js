@@ -1,9 +1,11 @@
 const SchemaStorage = require('./SchemaStorage');
 const assert = require('assert');
 const Schema = require('./Schema');
+const BaseController = require('./BaseController');
 
-module.exports = class SchemaController {
+module.exports = class SchemaController extends BaseController {
     constructor(schemaStorage) {
+        super();
         assert.ok(schemaStorage instanceof SchemaStorage);
         this.schemaStorage = schemaStorage;
     }
