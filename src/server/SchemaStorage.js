@@ -2,6 +2,7 @@ const Database = require('./Database');
 const assert = require('assert');
 const Schema = require('./Schema');
 const CursorVisitor = require('./CursorVisitor');
+const NotFoundError = require('./errors/NotFoundError');
 
 module.exports = class SchemaStorage {
     constructor(database) {
@@ -52,9 +53,11 @@ module.exports = class SchemaStorage {
         const dataToUpdate = this.toObject(schema);
         delete dataToUpdate._id;
         return this.getCollection()
-            .then(col => col.updateOne({ name: dataToUpdate.name }, { $set: dataToUpdate }))
+            .then(col => col.updateOne({ _id: schema.getId() }, { $set: dataToUpdate }))
             .then((res) => {
-                assert(res.result.nModified === 1, `No schema with id '${schema.getId()}' found`);
+                if (res.result.nModified !== 1) {
+                    throw new NotFoundError('schema', schema.getId());
+                }
                 return schema;
             });
     }

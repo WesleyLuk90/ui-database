@@ -6,6 +6,7 @@ const Database = require('./Database');
 const bodyParser = require('body-parser');
 const SchemaController = require('./SchemaController');
 const SchemaStorage = require('./SchemaStorage');
+const RequestError = require('./errors/RequestError');
 
 module.exports = class RoutesProvider {
     constructor(database) {
@@ -32,10 +33,20 @@ module.exports = class RoutesProvider {
     loadErrorHandlers(server) {
         const app = server.getApp();
         app.use((err, req, res, next) => {
+            // TODO add logging
             if (res.headersSent) {
                 return next(err);
             }
-            res.status(400).send({ error: err });
+            if (err instanceof RequestError) {
+                return res.status(400).send({
+                    error: {
+                        name: err.name,
+                        message: err.message,
+                        stack: err.stack,
+                    },
+                });
+            }
+            return next(err);
         });
     }
 

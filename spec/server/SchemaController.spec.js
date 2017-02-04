@@ -115,12 +115,11 @@ describe('SchemaController', () => {
                 .then(done);
         });
 
-        it('should handle errors', (done) => {
-            superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'invalid_id', name: 'thing', fields: [] })
-                .then(fail)
-                .catch((e) => {
-                    expect(e.status).toBe(400);
-                    expect(e.response.body.error.message).toMatch(/No schema with id 'invalid_id' found/);
+        it('should update', (done) => {
+            schemaStorage.create(Schema.create('My Schema', 'my_schema'))
+                .then(() => superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'my_schema', name: 'New Schema name', fields: [] }))
+                .then((res) => {
+                    expect(res.body.result).toEqual({ id: 'my_schema', name: 'New Schema name', fields: [] });
                 })
                 .catch(fail)
                 .then(done);

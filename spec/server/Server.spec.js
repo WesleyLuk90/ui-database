@@ -16,4 +16,16 @@ describe('Server', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should handle errors', (done) => {
+        superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'invalid_id', name: 'thing', fields: [] })
+            .then(fail)
+            .catch((e) => {
+                expect(e.status).toBe(400);
+                expect(e.response.body.error.name).toBe('NotFoundError');
+                expect(e.response.body.error.message).toMatch(/The schema with id 'invalid_id' was not found/);
+            })
+            .catch(fail)
+            .then(done);
+    });
 });
