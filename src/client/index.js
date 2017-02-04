@@ -1,12 +1,10 @@
 import ReactDom from 'react-dom';
 import React from 'react';
+import Page from './components/Page';
 
-import Test from './Test';
-
-require('bootstrap-sass/assets/stylesheets/_bootstrap-sprockets.scss');
-require('bootstrap-sass/assets/stylesheets/_bootstrap.scss');
+require('./styles/main.scss');
 
 const element = document.createElement('div');
 document.body.appendChild(element);
 
-ReactDom.render(React.createElement(Test), element);
+ReactDom.render(React.createElement(Page), element);

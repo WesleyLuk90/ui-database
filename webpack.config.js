@@ -1,3 +1,5 @@
+const LiveReloadPlugin = require('webpack-livereload-plugin');
+
 module.exports = {
     entry: './src/client/index',
     output: {
@@ -20,7 +22,9 @@ module.exports = {
             loader: 'url-loader?limit=8192',
         }],
     },
-    plugins: [],
+    plugins: [
+        new LiveReloadPlugin({ appendScriptTag: true }),
+    ],
     resolve: {
         extensions: ['.js', '.jsx', '.css'],
     },
