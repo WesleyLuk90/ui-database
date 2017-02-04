@@ -45,7 +45,7 @@ describe('DocumentStorage', () => {
                 return documentStorage.update(doc);
             })
             .then(() => documentStorage.get(DocumentReference.create(testSchema, doc.getId())))
-            .then(foundDocument => {
+            .then((foundDocument) => {
                 expect(foundDocument.getUpdatedAt()).not.toBe(doc.getUpdatedAt());
                 expect(foundDocument.getCreatedAt()).toEqual(doc.getCreatedAt());
                 expect(foundDocument.getData()).toEqual(doc.getData());
