@@ -9,8 +9,17 @@ module.exports = class DocumentController {
     }
 
     create(request) {
-        assert(request.body.schema);
+        assert(request.params.schema);
+
         return this.documentStorage
-            .create(Document.create(request.body.schema, null, request.body.data));
+            .create(Document.create(request.params.schema, null, request.body.data));
+    }
+
+    update(request) {
+        assert(request.params.schema);
+        assert(request.params.id);
+
+        return this.documentStorage
+            .update(Document.create(request.params.schema, request.params.id, request.body.data));
     }
 };

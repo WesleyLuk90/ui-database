@@ -3,6 +3,7 @@ const DocumentStorage = require('../../src/server/DocumentStorage');
 const Database = require('../../src/server/Database');
 const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
+const Document = require('../../src/server/Document');
 
 describe('DocumentController', () => {
     let controller;
@@ -18,8 +19,10 @@ describe('DocumentController', () => {
 
     it('should create', (done) => {
         const request = {
-            body: {
+            params: {
                 schema: testSchema,
+            },
+            body: {
                 data: {
                     some: 'data',
                 },
@@ -36,25 +39,34 @@ describe('DocumentController', () => {
             .catch(fail)
             .then(done);
     });
-    //
-    // it('should update', (done) => {
-    //     const request = {
-    //         body: {
-    //             name: 'my document',
-    //             id: 'my_document',
-    //             fields: [{ id: 'f1', value: 'hi' }],
-    //         },
-    //     };
-    //     documentStorage.create(Document.create('my document', 'my_document'))
-    //         .then(() => controller.update(request))
-    //         .then((document) => {
-    //             expect(document.getId()).toBe('my_document');
-    //             expect(document.getName()).toBe('my document');
-    //         })
-    //         .catch(fail)
-    //         .then(done);
-    // });
-    //
+
+    it('should update', (done) => {
+        documentStorage.create(Document.create(testSchema, null, { some: 'data' }))
+            .then((newDocument) => {
+                const request = {
+                    params: {
+                        schema: testSchema,
+                        id: newDocument.getId(),
+                    },
+                    body: {
+                        data: {
+                            some: 'new data',
+                        },
+                    },
+                };
+                return controller.update(request);
+            })
+            .then((document) => {
+                expect(document.getId()).toBeTruthy();
+                expect(document.getCreatedAt()).toBeTruthy();
+                expect(document.getUpdatedAt()).toBeTruthy();
+                expect(document.getData()).toEqual({ some: 'new data' });
+                expect(document.getSchema()).toBe(testSchema);
+            })
+            .catch(fail)
+            .then(done);
+    });
+
     // it('should get', (done) => {
     //     const request = {
     //         params: {
