@@ -14,7 +14,7 @@ module.exports = class Schema {
     }
 
     setId(id) {
-        assert.ok(id && /^[a-z_0-9]+$/.test(id), 'Schema can only contain letters, numbers and underscore');
+        assert(id && /^[a-z_0-9]+$/.test(id), 'Schema can only contain letters, numbers and underscore');
         this.id = id;
         return this;
     }
@@ -24,13 +24,13 @@ module.exports = class Schema {
     }
 
     setName(name) {
-        assert.ok(name);
+        assert(name);
         this.name = name;
         return this;
     }
 
     setFields(fields) {
-        assert.ok(Array.isArray(fields));
+        assert(Array.isArray(fields));
 
         this.fields = fields;
         return this;

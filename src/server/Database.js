@@ -4,7 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 module.exports = class Database {
     constructor(config) {
-        assert.ok(config instanceof Config);
+        assert(config instanceof Config);
         this.config = config;
     }
 

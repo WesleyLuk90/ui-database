@@ -9,7 +9,7 @@ const SchemaStorage = require('./SchemaStorage');
 
 module.exports = class RoutesProvider {
     constructor(database) {
-        assert.ok(database instanceof Database);
+        assert(database instanceof Database);
 
         this.database = database;
     }
@@ -40,7 +40,7 @@ module.exports = class RoutesProvider {
     }
 
     provide(server) {
-        assert.ok(server instanceof Server);
+        assert(server instanceof Server);
 
         this.loadMiddleware(server);
         this.loadRoutes(server);

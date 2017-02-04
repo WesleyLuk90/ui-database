@@ -5,7 +5,7 @@ const CursorVisitor = require('./CursorVisitor');
 
 module.exports = class SchemaStorage {
     constructor(database) {
-        assert.ok(database instanceof Database);
+        assert(database instanceof Database);
         this.database = database;
     }
 
@@ -18,7 +18,7 @@ module.exports = class SchemaStorage {
     }
 
     get(_id) {
-        assert.ok(typeof _id === 'string' && _id);
+        assert(typeof _id === 'string' && _id);
 
         return this.getCollection()
             .then(col => col.findOne({ _id }))
@@ -26,9 +26,9 @@ module.exports = class SchemaStorage {
     }
 
     create(schema) {
-        assert.ok(schema instanceof Schema);
-        assert.ok(schema.getName());
-        assert.ok(schema.getId());
+        assert(schema instanceof Schema);
+        assert(schema.getName());
+        assert(schema.getId());
         const toInsert = this.toObject(schema);
         return this.getCollection()
             .then(col => col.insert(toInsert))
@@ -48,7 +48,7 @@ module.exports = class SchemaStorage {
     }
 
     update(schema) {
-        assert.ok(schema instanceof Schema);
+        assert(schema instanceof Schema);
         const dataToUpdate = this.toObject(schema);
         delete dataToUpdate._id;
         return this.getCollection()
@@ -76,7 +76,7 @@ module.exports = class SchemaStorage {
     }
 
     toObject(schema) {
-        assert.ok(schema instanceof Schema);
+        assert(schema instanceof Schema);
         return {
             _id: schema.id,
             name: schema.name,
@@ -85,7 +85,7 @@ module.exports = class SchemaStorage {
     }
 
     fromObject(data) {
-        assert.ok(data);
+        assert(data);
         const schema = new Schema();
         schema.id = data._id;
         schema.name = data.name;

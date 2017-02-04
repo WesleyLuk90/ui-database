@@ -6,7 +6,7 @@ const BaseController = require('./BaseController');
 module.exports = class SchemaController extends BaseController {
     constructor(schemaStorage) {
         super();
-        assert.ok(schemaStorage instanceof SchemaStorage);
+        assert(schemaStorage instanceof SchemaStorage);
         this.schemaStorage = schemaStorage;
     }
 
@@ -28,7 +28,7 @@ module.exports = class SchemaController extends BaseController {
     }
 
     list(request) {
-        assert.ok(request);
+        assert(request);
         return this.schemaStorage.list();
     }
 };

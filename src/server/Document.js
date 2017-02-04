@@ -12,7 +12,7 @@ module.exports = class Document {
     }
 
     setSchema(schema) {
-        assert.ok(schema);
+        assert(schema);
         this.schema = schema;
         return this;
     }

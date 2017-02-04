@@ -9,7 +9,7 @@ module.exports = class Server {
     }
 
     start() {
-        assert.ok(!this.httpServer, 'Server has already been started');
+        assert(!this.httpServer, 'Server has already been started');
         const defer = Q.defer();
         this.httpServer = this.app.listen(this.config.getListenPort(), defer.resolve);
         return defer.promise;
@@ -26,7 +26,7 @@ module.exports = class Server {
     }
 
     stop() {
-        assert.ok(this.httpServer, 'Server is not started');
+        assert(this.httpServer, 'Server is not started');
         const defer = Q.defer();
         this.httpServer.close(defer.resolve);
         return defer.promise.then(() => {

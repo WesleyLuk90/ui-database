@@ -2,7 +2,7 @@ const assert = require('assert');
 
 module.exports = class CursorVisitor {
     constructor(cursor) {
-        assert.ok(cursor);
+        assert(cursor);
         this.cursor = cursor;
     }
 

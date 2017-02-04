@@ -11,7 +11,7 @@ module.exports = class DocumentReferernce {
     }
 
     setId(id) {
-        assert.ok(id);
+        assert(id);
         this.id = id;
         return this;
     }
@@ -21,7 +21,7 @@ module.exports = class DocumentReferernce {
     }
 
     setSchema(schema) {
-        assert.ok(schema);
+        assert(schema);
         this.schema = schema;
         return this;
     }

@@ -7,25 +7,25 @@ const DocumentReference = require('./DocumentReference');
 
 module.exports = class DocumentStorage {
     constructor(database) {
-        assert.ok(database instanceof Database);
+        assert(database instanceof Database);
         this.database = database;
     }
 
     getCollection(schema) {
-        assert.ok(typeof schema === 'string');
+        assert(typeof schema === 'string');
         return this.database.getCollection(schema);
     }
 
     clear(schema) {
-        assert.ok(schema instanceof Schema);
+        assert(schema instanceof Schema);
 
         return this.getCollection(schema.getId())
             .then(col => col.remove({}));
     }
 
     create(doc) {
-        assert.ok(doc instanceof Document);
-        assert.ok(!doc.getId(), 'Document already has an id');
+        assert(doc instanceof Document);
+        assert(!doc.getId(), 'Document already has an id');
 
         const objectToInsert = this.toObject(doc);
 
@@ -39,7 +39,7 @@ module.exports = class DocumentStorage {
     }
 
     get(documentReference) {
-        assert.ok(documentReference instanceof DocumentReference, 'Expected a document reference');
+        assert(documentReference instanceof DocumentReference, 'Expected a document reference');
 
         return this.getCollection(documentReference.getSchema())
             .then(col => col.findOne({ _id: documentReference.getId() }))
@@ -52,16 +52,16 @@ module.exports = class DocumentStorage {
     }
 
     update(doc) {
-        assert.ok(doc instanceof Document);
-        assert.ok(doc.getId());
+        assert(doc instanceof Document);
+        assert(doc.getId());
 
         return this.getCollection(doc.getSchema())
             .then(col => col.updateOne({ _id: doc.getId() }, { $set: { data: doc.getData() } }))
-            .then(res => assert.ok(res.result.nModified, 'Expected one document to be updated'));
+            .then(res => assert(res.result.nModified, 'Expected one document to be updated'));
     }
 
     toObject(doc) {
-        assert.ok(doc instanceof Document);
+        assert(doc instanceof Document);
 
         return {
             _id: doc.getId() || uuid(),
