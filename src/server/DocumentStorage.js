@@ -17,7 +17,7 @@ module.exports = class DocumentStorage {
     }
 
     clear(schema) {
-        assert(schema instanceof Schema);
+        assert(schema instanceof Schema, 'Requires a schema');
 
         return this.getCollection(schema.getId())
             .then(col => col.remove({}));
