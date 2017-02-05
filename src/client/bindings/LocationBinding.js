@@ -40,3 +40,6 @@ export default class LocationBinding {
         return this.location.hash.replace(/^#/, '');
     }
 }
+
+LocationBinding.$name = 'LocationBinding';
+LocationBinding.$inject = ['window', 'location', 'RoutingService'];

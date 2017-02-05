@@ -80,3 +80,5 @@ export default class RoutingService {
         return this.stateStream;
     }
 }
+
+RoutingService.$name = 'RoutingService';
