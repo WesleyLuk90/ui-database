@@ -22,12 +22,16 @@ export default class RoutingService {
 
     toUrl(url) {
         assert.ok(typeof url === 'string');
+        let newUrl = url;
 
         let state = _(this.states).filter(s => s.url === url || url.match(s.url)).first();
         if (!state) {
-            state = _(this.states).first(s => s.default);
+            state = _(this.states).filter(s => s.default).first();
+            assert.ok(state, `Failed to match url ${url} to any state and no default state was defined`);
+            assert.ok(typeof state.default === 'string');
+            newUrl = state.default;
         }
-        return this.updateState(url, state);
+        return this.updateState(newUrl, state);
     }
 
     getUrl() {
@@ -36,9 +40,9 @@ export default class RoutingService {
 
     updateState(url, state) {
         if (this.currentState === state) {
-            return;
+            return Q.when();
         }
-        const match = url.match(state.url);
+        const match = url.match(state.url) || [];
 
         const params = match.slice();
         const asyncParams = state.onEnter ? state.onEnter(params) : params;

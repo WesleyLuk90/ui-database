@@ -10,6 +10,7 @@ module.exports = {
     module: {
         rules: [{
             test: /\.(js|jsx)$/,
+            exclude: /(node_modules|bower_components)/,
             loader: 'react-hot-loader!babel-loader',
         }, {
             test: /\.css$/,
@@ -26,6 +27,6 @@ module.exports = {
         new LiveReloadPlugin({ appendScriptTag: true }),
     ],
     resolve: {
-        extensions: ['.js', '.jsx', '.css'],
+        extensions: ['.js', '.jsx'],
     },
 };

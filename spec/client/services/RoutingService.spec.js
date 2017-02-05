@@ -88,6 +88,20 @@ describe('RoutingService', () => {
             .then(done);
     });
 
+    it('should use the default state', (done) => {
+        const router = new RoutingService();
+        router.register({ name: 'a', url: '/a' });
+        router.register({ name: 'b', url: '/b', default: '/b' });
+
+        router.toUrl('/c')
+            .then(() => {
+                expect(router.getState().name).toBe('b');
+                expect(router.getUrl()).toBe('/b');
+            })
+            .catch(fail)
+            .then(done);
+    });
+
     it('should emit a stream of states', (done) => {
         const router = new RoutingService();
 
