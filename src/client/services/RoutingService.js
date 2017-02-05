@@ -35,6 +35,9 @@ export default class RoutingService {
     }
 
     updateState(url, state) {
+        if (this.currentState === state) {
+            return;
+        }
         const match = url.match(state.url);
 
         const params = match.slice();

@@ -109,4 +109,24 @@ describe('RoutingService', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should not go to the same state twice', (done) => {
+        const router = new RoutingService();
+
+        const streamSpy = jasmine.createSpy('streamSpy');
+        router.getStateStream().subscribe(streamSpy);
+
+        router.register({ name: 'a', url: '/a' });
+        router.toUrl('/a')
+            .then(() => {
+                expect(streamSpy).toHaveBeenCalledWith({ name: 'a', url: '/a' });
+                streamSpy.calls.reset();
+                return router.toUrl('/a');
+            })
+            .then(() => {
+                expect(streamSpy).not.toHaveBeenCalled();
+            })
+            .catch(fail)
+            .then(done);
+    });
 });

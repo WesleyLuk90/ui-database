@@ -8,3 +8,6 @@ const element = document.createElement('div');
 document.body.appendChild(element);
 
 ReactDom.render(React.createElement(Page), element);
+
+
+const routingService = new RoutingService();
