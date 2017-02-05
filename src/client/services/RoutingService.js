@@ -1,5 +1,6 @@
 import assert from 'assert';
 import _ from 'lodash';
+import Q from 'q';
 
 export default class RoutingService {
     constructor() {
@@ -19,22 +20,40 @@ export default class RoutingService {
 
     toUrl(url) {
         assert.ok(typeof url === 'string');
-        this.currentUrl = url;
 
-        let state = _(this.states).first(s => s.url === url);
+        let state = _(this.states).first(s => s.url === url || url.match(s.url));
         if (!state) {
             state = _(this.states).first(s => s.default);
         }
-        this.setState(state);
+        return this.updateState(url, state);
     }
 
     getUrl() {
         return this.currentUrl;
     }
 
-    setState(state) {
-        this.currentState = state;
-        this.currentParams = {};
+    updateState(url, state) {
+        const match = url.match(state.url);
+        const params = match.slice();
+        const asyncParams = state.onEnter ? state.onEnter(params) : params;
+
+        return this.resolvePromises(asyncParams)
+            .then((loadedParams) => {
+                this.currentUrl = url;
+                this.currentState = state;
+                this.currentParams = loadedParams;
+            });
+    }
+
+    resolvePromises(asyncParams) {
+        if (Array.isArray(asyncParams)) {
+            return Q.all(asyncParams);
+        }
+        const output = {};
+        return Q.all(Object.keys(asyncParams)
+            .map(key => Q.when(asyncParams[key])
+                .then((value) => { output[key] = value; }))
+        ).then(() => output);
     }
 
     getState() {
