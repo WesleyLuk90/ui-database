@@ -1,6 +1,7 @@
 import assert from 'assert';
 import _ from 'lodash';
 import Q from 'q';
+import Rx from 'rx';
 
 export default class RoutingService {
     constructor() {
@@ -9,6 +10,7 @@ export default class RoutingService {
         this.currentState = null;
         this.currentParams = null;
         this.loadedParams = null;
+        this.stateStream = new Rx.BehaviorSubject(null);
     }
 
     register(state) {
@@ -21,7 +23,7 @@ export default class RoutingService {
     toUrl(url) {
         assert.ok(typeof url === 'string');
 
-        let state = _(this.states).first(s => s.url === url || url.match(s.url));
+        let state = _(this.states).filter(s => s.url === url || url.match(s.url)).first();
         if (!state) {
             state = _(this.states).first(s => s.default);
         }
@@ -34,6 +36,7 @@ export default class RoutingService {
 
     updateState(url, state) {
         const match = url.match(state.url);
+
         const params = match.slice();
         const asyncParams = state.onEnter ? state.onEnter(params) : params;
 
@@ -42,6 +45,7 @@ export default class RoutingService {
                 this.currentUrl = url;
                 this.currentState = state;
                 this.currentParams = loadedParams;
+                this.stateStream.onNext(state);
             });
     }
 
@@ -51,9 +55,10 @@ export default class RoutingService {
         }
         const output = {};
         return Q.all(Object.keys(asyncParams)
-            .map(key => Q.when(asyncParams[key])
-                .then((value) => { output[key] = value; }))
-        ).then(() => output);
+            .map(key =>
+                Q.when(asyncParams[key]).then((value) => {
+                    output[key] = value;
+                }))).then(() => output);
     }
 
     getState() {
@@ -62,5 +67,9 @@ export default class RoutingService {
 
     getParams() {
         return this.currentParams;
+    }
+
+    getStateStream() {
+        return this.stateStream;
     }
 }

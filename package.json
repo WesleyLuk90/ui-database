@@ -46,6 +46,7 @@
         "file-loader": "^0.10.0",
         "lodash": "^4.17.4",
         "mongodb": "^2.2.22",
+        "rx": "^4.1.0",
         "superagent": "^3.4.1"
     }
 }
