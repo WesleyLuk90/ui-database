@@ -11,7 +11,8 @@ describe('RoutingService', () => {
 
         router.toUrl('/');
 
-        expect(router.getState()).toEqual({ url: '/' });
+        expect(router.getState()).toEqual({ name: 'home', url: '/' });
         expect(router.getParams()).toEqual({});
+        expect(router.getUrl()).toEqual('/');
     });
 });

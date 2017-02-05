@@ -2,6 +2,7 @@ const webpack = require('./webpack.config');
 
 module.exports = function configure(config) {
     config.set({
+        frameworks: ['jasmine'],
         files: [
             { pattern: 'spec/client/index.js', watched: false },
         ],
