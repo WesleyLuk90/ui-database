@@ -3,6 +3,7 @@ import assert from 'assert';
 
 import LocationBinding from './bindings/LocationBinding';
 import RoutingService from './services/RoutingService';
+import StateBindings from './bindings/StateBindings';
 
 Bottle.config.strict = true;
 
@@ -17,6 +18,7 @@ export default class AppModule {
         bottle.value('location', window.location);
         bottle.register(LocationBinding);
         bottle.register(RoutingService);
+        bottle.register(StateBindings);
         return bottle;
     }
 

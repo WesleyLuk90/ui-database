@@ -1,0 +1,26 @@
+.navigation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 5px 0;
+}
+
+.navigation-item {
+    font-size: 20px;
+
+    a {
+        display: block;
+        height: 40px;
+        padding: 5px 7px;
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+    }
+}

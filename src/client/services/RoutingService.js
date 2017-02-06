@@ -17,6 +17,12 @@ export default class RoutingService {
         assert.ok(state.name);
         assert.ok(state.url);
 
+        if (typeof state.url === 'string') {
+            const escapedRegex = state.url.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            const tokenizedRegex = state.url.replace(/(:\w+)/g, '(\\w+)');
+            state.url = new RegExp(`^${tokenizedRegex}$`);
+        }
+
         this.states.push(state);
     }
 
@@ -24,7 +30,7 @@ export default class RoutingService {
         assert.ok(typeof url === 'string');
         let newUrl = url;
 
-        let state = _(this.states).filter(s => s.url === url || url.match(s.url)).first();
+        let state = _(this.states).filter(s => url.match(s.url)).first();
         if (!state) {
             state = _(this.states).filter(s => s.default).first();
             assert.ok(state, `Failed to match url ${url} to any state and no default state was defined`);
@@ -39,9 +45,6 @@ export default class RoutingService {
     }
 
     updateState(url, state) {
-        if (this.currentState === state) {
-            return Q.when();
-        }
         const match = url.match(state.url) || [];
 
         const params = match.slice();
@@ -52,7 +55,9 @@ export default class RoutingService {
                 this.currentUrl = url;
                 this.currentState = state;
                 this.currentParams = loadedParams;
-                this.stateStream.onNext(state);
+                if (this.currentState === state) {
+                    this.stateStream.onNext(state);
+                }
             });
     }
 

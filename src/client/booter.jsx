@@ -6,9 +6,8 @@ import AppModule from './AppModule';
 export default function boot() {
     const appModule = new AppModule();
 
-    const routingService = appModule.get('RoutingService');
-    routingService.register({ name: 'schemas', url: '/schemas' });
-    routingService.register({ name: 'home', url: '/', default: '/' });
+    const stateBindings = appModule.get('StateBindings');
+    stateBindings.bind();
 
     const binder = appModule.get('LocationBinding');
     binder.bind();

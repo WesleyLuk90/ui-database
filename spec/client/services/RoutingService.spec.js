@@ -12,7 +12,7 @@ describe('RoutingService', () => {
 
         router.toUrl('/')
             .then(() => {
-                expect(router.getState()).toEqual({ name: 'home', url: '/' });
+                expect(router.getState().name).toEqual('home');
                 expect(router.getParams()).toEqual(['/']);
                 expect(router.getUrl()).toEqual('/');
             }).catch(fail).then(done);
@@ -69,7 +69,21 @@ describe('RoutingService', () => {
         router.register({ name: 'c', url: '/c' });
 
         router.toUrl('/b')
-            .then(() => expect(router.getState()).toEqual({ name: 'b', url: '/b' }))
+            .then(() => expect(router.getState().name).toEqual('b'))
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should allow shorthand parameters', (done) => {
+        const router = new RoutingService();
+
+        router.register({ name: 'a', url: '/a/:b/:c' });
+
+        router.toUrl('/a/bbb/cc')
+            .then(() => {
+                expect(router.getState().name).toEqual('a');
+                expect(router.getParams()).toEqual(['/a/bbb/cc', 'bbb', 'cc']);
+            })
             .catch(fail)
             .then(done);
     });
@@ -79,11 +93,12 @@ describe('RoutingService', () => {
 
         router.register({ name: 'a', url: '/a' });
         router.register({ name: 'b', url: /^\/b$/ });
-        router.register({ name: 'b-d-e', url: '/b/d/e' });
+        const matchingRoute = { name: 'b-d-e', url: '/b/d/e' };
+        router.register(matchingRoute);
         router.register({ name: 'c', url: '/c' });
 
         router.toUrl('/b/d/e')
-            .then(() => expect(router.getState()).toEqual({ name: 'b-d-e', url: '/b/d/e' }))
+            .then(() => expect(router.getState()).toBe(matchingRoute))
             .catch(fail)
             .then(done);
     });
@@ -105,40 +120,25 @@ describe('RoutingService', () => {
     it('should emit a stream of states', (done) => {
         const router = new RoutingService();
 
-        router.register({ name: 'a', url: '/a' });
-        router.register({ name: 'b', url: '/b' });
+        const aRoute = { name: 'a', url: '/a' };
+        const bRoute = { name: 'b', url: '/b' };
+
+        router.register(aRoute);
+        router.register(bRoute);
 
         const streamSpy = jasmine.createSpy('streamSpy');
         router.getStateStream().subscribe(streamSpy);
 
         router.toUrl('/a')
             .then(() => {
-                expect(streamSpy).toHaveBeenCalledWith({ name: 'a', url: '/a' });
+                expect(streamSpy).toHaveBeenCalledWith(aRoute);
+                expect(streamSpy).not.toHaveBeenCalledWith(bRoute);
                 streamSpy.calls.reset();
             })
             .then(() => router.toUrl('/b'))
             .then(() => {
-                expect(streamSpy).toHaveBeenCalledWith({ name: 'b', url: '/b' });
-            })
-            .catch(fail)
-            .then(done);
-    });
-
-    it('should not go to the same state twice', (done) => {
-        const router = new RoutingService();
-
-        const streamSpy = jasmine.createSpy('streamSpy');
-        router.getStateStream().subscribe(streamSpy);
-
-        router.register({ name: 'a', url: '/a' });
-        router.toUrl('/a')
-            .then(() => {
-                expect(streamSpy).toHaveBeenCalledWith({ name: 'a', url: '/a' });
-                streamSpy.calls.reset();
-                return router.toUrl('/a');
-            })
-            .then(() => {
-                expect(streamSpy).not.toHaveBeenCalled();
+                expect(streamSpy).toHaveBeenCalledWith(bRoute);
+                expect(streamSpy).not.toHaveBeenCalledWith(aRoute);
             })
             .catch(fail)
             .then(done);
