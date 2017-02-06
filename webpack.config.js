@@ -5,6 +5,7 @@ module.exports = {
     output: {
         path: `${__dirname}/public/build`,
         filename: 'bundle.js',
+        publicPath: '/build/',
     },
     devtool: 'eval-source-map',
     module: {

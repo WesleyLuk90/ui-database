@@ -4,6 +4,8 @@ import assert from 'assert';
 import LocationBinding from './bindings/LocationBinding';
 import RoutingService from './services/RoutingService';
 
+Bottle.config.strict = true;
+
 export default class AppModule {
     constructor() {
         this.bottle = this.bind();

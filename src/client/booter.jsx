@@ -4,11 +4,6 @@ import Page from './components/Page';
 import AppModule from './AppModule';
 
 export default function boot() {
-    const element = document.createElement('div');
-    document.body.appendChild(element);
-
-    ReactDom.render(React.createElement(Page), element);
-
     const appModule = new AppModule();
 
     const routingService = appModule.get('RoutingService');
@@ -17,4 +12,6 @@ export default function boot() {
 
     const binder = appModule.get('LocationBinding');
     binder.bind();
+
+    ReactDom.render(<Page appModule={appModule} />, document.querySelector('.page-container'));
 }

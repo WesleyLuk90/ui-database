@@ -45,6 +45,7 @@
         "dotenv": "^4.0.0",
         "express": "^4.14.1",
         "file-loader": "^0.10.0",
+        "font-awesome": "^4.7.0",
         "lodash": "^4.17.4",
         "mongodb": "^2.2.22",
         "rx": "^4.1.0",
