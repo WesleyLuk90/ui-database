@@ -1,13 +1,13 @@
 import ReactDom from 'react-dom';
 import React from 'react';
 import Page from './components/Page';
-import AppModule from './AppModule';
+import AppModuleProvider from './AppModuleProvider';
 
 export default function boot() {
-    const appModule = new AppModule();
+    const appModule = AppModuleProvider.create();
 
     const stateBindings = appModule.get('StateBindings');
-    stateBindings.bind();
+    stateBindings.bind(appModule);
 
     const binder = appModule.get('LocationBinding');
     binder.bind();
