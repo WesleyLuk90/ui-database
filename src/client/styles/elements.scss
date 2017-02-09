@@ -1,0 +1,9 @@
+.simple-page {
+    @extend .container-fluid;
+
+    &__title {
+        @extend .h2;
+    }
+
+    &__content {}
+}

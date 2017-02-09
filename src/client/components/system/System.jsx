@@ -1,5 +1,6 @@
 import React from 'react';
 import AppModule from '../../AppModule';
+import SimplePage from '../elements/SimplePage';
 
 export default class System extends React.Component {
 
@@ -8,7 +9,7 @@ export default class System extends React.Component {
         this.state = {};
     }
     render() {
-        return (<div>This is system</div>);
+        return (<SimplePage title="System">A system page</SimplePage>);
     }
 }
 
