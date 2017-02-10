@@ -17,13 +17,14 @@ export default class RoutingService {
         assert.ok(state.name);
         assert.ok(state.url);
 
+        const newState = state;
         if (typeof state.url === 'string') {
-            const escapedRegex = state.url.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            const tokenizedRegex = state.url.replace(/(:\w+)/g, '(\\w+)');
-            state.url = new RegExp(`^${tokenizedRegex}$`);
+            const escapedRegex = state.url.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+            const tokenizedRegex = escapedRegex.replace(/(:\w+)/g, '(\\w+)');
+            newState.url = new RegExp(`^${tokenizedRegex}$`);
         }
 
-        this.states.push(state);
+        this.states.push(newState);
     }
 
     toUrl(url) {
