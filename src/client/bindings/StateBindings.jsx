@@ -4,6 +4,7 @@ import RoutingService from '../services/RoutingService';
 import Home from '../components/Home';
 import System from '../components/system/System';
 import AppModule from '../AppModule';
+import Schemas from '../components/system/Schemas';
 
 export default class StateBindings {
     constructor(routingService) {
@@ -15,6 +16,7 @@ export default class StateBindings {
         assert(appModule instanceof AppModule);
         this.routingService.register({ name: 'schemas', url: '/schemas' });
         this.routingService.register({ name: 'system', url: '/system/', view: <System appModule={appModule} /> });
+        this.routingService.register({ name: 'schemas', url: '/system/schemas/', view: <Schemas appModule={appModule} /> });
         this.routingService.register({ name: 'home', url: '/', default: '/', view: <Home /> });
     }
 }

@@ -4,21 +4,22 @@ import SimplePage from '../elements/SimplePage';
 import ListItem from '../elements/ListItem';
 import List from '../elements/List';
 
-export default class System extends React.Component {
-
+export default class Schemas extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
+
     render() {
-        return (<SimplePage title="System">
+        return (<SimplePage title="Schemas">
             <List>
-                <ListItem><a href="#/system/schemas/">Schemas</a></ListItem>
+                <ListItem>Schema 1</ListItem>
+                <ListItem>Schema 2</ListItem>
             </List>
         </SimplePage>);
     }
 }
 
-System.propTypes = {
+Schemas.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };
