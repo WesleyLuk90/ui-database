@@ -7,7 +7,7 @@ export default class Icon extends React.Component {
             classNames.push(`fa-${this.props.size}`);
         }
         if (this.props.fullWidth) {
-            classNames.push(`fa-fw`);
+            classNames.push('fa-fw');
         }
         return classNames.join(' ');
     }
@@ -20,7 +20,7 @@ export default class Icon extends React.Component {
 Icon.propTypes = {
     icon: React.PropTypes.string.isRequired,
     size: React.PropTypes.string,
-    fullWidth: React.PropTypes.boolean,
+    fullWidth: React.PropTypes.bool,
 };
 
 Icon.defaultProps = {

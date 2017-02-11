@@ -8,6 +8,12 @@
     @extend .container-fluid;
     padding-top: 10px;
     padding-bottom: 10px;
+
+    &__title {
+        margin-top: 10px;
+        padding-bottom: 5px;
+        border-bottom: solid 2px $border-color;
+    }
 }
 
 .list {
@@ -36,19 +42,28 @@
 }
 
 .card {
-    cursor: pointer;
+    background: white;
     border: solid 1px $border-color;
     border-radius: $small-border-radius;
     padding: 5px 7px;
     margin: 5px 0;
     display: flex;
+    width: 100%;
 
-    .card__icon {
-        padding-right: 7px;
-    }
+    &__icon {}
 
-    .card__label {
+    &__label {
         font-size: 2rem;
         align-self: flex-start;
+    }
+}
+
+.text-input {
+    @extend .form-group;
+
+    &__label {}
+
+    &__control {
+        @extend .form-control;
     }
 }
