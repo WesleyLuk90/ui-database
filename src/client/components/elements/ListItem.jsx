@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ListItem extends React.Component {
     render() {
-        return (<li className="list">{this.props.children}</li>);
+        return (<li className="list-item">{this.props.children}</li>);
     }
 }
 
