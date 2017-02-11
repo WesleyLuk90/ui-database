@@ -8,15 +8,11 @@ import Button from '../elements/Button';
 import PageLayout from '../elements/PageLayout';
 
 export default class Schemas extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
 
     render() {
         return (<PageLayout title="Schemas">
             <Section>
-                <ActionBar><Button>Create Schema</Button></ActionBar>
+                <ActionBar><Button href="#/system/schemas/create">Create Schema</Button></ActionBar>
             </Section>
             <Section>
                 <List>

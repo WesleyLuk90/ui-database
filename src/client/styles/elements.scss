@@ -28,6 +28,7 @@
 
 .button {
     @extend .btn;
+    @extend .btn-primary;
 }
 
 .action-bar {
