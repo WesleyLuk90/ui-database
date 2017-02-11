@@ -6,6 +6,7 @@ export default class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = { currentState: null };
+        this.logger = this.props.appModule.get('Logger');
     }
 
     componentDidMount() {
@@ -26,7 +27,11 @@ export default class Content extends React.Component {
     }
 
     updateState(newState) {
-        this.setState({ currentState: newState });
+        try {
+            this.setState({ currentState: newState });
+        } catch (e) {
+            this.logger.error(e);
+        }
     }
 
     render() {

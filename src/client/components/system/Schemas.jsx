@@ -37,6 +37,3 @@ export default class Schemas extends React.Component {
 Schemas.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };
-Schemas.propTypes = {
-    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
-};
