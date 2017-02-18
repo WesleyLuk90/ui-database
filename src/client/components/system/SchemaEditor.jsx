@@ -5,6 +5,7 @@ import Schema from '../../models/Schema';
 import Section from '../elements/Section';
 import TextInput from '../elements/TextInput';
 import FieldEditor from './FieldEditor';
+import FieldType from '../../models/FieldType';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class SchemaEditor extends React.Component {
     }
 
     addField(type) {
-        this.props.schema.addField({ type: type });
+        this.props.schema.addField(type.newField());
         this.forceUpdate();
     }
 
@@ -33,14 +34,8 @@ export default class SchemaEditor extends React.Component {
         return (<div className="schema-editor">
             <div className="schema-editor__toolbox">
                 <Section>
-                    <Card icon="font" label="Text" onClick={() => this.addField('text')} />
-                    <Card icon="calculator" label="Number" onClick={() => this.addField('number')} />
-                    <Card icon="calendar" label="Date" onClick={() => this.addField('date')} />
-                    <Card icon="clock-o" label="Date Time" onClick={() => this.addField('datetime')} />
-                    <Card icon="paperclip" label="File" onClick={() => this.addField('file')} />
-                    <Card icon="link" label="Link" onClick={() => this.addField('link')} />
-                    <Card icon="file" label="Reference" onClick={() => this.addField('reference')} />
-                    <Card icon="list" label="List" onClick={() => this.addField('list')} />
+                    {FieldType.getTypes().map(type =>
+                        <Card key={type.getType()} icon={type.getIcon()} label={type.getLabel()} onClick={() => this.addField(type)} />)}
                 </Section>
             </div>
             <div className="schema-editor__fields">
@@ -65,6 +60,6 @@ export default class SchemaEditor extends React.Component {
 }
 
 SchemaEditor.propTypes = {
-    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
+    // appModule: React.PropTypes.instanceOf(AppModule).isRequired,
     schema: React.PropTypes.instanceOf(Schema).isRequired,
 };
