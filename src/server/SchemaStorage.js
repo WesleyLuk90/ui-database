@@ -10,9 +10,7 @@ module.exports = class SchemaStorage {
         this.database = database;
     }
 
-    migrate() {
-        return this.getCollection().createIndex({ name: true }, { unique: true });
-    }
+    migrate() {}
 
     getCollection() {
         return this.database.getCollection('schemas');
@@ -40,7 +38,7 @@ module.exports = class SchemaStorage {
             })
             .catch((e) => {
                 if (e.code === 11000) {
-                    const error = new Error(`Schema with name '${schema.name}' already exists`);
+                    const error = new Error(`Schema with id '${schema.id}' already exists`);
                     error.cause = e;
                     throw error;
                 }

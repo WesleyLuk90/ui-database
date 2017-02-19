@@ -24,12 +24,12 @@ describe('SchemaStorage', () => {
     });
 
     it('should fail inserting a duplicate schema', (done) => {
-        const schema = Schema.create('my-schema', 'my_schema');
-        schema.setName('my-schema');
+        const schema = Schema.create('My Schema', 'my_schema');
+
         schemaStorage.create(schema)
             .then(() => schemaStorage.create(schema))
             .then(fail)
-            .catch(e => expect(e).toMatch(/Schema with name 'my-schema' already exists/))
+            .catch(e => expect(e).toMatch(/Schema with id 'my_schema' already exists/))
             .catch(fail)
             .then(done);
     });
