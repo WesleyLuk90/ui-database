@@ -25,7 +25,8 @@ module.exports = class RoutesProvider {
     }
 
     loadRoutes(server) {
-        const schemaController = new SchemaController(new SchemaStorage(this.database), new SchemaValidator());
+        const schemaController =
+            new SchemaController(new SchemaStorage(this.database), new SchemaValidator());
         const app = server.getApp();
         app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
         app.put('/api/schema/', schemaController.getRouteHandler('create'));

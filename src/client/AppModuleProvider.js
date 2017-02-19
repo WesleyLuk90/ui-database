@@ -8,6 +8,8 @@ import StateBindings from './bindings/StateBindings';
 import Logger from './services/Logger';
 import SchemaService from './services/SchemaService';
 import HttpService from './services/HttpService';
+import ErrorService from './services/ErrorService';
+import ErrorFormattingService from './services/ErrorFormattingService';
 
 Bottle.config.strict = true;
 
@@ -21,6 +23,8 @@ export default class AppModuleProvider {
         bottle.register(StateBindings);
         bottle.register(HttpService);
         bottle.register(SchemaService);
+        bottle.register(ErrorService);
+        bottle.register(ErrorFormattingService);
         bottle.constant('superagent', superagent);
         bottle.register(Logger);
         return new AppModule(bottle);

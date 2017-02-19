@@ -3,6 +3,7 @@ const assert = require('assert');
 const Schema = require('./Schema');
 const CursorVisitor = require('./CursorVisitor');
 const NotFoundError = require('./errors/NotFoundError');
+const DuplicateKeyError = require('./errors/DuplicateKeyError');
 
 module.exports = class SchemaStorage {
     constructor(database) {
@@ -38,8 +39,7 @@ module.exports = class SchemaStorage {
             })
             .catch((e) => {
                 if (e.code === 11000) {
-                    const error = new Error(`Schema with id '${schema.id}' already exists`);
-                    error.cause = e;
+                    const error = new DuplicateKeyError('Schema', schema.id);
                     throw error;
                 }
                 throw e;

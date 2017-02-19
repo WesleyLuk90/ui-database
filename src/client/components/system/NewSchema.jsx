@@ -11,13 +11,15 @@ export default class NewSchema extends React.Component {
         super(props);
 
         this.schemaService = this.props.appModule.get('SchemaService');
+        this.errorService = this.props.appModule.get('ErrorService');
         this.state = {
             schema: Schema.create(),
         };
     }
 
     createSchema(schema) {
-        this.schemaService.create(schema);
+        this.schemaService.create(schema)
+            .catch(this.errorService.catchHandler());
     }
 
     render() {
