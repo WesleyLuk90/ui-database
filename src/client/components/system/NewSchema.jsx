@@ -4,6 +4,8 @@ import PageLayout from '../elements/PageLayout';
 import SchemaEditor from './SchemaEditor';
 import Schema from '../../models/Schema';
 import Button from '../elements/Button';
+import ActionBar from '../elements/ActionBar';
+import Section from '../elements/Section';
 
 export default class NewSchema extends React.Component {
 
@@ -24,7 +26,11 @@ export default class NewSchema extends React.Component {
 
     render() {
         return (<PageLayout title="Create Schema">
-            <Button onClick={() => this.createSchema(this.state.schema)}>Create</Button>
+            <Section>
+                <ActionBar>
+                    <Button onClick={() => this.createSchema(this.state.schema)}>Create</Button>
+                </ActionBar>
+            </Section>
             <SchemaEditor appModule={this.props.appModule} schema={this.state.schema} />
         </PageLayout>);
     }

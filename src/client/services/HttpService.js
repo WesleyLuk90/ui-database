@@ -3,12 +3,16 @@ export default class HttpService {
         this.superagent = superagent;
     }
 
+    get(url) {
+        return this.superagent.get(url).then(res => res.body);
+    }
+
     post(url, data) {
-        return this.superagent.post(url).send(data);
+        return this.superagent.post(url).send(data).then(res => res.body);
     }
 
     put(url, data) {
-        return this.superagent.put(url).send(data);
+        return this.superagent.put(url).send(data).then(res => res.body);
     }
 }
 

@@ -13,6 +13,11 @@ export default class SchemaService {
         return this.httpService.put('/api/schema', schema.toJSON())
             .then(res => Schema.fromJSON(res.schema));
     }
+
+    list() {
+        return this.httpService.get('/api/schema')
+            .then(res => res.result.map(Schema.fromJSON));
+    }
 }
 
 SchemaService.$name = 'SchemaService';

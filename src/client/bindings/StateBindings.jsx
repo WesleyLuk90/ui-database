@@ -17,7 +17,7 @@ export default class StateBindings {
         assert(appModule instanceof AppModule);
         this.routingService.register({ name: 'schemas', url: '/schemas' });
         this.routingService.register({ name: 'system', url: '/system/', view: <System appModule={appModule} /> });
-        this.routingService.register({ name: 'schemas', url: '/system/schemas/', view: <Schemas appModule={appModule} /> });
+        this.routingService.register({ name: 'schemas', url: '/system/schemas/', view: <Schemas appModule={appModule} />, onEnter: () => [appModule.get('SchemaListStore').load()] });
         this.routingService.register({ name: 'schemas.create', url: '/system/schemas/create', view: <NewSchema appModule={appModule} /> });
         this.routingService.register({ name: 'home', url: '/', default: '/', view: <Home /> });
     }

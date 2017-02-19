@@ -48,4 +48,39 @@ describe('SchemaService', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should load schemas', (done) => {
+        const schemaService = new SchemaService(httpService);
+        httpService.get.and.callFake((url) => {
+            expect(url).toBe('/api/schema');
+            return Q.when({
+                result: [
+                    {
+                        name: 'My Schema 1',
+                        id: 'my_schema1',
+                        fields: [{
+                            name: 'Name',
+                            type: 'text',
+                            id: 'name',
+                        }],
+                    },
+                    {
+                        name: 'My Schema 2',
+                        id: 'my_schema2',
+                        fields: [{
+                            name: 'Name',
+                            type: 'text',
+                            id: 'name',
+                        }],
+                    },
+                ],
+            });
+        });
+        schemaService.list()
+            .then((schemas) => {
+                expect(schemas.length).toBe(2);
+            })
+            .catch(fail)
+            .then(done);
+    });
 });
