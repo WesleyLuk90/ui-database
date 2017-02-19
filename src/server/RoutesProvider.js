@@ -9,6 +9,7 @@ const SchemaStorage = require('./SchemaStorage');
 const RequestError = require('./errors/RequestError');
 const DocumentController = require('./DocumentController');
 const DocumentStorage = require('./DocumentStorage');
+const SchemaValidator = require('./SchemaValidator');
 
 module.exports = class RoutesProvider {
     constructor(database) {
@@ -24,7 +25,7 @@ module.exports = class RoutesProvider {
     }
 
     loadRoutes(server) {
-        const schemaController = new SchemaController(new SchemaStorage(this.database));
+        const schemaController = new SchemaController(new SchemaStorage(this.database), new SchemaValidator());
         const app = server.getApp();
         app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
         app.put('/api/schema/', schemaController.getRouteHandler('create'));

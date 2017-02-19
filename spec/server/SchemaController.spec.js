@@ -5,13 +5,17 @@ const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
 const ServerToolkit = require('./ServerToolkit');
 const superagent = require('superagent');
+const SchemaValidator = require('../../src/server/SchemaValidator');
 
 describe('SchemaController', () => {
     let controller;
     let schemaStorage;
+    let schemaValidator;
     beforeEach((done) => {
         schemaStorage = new SchemaStorage(new Database(new Config()));
-        controller = new SchemaController(schemaStorage);
+        schemaValidator = new SchemaValidator();
+        spyOn(schemaValidator, 'validate');
+        controller = new SchemaController(schemaStorage, schemaValidator);
         schemaStorage.clear()
             .catch(fail)
             .then(done);
@@ -26,6 +30,7 @@ describe('SchemaController', () => {
         };
         controller.create(request)
             .then((schema) => {
+                expect(schemaValidator.validate).toHaveBeenCalled();
                 expect(schema.getId()).toBe('my_schema');
                 expect(schema.getName()).toBe('my schema');
             })
@@ -44,6 +49,7 @@ describe('SchemaController', () => {
         schemaStorage.create(Schema.create('my schema', 'my_schema'))
             .then(() => controller.update(request))
             .then((schema) => {
+                expect(schemaValidator.validate).toHaveBeenCalled();
                 expect(schema.getId()).toBe('my_schema');
                 expect(schema.getName()).toBe('my schema');
             })
@@ -60,6 +66,7 @@ describe('SchemaController', () => {
         schemaStorage.create(Schema.create('my schema', 'my_schema'))
             .then(() => controller.get(request))
             .then((schema) => {
+                expect(schemaValidator.validate).not.toHaveBeenCalled();
                 expect(schema.getId()).toBe('my_schema');
                 expect(schema.getName()).toBe('my schema');
             })
@@ -72,6 +79,7 @@ describe('SchemaController', () => {
         schemaStorage.create(Schema.create('my schema', 'my_schema'))
             .then(() => controller.list(request))
             .then((schemas) => {
+                expect(schemaValidator.validate).not.toHaveBeenCalled();
                 expect(Array.isArray(schemas)).toBe(true);
                 expect(schemas.length).toBe(1);
                 expect(schemas[0].getId()).toBe('my_schema');

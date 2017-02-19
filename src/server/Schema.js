@@ -14,7 +14,6 @@ module.exports = class Schema {
     }
 
     setId(id) {
-        assert(id && /^[a-z_0-9]+$/.test(id), 'Schema can only contain letters, numbers and underscore');
         this.id = id;
         return this;
     }
@@ -24,7 +23,6 @@ module.exports = class Schema {
     }
 
     setName(name) {
-        assert(name);
         this.name = name;
         return this;
     }
@@ -34,5 +32,14 @@ module.exports = class Schema {
 
         this.fields = fields;
         return this;
+    }
+
+    addField(field) {
+        this.fields.push(field);
+        return this;
+    }
+
+    getFields() {
+        return this.fields;
     }
 };
