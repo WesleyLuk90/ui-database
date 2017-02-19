@@ -26,7 +26,19 @@ export default class Field {
         return this.name;
     }
 
+    setName(name) {
+        assert(typeof name === 'string');
+        this.name = name;
+        return this;
+    }
+
     getId() {
         return this.id;
+    }
+
+    setId(id) {
+        assert(typeof id === 'string');
+        this.id = id;
+        return this;
     }
 }

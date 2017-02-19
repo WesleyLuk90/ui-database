@@ -1,3 +1,6 @@
+import assert from 'assert';
+import Field from './Field';
+
 export default class Schema {
     static create() {
         return new Schema();
@@ -32,6 +35,7 @@ export default class Schema {
     }
 
     addField(field) {
+        assert(field instanceof Field);
         this.fields.push(field);
     }
 }
