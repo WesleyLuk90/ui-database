@@ -3,19 +3,26 @@ import AppModule from '../../AppModule';
 import PageLayout from '../elements/PageLayout';
 import SchemaEditor from './SchemaEditor';
 import Schema from '../../models/Schema';
+import Button from '../elements/Button';
 
 export default class NewSchema extends React.Component {
 
     constructor(props) {
         super(props);
 
+        this.schemaService = this.props.appModule.get('SchemaService');
         this.state = {
             schema: Schema.create(),
         };
     }
 
+    createSchema(schema) {
+        this.schemaService.create(schema);
+    }
+
     render() {
         return (<PageLayout title="Create Schema">
+            <Button onClick={() => this.createSchema(this.state.schema)}>Create</Button>
             <SchemaEditor appModule={this.props.appModule} schema={this.state.schema} />
         </PageLayout>);
     }

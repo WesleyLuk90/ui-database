@@ -6,6 +6,10 @@ export default class Field {
         return new Field().setType(type);
     }
 
+    static fromJSON(data) {
+        return Object.assign(Object.create(Field.prototype), data);
+    }
+
     constructor() {
         this.id = '';
         this.name = '';
@@ -40,5 +44,13 @@ export default class Field {
         assert(typeof id === 'string');
         this.id = id;
         return this;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            type: this.type,
+        };
     }
 }

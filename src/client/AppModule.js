@@ -7,7 +7,8 @@ export default class AppModule {
     }
 
     get(dependency) {
-        assert.ok(typeof dependency === 'string');
+        assert.ok(typeof dependency === 'string', 'Requires a dependency name');
+        assert.ok(this.bottle.container[dependency], `Unknown dependency '${dependency}'`);
         return this.bottle.container[dependency];
     }
 }

@@ -6,6 +6,12 @@ export default class Schema {
         return new Schema();
     }
 
+    static fromJSON(data) {
+        const schema = Object.assign(Object.create(Schema.prototype), data);
+        schema.fields = schema.fields.map(f => Field.fromJSON(f));
+        return schema;
+    }
+
     constructor() {
         this.name = '';
         this.id = '';
@@ -37,5 +43,13 @@ export default class Schema {
     addField(field) {
         assert(field instanceof Field);
         this.fields.push(field);
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            id: this.id,
+            fields: this.fields.map(f => f.toJSON()),
+        };
     }
 }
