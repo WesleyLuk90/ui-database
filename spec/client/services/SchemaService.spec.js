@@ -29,7 +29,7 @@ describe('SchemaService', () => {
                 }],
             });
             return Q.when({
-                schema: {
+                result: {
                     name: 'My Schema',
                     id: 'my_schema',
                     fields: [{
@@ -79,6 +79,59 @@ describe('SchemaService', () => {
         schemaService.list()
             .then((schemas) => {
                 expect(schemas.length).toBe(2);
+            })
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should get schemas', (done) => {
+        const schemaService = new SchemaService(httpService);
+        httpService.get.and.callFake((url) => {
+            expect(url).toBe('/api/schema/abc');
+            return Q.when({
+                result: {
+                    name: 'My Schema 1',
+                    id: 'abc',
+                    fields: [{
+                        name: 'Name',
+                        type: 'text',
+                        id: 'name',
+                    }],
+                },
+            });
+        });
+        schemaService.get('abc')
+            .then((schema) => {
+                expect(schema instanceof Schema).toBe(true);
+            })
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should save schemas', (done) => {
+        const schema = Schema.create();
+        schema.setName('My Schema');
+        schema.setId('my_schema');
+        schema.addField(Field.create('text').setName('Name').setId('name'));
+
+        const schemaService = new SchemaService(httpService);
+        httpService.post.and.callFake((url) => {
+            expect(url).toBe('/api/schema');
+            return Q.when({
+                result: {
+                    name: 'My Schema',
+                    id: 'my_schema',
+                    fields: [{
+                        name: 'Name',
+                        type: 'text',
+                        id: 'name',
+                    }],
+                },
+            });
+        });
+        schemaService.update(schema)
+            .then((updatedSchema) => {
+                expect(updatedSchema).toEqual(schema);
             })
             .catch(fail)
             .then(done);

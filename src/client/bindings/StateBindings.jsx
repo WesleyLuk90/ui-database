@@ -6,6 +6,7 @@ import System from '../components/system/System';
 import AppModule from '../AppModule';
 import Schemas from '../components/system/Schemas';
 import NewSchema from '../components/system/NewSchema';
+import EditSchema from '../components/system/EditSchema';
 
 export default class StateBindings {
     constructor(routingService) {
@@ -15,11 +16,38 @@ export default class StateBindings {
 
     bind(appModule) {
         assert(appModule instanceof AppModule);
-        this.routingService.register({ name: 'schemas', url: '/schemas' });
-        this.routingService.register({ name: 'system', url: '/system/', view: <System appModule={appModule} /> });
-        this.routingService.register({ name: 'schemas', url: '/system/schemas/', view: <Schemas appModule={appModule} />, onEnter: () => [appModule.get('SchemaListStore').load()] });
-        this.routingService.register({ name: 'schemas.create', url: '/system/schemas/create', view: <NewSchema appModule={appModule} /> });
-        this.routingService.register({ name: 'home', url: '/', default: '/', view: <Home /> });
+        this.routingService.register({
+            name: 'schemas',
+            url: '/schemas',
+        });
+        this.routingService.register({
+            name: 'system',
+            url: '/system/',
+            view: <System appModule={appModule} />,
+        });
+        this.routingService.register({
+            name: 'schemas',
+            url: '/system/schemas/',
+            view: <Schemas appModule={appModule} />,
+            onEnter: () => [appModule.get('SchemaListStore').load()],
+        });
+        this.routingService.register({
+            name: 'schemas.create',
+            url: '/system/schemas/create',
+            view: <NewSchema appModule={appModule} />,
+        });
+        this.routingService.register({
+            name: 'schemas.edit',
+            url: /\/system\/schemas\/edit\/(.*)/,
+            view: <EditSchema appModule={appModule} />,
+            onEnter: match => ({ schema: appModule.get('SchemaService').get(match[1]) }),
+        });
+        this.routingService.register({
+            name: 'home',
+            url: '/',
+            default: '/',
+            view: <Home />,
+        });
     }
 }
 

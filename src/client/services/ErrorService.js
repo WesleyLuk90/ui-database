@@ -10,6 +10,7 @@ export default class ErrorService {
     }
 
     handleError(e) {
+        console.error(e);
         this.errors.onNext(e);
     }
 

@@ -11,6 +11,7 @@ export default class RoutingService {
         this.currentParams = null;
         this.loadedParams = null;
         this.stateStream = new Rx.BehaviorSubject(null);
+        this.currentParamStream = new Rx.BehaviorSubject(null);
     }
 
     register(state) {
@@ -58,6 +59,7 @@ export default class RoutingService {
                 this.currentParams = loadedParams;
                 if (this.currentState === state) {
                     this.stateStream.onNext(state);
+                    this.currentParamStream.onNext(loadedParams);
                 }
             });
     }
@@ -80,6 +82,10 @@ export default class RoutingService {
 
     getParams() {
         return this.currentParams;
+    }
+
+    getParamStream() {
+        return this.currentParamStream;
     }
 
     getStateStream() {
