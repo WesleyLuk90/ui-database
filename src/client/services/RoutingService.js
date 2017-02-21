@@ -12,6 +12,7 @@ export default class RoutingService {
         this.loadedParams = null;
         this.stateStream = new Rx.BehaviorSubject(null);
         this.currentParamStream = new Rx.BehaviorSubject(null);
+        this.errorStream = new Rx.Subject();
     }
 
     register(state) {
@@ -51,6 +52,7 @@ export default class RoutingService {
 
         const params = match.slice();
         const asyncParams = state.onEnter ? state.onEnter(params) : params;
+        assert(asyncParams, 'onEnter should return a value');
 
         return this.resolvePromises(asyncParams)
             .then((loadedParams) => {
@@ -61,10 +63,16 @@ export default class RoutingService {
                     this.stateStream.onNext(state);
                     this.currentParamStream.onNext(loadedParams);
                 }
+            }).catch((e) => {
+                this.errorStream.onNext(e);
+                throw e;
             });
     }
 
     resolvePromises(asyncParams) {
+        if (asyncParams.then) {
+            return Q.when(asyncParams);
+        }
         if (Array.isArray(asyncParams)) {
             return Q.all(asyncParams);
         }
@@ -90,6 +98,10 @@ export default class RoutingService {
 
     getStateStream() {
         return this.stateStream;
+    }
+
+    getErrorStream() {
+        return this.errorStream;
     }
 }
 

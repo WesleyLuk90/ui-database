@@ -8,7 +8,7 @@ export default class SchemaListStore {
     }
 
     load() {
-        this.schemaService.list()
+        return this.schemaService.list()
             .then(schemas => this.schemas.onNext(schemas));
     }
 

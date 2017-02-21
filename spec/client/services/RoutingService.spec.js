@@ -143,4 +143,46 @@ describe('RoutingService', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should resolve onEnter before loading the state', (done) => {
+        const router = new RoutingService();
+
+        const resolver = jasmine.createSpy('resolver');
+
+        const aRoute = {
+            name: 'a',
+            url: '/a',
+            onEnter: () => Q.delay(0)
+                .then(() => expect(router.getState()).toBe(null))
+                .then(resolver),
+        };
+
+        router.register(aRoute);
+
+        router.toUrl('/a')
+            .then(() => expect(resolver).toHaveBeenCalled())
+            .catch(fail)
+            .then(done);
+    });
+
+    it('should emit errors when resolving onEnter', (done) => {
+        const router = new RoutingService();
+        const spy = jasmine.createSpy('errorStream');
+        router.getErrorStream().subscribe(spy);
+
+        const error = new Error('some error');
+        const aRoute = {
+            name: 'a',
+            url: '/a',
+            onEnter: () => Q.reject(error),
+        };
+
+        router.register(aRoute);
+
+        router.toUrl('/a')
+            .then(fail)
+            .catch(() => expect(spy).toHaveBeenCalledWith(error))
+            .catch(fail)
+            .then(done);
+    });
 });

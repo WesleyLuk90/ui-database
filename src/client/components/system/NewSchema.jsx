@@ -24,7 +24,7 @@ export default class NewSchema extends React.Component {
     createSchema(schema) {
         this.schemaService.create(schema)
             .then((createdSchema) => {
-                this.routingService.toUrl(`/system/schemas/edit/${createdSchema.getId()}`)
+                this.routingService.toUrl(`/system/schemas/edit/${createdSchema.getId()}`);
             })
             .catch(this.errorService.catchHandler());
     }
