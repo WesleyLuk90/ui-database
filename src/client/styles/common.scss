@@ -15,6 +15,11 @@
         @extend .alert;
         @extend .alert-danger;
         height: 100px;
+        display: flex;
+    }
+
+    &__close {
+        padding-left: 5px;
     }
 
     &__content {
