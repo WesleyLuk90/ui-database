@@ -4,6 +4,10 @@ import Q from 'q';
 import Rx from 'rx';
 
 export default class RoutingService {
+    static getShorthandRegex() {
+        return /(:\w+)/g;
+    }
+
     constructor() {
         this.states = [];
         this.currentUrl = null;
@@ -16,13 +20,15 @@ export default class RoutingService {
     }
 
     register(state) {
-        assert.ok(state.name);
+        assert.ok(state.name, 'State requires a name');
         assert.ok(state.url);
+        assert(!this.getStateByName(state.name), `Duplicate state name '${state.name}'`);
 
         const newState = state;
         if (typeof state.url === 'string') {
             const escapedRegex = state.url.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
-            const tokenizedRegex = escapedRegex.replace(/(:\w+)/g, '(\\w+)');
+            const tokenizedRegex = escapedRegex.replace(RoutingService.getShorthandRegex(), '(\\w+)');
+            newState._originalUrl = state.url;
             newState.url = new RegExp(`^${tokenizedRegex}$`);
         }
 
@@ -102,6 +108,11 @@ export default class RoutingService {
 
     getErrorStream() {
         return this.errorStream;
+    }
+
+    getStateByName(name) {
+        const state = _(this.states).filter(s => s.name === name).first();
+        return state;
     }
 }
 

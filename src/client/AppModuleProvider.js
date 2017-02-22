@@ -11,6 +11,7 @@ import HttpService from './services/HttpService';
 import ErrorService from './services/ErrorService';
 import ErrorFormattingService from './services/ErrorFormattingService';
 import SchemaListStore from './stores/SchemaListStore';
+import UrlFactory from './services/UrlFactory';
 
 Bottle.config.strict = true;
 
@@ -27,6 +28,7 @@ export default class AppModuleProvider {
         bottle.register(ErrorService);
         bottle.register(ErrorFormattingService);
         bottle.register(SchemaListStore);
+        bottle.register(UrlFactory);
         bottle.constant('superagent', superagent);
         bottle.register(Logger);
         return new AppModule(bottle);

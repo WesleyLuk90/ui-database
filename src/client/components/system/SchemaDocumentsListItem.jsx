@@ -4,10 +4,6 @@ import Schema from '../../models/Schema';
 
 export default class SchemaDocumentsListItem extends React.Component {
 
-    getEditUrl() {
-        return `#/system/schemas/edit/${this.props.schema.getId()}`;
-    }
-
     render() {
         return (<ListItem>
             <div className="schema-documents-list-item">

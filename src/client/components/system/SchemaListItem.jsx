@@ -1,11 +1,18 @@
 import React from 'react';
 import ListItem from '../elements/ListItem';
 import Schema from '../../models/Schema';
+import AppModule from '../../AppModule';
 
 export default class SchemaListItem extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.urlFactory = this.props.appModule.get('UrlFactory');
+    }
+
     getEditUrl() {
-        return `#/system/schemas/edit/${this.props.schema.getId()}`;
+        return this.urlFactory.get('schemas.edit', this.props.schema.getId());
     }
 
     render() {
@@ -19,5 +26,6 @@ export default class SchemaListItem extends React.Component {
 }
 
 SchemaListItem.propTypes = {
+    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
     schema: React.PropTypes.instanceOf(Schema).isRequired,
 };

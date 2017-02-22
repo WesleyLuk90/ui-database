@@ -12,6 +12,7 @@ export default class Schemas extends React.Component {
         super(props);
 
         this.schemaListStore = this.props.appModule.get('SchemaListStore');
+        this.urlFactory = this.props.appModule.get('UrlFactory');
 
         this.state = {
             schemas: [],
@@ -37,11 +38,11 @@ export default class Schemas extends React.Component {
     render() {
         return (<PageLayout title="Schemas">
             <Section>
-                <ActionBar><Button href="#/system/schemas/create">Create Schema</Button></ActionBar>
+                <ActionBar><Button href={this.urlFactory.get('schemas.create')}>Create Schema</Button></ActionBar>
             </Section>
             <Section>
                 <List>
-                    {this.state.schemas.map(schema => <SchemaListItem schema={schema} key={schema.getId()} />)}
+                    {this.state.schemas.map(schema => <SchemaListItem schema={schema} key={schema.getId()} appModule={this.props.appModule} />)}
                 </List>
             </Section>
         </PageLayout>);

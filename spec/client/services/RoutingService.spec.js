@@ -18,6 +18,22 @@ describe('RoutingService', () => {
             }).catch(fail).then(done);
     });
 
+    it('should require a name', () => {
+        const router = new RoutingService();
+        expect(() => router.register({ url: 'things' })).toThrowError(/State requires a name/);
+    });
+
+    it('should get routes', () => {
+        const router = new RoutingService();
+        const route = {
+            name: 'page',
+            url: /\/stuff\/(\w+)\/(\w+)/,
+        };
+        router.register(route);
+
+        expect(router.getStateByName('page')).toEqual(route);
+    });
+
     it('should handle parameters', (done) => {
         const router = new RoutingService();
 
@@ -115,6 +131,12 @@ describe('RoutingService', () => {
             })
             .catch(fail)
             .then(done);
+    });
+
+    it('should throw an error on duplicate name', () => {
+        const router = new RoutingService();
+        router.register({ name: 'a', url: '/a' });
+        expect(() => router.register({ name: 'a', url: '/a' })).toThrowError(/Duplicate state name 'a'/);
     });
 
     it('should emit a stream of states', (done) => {

@@ -19,10 +19,6 @@ export default class StateBindings {
         assert(appModule instanceof AppModule);
 
         this.routingService.register({
-            name: 'schemas',
-            url: '/schemas',
-        });
-        this.routingService.register({
             name: 'system',
             url: '/system/',
             view: <System appModule={appModule} />,
@@ -46,7 +42,7 @@ export default class StateBindings {
         });
         this.routingService.register({
             name: 'schemas.edit',
-            url: /\/system\/schemas\/edit\/(.*)/,
+            url: '/system/schemas/edit/:id',
             view: <EditSchema appModule={appModule} />,
             onEnter: match => ({ schema: appModule.get('SchemaService').get(match[1]) }),
         });

@@ -8,13 +8,16 @@ export default class System extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.urlFactory = this.props.appModule.get('UrlFactory');
+
         this.state = {};
     }
     render() {
         return (<Section title="System">
             <List>
-                <ListItem><a href="#/system/schemas/">Schemas</a></ListItem>
-                <ListItem><a href="#/system/documents/">Documents</a></ListItem>
+                <ListItem><a href={this.urlFactory.get('schemas')}>Schemas</a></ListItem>
+                <ListItem><a href={this.urlFactory.get('documents')}>Documents</a></ListItem>
             </List>
         </Section>);
     }
