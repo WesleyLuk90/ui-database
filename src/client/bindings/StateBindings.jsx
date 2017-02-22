@@ -7,6 +7,7 @@ import AppModule from '../AppModule';
 import Schemas from '../components/system/Schemas';
 import NewSchema from '../components/system/NewSchema';
 import EditSchema from '../components/system/EditSchema';
+import Documents from '../components/system/Documents';
 
 export default class StateBindings {
     constructor(routingService) {
@@ -30,6 +31,12 @@ export default class StateBindings {
             name: 'schemas',
             url: '/system/schemas/',
             view: <Schemas appModule={appModule} />,
+            onEnter: () => appModule.get('SchemaListStore').load(),
+        });
+        this.routingService.register({
+            name: 'documents',
+            url: '/system/documents/',
+            view: <Documents appModule={appModule} />,
             onEnter: () => appModule.get('SchemaListStore').load(),
         });
         this.routingService.register({

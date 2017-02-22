@@ -14,6 +14,7 @@ export default class System extends React.Component {
         return (<Section title="System">
             <List>
                 <ListItem><a href="#/system/schemas/">Schemas</a></ListItem>
+                <ListItem><a href="#/system/documents/">Documents</a></ListItem>
             </List>
         </Section>);
     }
