@@ -3,12 +3,19 @@ import ListItem from '../elements/ListItem';
 import Schema from '../../models/Schema';
 
 export default class SchemaDocumentsListItem extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.urlFactory = this.props.appModule.get('UrlFactory');
+    }
 
     render() {
         return (<ListItem>
             <div className="schema-documents-list-item">
-                <div className="schema-documents-list-item__name">{this.props.schema.getName()}</div>
-                <div className="schema-documents-list-item__edit">10 Documents</div>
+                <a href={this.urlFactory.get('documents.forschema', this.props.schema.getId())}>
+                    <div className="schema-documents-list-item__name">{this.props.schema.getName()}</div>
+                    <div className="schema-documents-list-item__edit">10 Documents</div>
+                </a>
             </div>
         </ListItem>);
     }

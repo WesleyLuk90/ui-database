@@ -8,6 +8,7 @@ import Schemas from '../components/system/Schemas';
 import NewSchema from '../components/system/NewSchema';
 import EditSchema from '../components/system/EditSchema';
 import Documents from '../components/system/Documents';
+import SchemaDocuments from '../components/system/SchemaDocuments';
 
 export default class StateBindings {
     constructor(routingService) {
@@ -30,12 +31,6 @@ export default class StateBindings {
             onEnter: () => appModule.get('SchemaListStore').load(),
         });
         this.routingService.register({
-            name: 'documents',
-            url: '/system/documents/',
-            view: <Documents appModule={appModule} />,
-            onEnter: () => appModule.get('SchemaListStore').load(),
-        });
-        this.routingService.register({
             name: 'schemas.create',
             url: '/system/schemas/create',
             view: <NewSchema appModule={appModule} />,
@@ -45,6 +40,18 @@ export default class StateBindings {
             url: '/system/schemas/edit/:id',
             view: <EditSchema appModule={appModule} />,
             onEnter: match => ({ schema: appModule.get('SchemaService').get(match[1]) }),
+        });
+        this.routingService.register({
+            name: 'documents',
+            url: '/system/documents/',
+            view: <Documents appModule={appModule} />,
+            onEnter: () => appModule.get('SchemaListStore').load(),
+        });
+        this.routingService.register({
+            name: 'documents.forschema',
+            url: '/system/documents/:id',
+            view: <SchemaDocuments appModule={appModule} />,
+            onEnter: match => appModule.get('DocumentsSchemaStore').load(match[1]),
         });
         this.routingService.register({
             name: 'home',

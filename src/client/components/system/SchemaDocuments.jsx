@@ -3,22 +3,22 @@ import AppModule from '../../AppModule';
 import Section from '../elements/Section';
 import List from '../elements/List';
 import PageLayout from '../elements/PageLayout';
-import SchemaDocumentsListItem from './SchemaDocumentsListItem';
+import Schema from '../../models/Schema';
 
-export default class Documents extends React.Component {
+export default class SchemaDocuments extends React.Component {
     constructor(props) {
         super(props);
 
-        this.schemaListStore = this.props.appModule.get('SchemaListStore');
+        this.documentsSchemaStore = this.props.appModule.get('DocumentsSchemaStore');
 
         this.state = {
-            schemas: [],
+            schema: Schema.create(),
         };
     }
 
     componentDidMount() {
         this.subscriptions = [
-            this.schemaListStore.getStream().subscribe(s => this.setSchemas(s)),
+            this.documentsSchemaStore.getStream().subscribe(s => this.setSchema(s)),
         ];
     }
 
@@ -26,23 +26,20 @@ export default class Documents extends React.Component {
         this.subscriptions.forEach(s => s.dispose());
     }
 
-    setSchemas(schemas) {
-        this.setState({
-            schemas: schemas,
-        });
+    setSchema(schema) {
+        this.setState({ schema: schema });
     }
 
     render() {
-        return (<PageLayout title="Documents">
+        return (<PageLayout title={`Documents for ${this.state.schema.getName()}`}>
             <Section>
                 <List>
-                    {this.state.schemas.map(schema => <SchemaDocumentsListItem schema={schema} key={schema.getId()} appModule={this.props.appModule} />)}
                 </List>
             </Section>
         </PageLayout>);
     }
 }
 
-Documents.propTypes = {
+SchemaDocuments.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };
