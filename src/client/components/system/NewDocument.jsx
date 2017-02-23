@@ -8,12 +8,11 @@ import ActionBar from '../elements/ActionBar';
 import ActionBarRight from '../elements/ActionBarRight';
 import Button from '../elements/Button';
 
-export default class SchemaDocuments extends React.Component {
+export default class NewDocument extends React.Component {
     constructor(props) {
         super(props);
 
-        this.documentsSchemaStore = this.props.appModule.get('DocumentsSchemaStore');
-        this.urlFactory = this.props.appModule.get('UrlFactory');
+        this.newDocumentStore = this.props.appModule.get('NewDocumentStore');
 
         this.state = {
             schema: Schema.create(),
@@ -22,7 +21,7 @@ export default class SchemaDocuments extends React.Component {
 
     componentDidMount() {
         this.subscriptions = [
-            this.documentsSchemaStore.getStream().subscribe(s => this.setSchema(s)),
+            this.newDocumentStore.getStream().subscribe(schema => this.setSchema(schema)),
         ];
     }
 
@@ -35,22 +34,21 @@ export default class SchemaDocuments extends React.Component {
     }
 
     render() {
-        return (<PageLayout title={`Documents for ${this.state.schema.getName()}`}>
+        return (<PageLayout title={`Create New ${this.state.schema.getName()}`}>
             <Section>
                 <ActionBar>
                     <ActionBarRight>
-                        <Button href={this.urlFactory.get('documents.create', this.state.schema.getId())}>Create</Button>
+                        <Button>Create</Button>
                     </ActionBarRight>
                 </ActionBar>
             </Section>
             <Section>
-                <List>
-                </List>
+                {this.state.schema.getFields().map(f => JSON.stringify(f))}
             </Section>
         </PageLayout>);
     }
 }
 
-SchemaDocuments.propTypes = {
+NewDocument.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };
