@@ -1,5 +1,6 @@
 import assert from 'assert';
 import Field from './Field';
+import _ from 'lodash';
 
 export default class Schema {
     static create() {
@@ -43,6 +44,13 @@ export default class Schema {
     addField(field) {
         assert(field instanceof Field);
         this.fields.push(field);
+    }
+
+    getField(fieldId) {
+        assert(typeof fieldId === 'string');
+        const field = _(this.fields).filter(f => f.getId() === fieldId).first();
+        assert(field, `Field with id ${fieldId} does not exist on this schema`);
+        return field;
     }
 
     toJSON() {

@@ -13,6 +13,7 @@ import ErrorFormattingService from './services/ErrorFormattingService';
 import SchemaListStore from './stores/SchemaListStore';
 import UrlFactory from './services/UrlFactory';
 import DocumentsSchemaStore from './stores/DocumentsSchemaStore';
+import DocumentService from './services/DocumentService';
 
 Bottle.config.strict = true;
 
@@ -26,6 +27,7 @@ export default class AppModuleProvider {
         bottle.register(StateBindings);
         bottle.register(HttpService);
         bottle.register(SchemaService);
+        bottle.register(DocumentService);
         bottle.register(ErrorService);
         bottle.register(ErrorFormattingService);
         bottle.register(SchemaListStore);
