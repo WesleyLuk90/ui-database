@@ -15,7 +15,7 @@ export default class DefaultValueEditor extends React.Component {
                 onChange={e => this.props.onChange(e.target.value)}
             />);
         }
-        return 'no input thing';
+        return `No Input for ${fieldType}`;
     }
 
     render() {

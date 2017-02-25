@@ -15,10 +15,13 @@ export default class NewDocument extends React.Component {
     constructor(props) {
         super(props);
 
+        this.documentService = this.props.appModule.get('DocumentService');
+
         this.state = {
             document: Document.fromSchema(this.props.schema),
         };
     }
+
     setSchema(schema) {
         this.setState({ schema: schema });
     }
@@ -32,12 +35,16 @@ export default class NewDocument extends React.Component {
         this.forceUpdate();
     }
 
+    create() {
+        console.log(this.state.document);
+    }
+
     render() {
         return (<PageLayout title={`Create New ${this.props.schema.getName()}`}>
             <Section>
                 <ActionBar>
                     <ActionBarRight>
-                        <Button>Create</Button>
+                        <Button onClick={() => this.create()}>Create</Button>
                     </ActionBarRight>
                 </ActionBar>
             </Section>
