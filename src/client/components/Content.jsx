@@ -5,13 +5,16 @@ export default class Content extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { currentState: null };
+
+        this.routingService = this.props.appModule.get('RoutingService');
         this.logger = this.props.appModule.get('Logger');
+
+        this.state = { view: null };
     }
 
     componentDidMount() {
         this.subscriptions = [
-            this.props.appModule.get('RoutingService').getStateStream().subscribe(newState => this.updateState(newState)),
+            this.routingService.getStateStream().subscribe(() => this.routingStateUpdated()),
         ];
     }
 
@@ -20,15 +23,28 @@ export default class Content extends React.Component {
     }
 
     getView() {
-        if (this.state.currentState) {
-            return this.state.currentState.view;
+        return this.state.view;
+    }
+
+    getCurrentView() {
+        const params = this.routingService.getParams();
+        if (params && params.view) {
+            return params.view;
+        }
+        const state = this.routingService.getState();
+        if (state) {
+            if (state.view) {
+                return state.view;
+            }
+            throw new Error(`No view associated with state ${state.name}`);
         }
         return null;
     }
 
-    updateState(newState) {
+    routingStateUpdated() {
         try {
-            this.setState({ currentState: newState });
+            const currentView = this.getCurrentView();
+            this.setState({ view: currentView });
         } catch (e) {
             this.logger.error(e);
         }

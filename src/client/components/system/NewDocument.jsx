@@ -7,34 +7,33 @@ import Schema from '../../models/Schema';
 import ActionBar from '../elements/ActionBar';
 import ActionBarRight from '../elements/ActionBarRight';
 import Button from '../elements/Button';
+import Document from '../../models/Document';
+import ListItem from '../elements/ListItem';
+import DefaultValueEditor from './DefaultValueEditor';
 
 export default class NewDocument extends React.Component {
     constructor(props) {
         super(props);
 
-        this.newDocumentStore = this.props.appModule.get('NewDocumentStore');
-
         this.state = {
-            schema: Schema.create(),
+            document: Document.fromSchema(this.props.schema),
         };
     }
-
-    componentDidMount() {
-        this.subscriptions = [
-            this.newDocumentStore.getStream().subscribe(schema => this.setSchema(schema)),
-        ];
-    }
-
-    componentWillUnmount() {
-        this.subscriptions.forEach(s => s.dispose());
-    }
-
     setSchema(schema) {
         this.setState({ schema: schema });
     }
 
+    getFieldValue(field) {
+        return this.state.document.getValue(field.getId());
+    }
+
+    setFieldValue(field, value) {
+        this.state.document.setValue(field.getId(), value);
+        this.forceUpdate();
+    }
+
     render() {
-        return (<PageLayout title={`Create New ${this.state.schema.getName()}`}>
+        return (<PageLayout title={`Create New ${this.props.schema.getName()}`}>
             <Section>
                 <ActionBar>
                     <ActionBarRight>
@@ -43,7 +42,11 @@ export default class NewDocument extends React.Component {
                 </ActionBar>
             </Section>
             <Section>
-                {this.state.schema.getFields().map(f => JSON.stringify(f))}
+                <List>
+                    {this.props.schema.getFields().map(f => <ListItem key={f.getId()}>
+                        <DefaultValueEditor field={f} value={this.getFieldValue(f)} onChange={v => this.setFieldValue(f, v)} />
+                    </ListItem>)}
+                </List>
             </Section>
         </PageLayout>);
     }
@@ -51,4 +54,5 @@ export default class NewDocument extends React.Component {
 
 NewDocument.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
+    schema: React.PropTypes.instanceOf(Schema).isRequired,
 };

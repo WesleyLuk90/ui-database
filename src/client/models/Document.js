@@ -12,6 +12,10 @@ export default class Document {
         return doc;
     }
 
+    static fromSchema(schema) {
+        return new Document(schema);
+    }
+
     constructor(schema) {
         assert(schema instanceof Schema);
         this.id = '';

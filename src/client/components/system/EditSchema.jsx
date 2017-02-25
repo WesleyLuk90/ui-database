@@ -6,6 +6,7 @@ import Button from '../elements/Button';
 import ActionBar from '../elements/ActionBar';
 import Section from '../elements/Section';
 import ActionBarRight from '../elements/ActionBarRight';
+import Schema from '../../models/Schema';
 
 export default class EditSchema extends React.Component {
 
@@ -14,10 +15,6 @@ export default class EditSchema extends React.Component {
 
         this.schemaService = this.props.appModule.get('SchemaService');
         this.errorService = this.props.appModule.get('ErrorService');
-
-        this.state = {
-            schema: this.props.appModule.get('RoutingService').getParams().schema,
-        };
     }
 
     saveSchema(schema) {
@@ -31,15 +28,16 @@ export default class EditSchema extends React.Component {
                 <ActionBar>
                     <a href="#/system/schemas/">Back to Schemas</a>
                     <ActionBarRight>
-                        <Button onClick={() => this.saveSchema(this.state.schema)}>Save</Button>
+                        <Button onClick={() => this.saveSchema(this.props.schema)}>Save</Button>
                     </ActionBarRight>
                 </ActionBar>
             </Section>
-            <SchemaEditor appModule={this.props.appModule} schema={this.state.schema} />
+            <SchemaEditor appModule={this.props.appModule} schema={this.props.schema} />
         </PageLayout>);
     }
 }
 
 EditSchema.propTypes = {
     appModule: React.PropTypes.instanceOf(AppModule).isRequired,
+    schema: React.PropTypes.instanceOf(Schema).isRequired,
 };

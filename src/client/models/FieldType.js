@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import assert from 'assert';
 import Field from './Field';
 
 export default class FieldType {
@@ -17,6 +18,12 @@ export default class FieldType {
 
     static getType(type) {
         return _(FieldType.getTypes()).filter(f => f.getType() === type).first();
+    }
+
+    static getTypeChecked(type) {
+        const foundType = FieldType.getType(type);
+        assert(foundType);
+        return foundType;
     }
 
     constructor(type, label, icon) {
@@ -39,5 +46,10 @@ export default class FieldType {
 
     newField() {
         return Field.create(this.getType());
+    }
+
+    equals(type) {
+        assert(type === null || type instanceof FieldType);
+        return this.getType() === type.getType();
     }
 }

@@ -39,8 +39,12 @@ export default class StateBindings {
         this.routingService.register({
             name: 'schemas.edit',
             url: '/system/schemas/edit/:id',
-            view: <EditSchema appModule={appModule} />,
-            onEnter: match => ({ schema: appModule.get('SchemaService').get(match[1]) }),
+            onEnter(match) {
+                return {
+                    view: appModule.get('SchemaService').get(match[1])
+                        .then(schema => <EditSchema appModule={appModule} schema={schema} />),
+                };
+            },
         });
         this.routingService.register({
             name: 'documents',
@@ -57,8 +61,12 @@ export default class StateBindings {
         this.routingService.register({
             name: 'documents.create',
             url: '/system/documents/:id/create',
-            view: <NewDocument appModule={appModule} />,
-            onEnter: match => appModule.get('NewDocumentStore').load(match[1]),
+            onEnter(match) {
+                return {
+                    view: appModule.get('SchemaService').get(match[1])
+                        .then(schema => <NewDocument appModule={appModule} schema={schema} />),
+                };
+            },
         });
         this.routingService.register({
             name: 'home',
