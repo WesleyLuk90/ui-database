@@ -66,6 +66,7 @@ export default class RoutingService {
                 this.currentState = state;
                 this.currentParams = loadedParams;
                 if (this.currentState === state) {
+                    this.originalParams = params;
                     this.stateStream.onNext(state);
                     this.currentParamStream.onNext(loadedParams);
                 }
@@ -96,6 +97,10 @@ export default class RoutingService {
 
     getParams() {
         return this.currentParams;
+    }
+
+    getOriginalParams() {
+        return this.originalParams;
     }
 
     getParamStream() {

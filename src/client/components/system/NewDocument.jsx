@@ -16,6 +16,7 @@ export default class NewDocument extends React.Component {
         super(props);
 
         this.documentService = this.props.appModule.get('DocumentService');
+        this.errorService = this.props.appModule.get('ErrorService');
 
         this.state = {
             document: Document.fromSchema(this.props.schema),
@@ -36,7 +37,11 @@ export default class NewDocument extends React.Component {
     }
 
     create() {
-        console.log(this.state.document);
+        this.documentService.create(this.state.document)
+            .catch(this.errorService.catchHandler())
+            .then(() => {
+                console.log('done');
+            });
     }
 
     render() {

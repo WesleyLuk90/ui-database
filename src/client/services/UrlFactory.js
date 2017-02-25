@@ -8,9 +8,14 @@ export default class UrlFactory {
     }
 
     get(routeName, ...params) {
+        return this._wrapPrefix(this.getReal(routeName, ...params));
+    }
+
+    getReal(routeName, ...params) {
         assert(typeof routeName === 'string');
 
         const route = this.routingService.getStateByName(routeName);
+        assert(route, `Route with name '${routeName}' does not exist`);
 
         return this._makeUrl(route, params);
     }
@@ -28,7 +33,7 @@ export default class UrlFactory {
         assert(paramCount === match.length, `Wrong number of replacements, found ${match.length} in ${originalUrl} but got ${paramCount}`);
 
         let index = 0;
-        return this._wrapPrefix(originalUrl.replace(RoutingService.getShorthandRegex(), () => params[index++]));
+        return originalUrl.replace(RoutingService.getShorthandRegex(), () => params[index++]);
     }
 }
 

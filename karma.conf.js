@@ -17,6 +17,12 @@ module.exports = function configure(config) {
         webpack: (() => {
             webpack.plugins = [];
             webpack.entry = null;
+            webpack.externals = {
+                cheerio: 'window',
+                'react/addons': true,
+                'react/lib/ExecutionEnvironment': true,
+                'react/lib/ReactContext': true,
+            };
             return webpack;
         })(),
 

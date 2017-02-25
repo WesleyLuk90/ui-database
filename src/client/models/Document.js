@@ -3,7 +3,8 @@ import Schema from './Schema';
 
 export default class Document {
     static fromJSON(data, schema) {
-        assert(schema instanceof Schema);
+        assert(schema instanceof Schema, 'Schema is required');
+        assert(data, 'data is required');
 
         const doc = new Document(schema);
         doc.setId(data.id);
@@ -28,6 +29,10 @@ export default class Document {
         this.schema = schema;
     }
 
+    getSchema() {
+        return this.schema;
+    }
+
     setId(id) {
         assert(typeof id === 'string');
         this.id = id;
@@ -49,5 +54,21 @@ export default class Document {
         assert(this.schema.getField(fieldId));
 
         return this.data[fieldId];
+    }
+
+    toJSON() {
+        const data = {};
+        const schema = this.getSchema();
+        schema.getFields().forEach((field) => {
+            if (this.data[field.getId()] == null) {
+                data[field.getId()] = null;
+            } else {
+                data[field.getId()] = this.data[field.getId()];
+            }
+        });
+        return {
+            id: this.getId(),
+            data: data,
+        };
     }
 }

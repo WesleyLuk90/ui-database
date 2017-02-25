@@ -1,6 +1,6 @@
 import assert from 'assert';
-import Field from './Field';
 import _ from 'lodash';
+import Field from './Field';
 
 export default class Schema {
     static create() {

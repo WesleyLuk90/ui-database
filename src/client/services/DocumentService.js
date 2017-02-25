@@ -9,6 +9,13 @@ export default class DocumentService {
         this.httpService = httpService;
     }
 
+    create(doc) {
+        assert(doc instanceof Document);
+        const schema = doc.getSchema();
+        return this.httpService.put(`/api/document/${schema.getId()}`, doc.toJSON())
+            .then(res => Document.fromJSON(res.result, schema));
+    }
+
     list(schema) {
         assert(schema instanceof Schema);
 

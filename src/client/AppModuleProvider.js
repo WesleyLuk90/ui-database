@@ -14,6 +14,7 @@ import SchemaListStore from './stores/SchemaListStore';
 import UrlFactory from './services/UrlFactory';
 import DocumentsSchemaStore from './stores/DocumentsSchemaStore';
 import DocumentService from './services/DocumentService';
+import LocationService from './services/LocationService';
 
 Bottle.config.strict = true;
 
@@ -32,6 +33,7 @@ export default class AppModuleProvider {
         bottle.register(ErrorFormattingService);
         bottle.register(SchemaListStore);
         bottle.register(DocumentsSchemaStore);
+        bottle.register(LocationService);
         bottle.register(UrlFactory);
         bottle.constant('superagent', superagent);
         bottle.register(Logger);

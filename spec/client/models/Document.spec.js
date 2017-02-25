@@ -23,4 +23,36 @@ describe('Document', () => {
         expect(doc.getValue('description')).toBe('things');
         expect(doc.getValue('count')).toBe(10);
     });
+
+    it('should create with just a schema', () => {
+        const schema = new Schema();
+        schema.addField(FieldType.getType('text').newField().setId('name'));
+        schema.addField(FieldType.getType('text').newField().setId('description'));
+        schema.addField(FieldType.getType('number').newField().setId('count'));
+
+        const doc = Document.fromSchema(schema);
+
+        doc.setValue('name', 'some name');
+        expect(doc.getValue('name')).toBe('some name');
+    });
+
+    it('should serialize to json', () => {
+        const schema = new Schema();
+        schema.addField(FieldType.getType('text').newField().setId('name'));
+        schema.addField(FieldType.getType('text').newField().setId('description'));
+        schema.addField(FieldType.getType('number').newField().setId('count'));
+
+        const doc = Document.fromSchema(schema);
+
+        doc.setId('some-id');
+        doc.setValue('name', 'some name');
+        expect(doc.toJSON()).toEqual({
+            id: 'some-id',
+            data: {
+                name: 'some name',
+                description: null,
+                count: null,
+            },
+        });
+    });
 });

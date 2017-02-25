@@ -15,17 +15,15 @@ export default class NewSchema extends React.Component {
 
         this.schemaService = this.props.appModule.get('SchemaService');
         this.errorService = this.props.appModule.get('ErrorService');
-        this.routingService = this.props.appModule.get('RoutingService');
+        this.locationService = this.props.appModule.get('LocationService');
         this.state = {
             schema: Schema.create(),
         };
     }
 
     createSchema(schema) {
-        this.schemaService.create(schema)
-            .then((createdSchema) => {
-                this.routingService.toUrl(`/system/schemas/edit/${createdSchema.getId()}`);
-            })
+        return this.schemaService.create(schema)
+            .then(createdSchema => this.locationService.toState('schemas.edit', createdSchema.getId()))
             .catch(this.errorService.catchHandler());
     }
 
@@ -35,7 +33,7 @@ export default class NewSchema extends React.Component {
                 <ActionBar>
                     <a href="#/system/schemas/">Back to Schemas</a>
                     <ActionBarRight>
-                        <Button onClick={() => this.createSchema(this.state.schema)}>Create</Button>
+                        <Button onClick={() => this.createSchema(this.state.schema)} className="create-schema">Create</Button>
                     </ActionBarRight>
                 </ActionBar>
             </Section>
