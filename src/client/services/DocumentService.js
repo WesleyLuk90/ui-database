@@ -40,6 +40,13 @@ export default class DocumentService {
         return this.httpService.get(`/api/document/${schema.getId()}/`)
             .then(res => res.result.map(d => Document.fromJSON(d, schema)));
     }
+
+    update(doc) {
+        assert(doc instanceof Document);
+        const schema = doc.getSchema();
+        return this.httpService.post(`/api/document/${schema.getId()}/${doc.getId()}`, doc.toJSON())
+            .then(res => Document.fromJSON(res.result, schema));
+    }
 }
 
 DocumentService.$name = 'DocumentService';
