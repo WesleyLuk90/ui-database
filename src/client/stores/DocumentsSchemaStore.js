@@ -27,6 +27,10 @@ export default class DocumentsSchemaStore {
     getStream() {
         return this.schema;
     }
+
+    getDocumentsStream() {
+        return this.documents;
+    }
 }
 
 DocumentsSchemaStore.$name = 'DocumentsSchemaStore';

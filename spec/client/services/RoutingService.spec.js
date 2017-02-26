@@ -95,10 +95,10 @@ describe('RoutingService', () => {
 
         router.register({ name: 'a', url: '/a/:b/:c' });
 
-        router.toUrl('/a/bbb/cc')
+        router.toUrl('/a/b-9b2b/a-1-S-2')
             .then(() => {
                 expect(router.getState().name).toEqual('a');
-                expect(router.getParams()).toEqual(['/a/bbb/cc', 'bbb', 'cc']);
+                expect(router.getParams()).toEqual(['/a/b-9b2b/a-1-S-2', 'b-9b2b', 'a-1-S-2']);
             })
             .catch(fail)
             .then(done);

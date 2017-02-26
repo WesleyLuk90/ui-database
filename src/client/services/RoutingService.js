@@ -27,7 +27,7 @@ export default class RoutingService {
         const newState = state;
         if (typeof state.url === 'string') {
             const escapedRegex = state.url.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
-            const tokenizedRegex = escapedRegex.replace(RoutingService.getShorthandRegex(), '(\\w+)');
+            const tokenizedRegex = escapedRegex.replace(RoutingService.getShorthandRegex(), '([a-zA-Z0-9\\-]+)');
             newState._originalUrl = state.url;
             newState.url = new RegExp(`^${tokenizedRegex}$`);
         }
@@ -41,6 +41,7 @@ export default class RoutingService {
 
         let state = _(this.states).filter(s => url.match(s.url)).first();
         if (!state) {
+            console.log(`Failed to find a match for url ${url}`);
             state = _(this.states).filter(s => s.default).first();
             assert.ok(state, `Failed to match url ${url} to any state and no default state was defined`);
             assert.ok(typeof state.default === 'string');

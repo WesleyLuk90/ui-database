@@ -10,6 +10,7 @@ import EditSchema from '../components/system/EditSchema';
 import Documents from '../components/system/Documents';
 import SchemaDocuments from '../components/system/SchemaDocuments';
 import NewDocument from '../components/system/NewDocument';
+import EditDocument from '../components/system/EditDocument';
 
 export default class StateBindings {
     constructor(routingService) {
@@ -65,6 +66,16 @@ export default class StateBindings {
                 return {
                     view: appModule.get('SchemaService').get(match[1])
                         .then(schema => <NewDocument appModule={appModule} schema={schema} />),
+                };
+            },
+        });
+        this.routingService.register({
+            name: 'documents.edit',
+            url: '/system/documents/:schema/:id/edit',
+            onEnter(match) {
+                return {
+                    view: appModule.get('DocumentService').get(match[1], match[2])
+                        .then(doc => <EditDocument appModule={appModule} document={doc} />),
                 };
             },
         });

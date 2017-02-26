@@ -8,10 +8,10 @@ module.exports = function configure(config) {
         ],
 
         preprocessors: {
-            'spec/**/*.js': ['webpack'],
-            'spec/**/*.jsx': ['webpack'],
-            'src/**/*.js': ['webpack'],
-            'src/**/*.jsx': ['webpack'],
+            'spec/**/*.js': ['webpack', 'sourcemap'],
+            'spec/**/*.jsx': ['webpack', 'sourcemap'],
+            'src/**/*.js': ['webpack', 'sourcemap'],
+            'src/**/*.jsx': ['webpack', 'sourcemap'],
         },
 
         webpack: (() => {

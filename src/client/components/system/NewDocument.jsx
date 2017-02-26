@@ -17,6 +17,7 @@ export default class NewDocument extends React.Component {
 
         this.documentService = this.props.appModule.get('DocumentService');
         this.errorService = this.props.appModule.get('ErrorService');
+        this.locationService = this.props.appModule.get('LocationService');
 
         this.state = {
             document: Document.fromSchema(this.props.schema),
@@ -37,11 +38,9 @@ export default class NewDocument extends React.Component {
     }
 
     create() {
-        this.documentService.create(this.state.document)
+        return this.documentService.create(this.state.document)
             .catch(this.errorService.catchHandler())
-            .then(() => {
-                console.log('done');
-            });
+            .then(doc => this.locationService.toState('documents.edit', doc.getSchema().getId(), doc.getId()));
     }
 
     render() {
@@ -49,7 +48,7 @@ export default class NewDocument extends React.Component {
             <Section>
                 <ActionBar>
                     <ActionBarRight>
-                        <Button onClick={() => this.create()}>Create</Button>
+                        <Button onClick={() => this.create()} className="create-document">Create</Button>
                     </ActionBarRight>
                 </ActionBar>
             </Section>

@@ -7,6 +7,7 @@ import Schema from '../../models/Schema';
 import ActionBar from '../elements/ActionBar';
 import ActionBarRight from '../elements/ActionBarRight';
 import Button from '../elements/Button';
+import ListItem from '../elements/ListItem';
 
 export default class SchemaDocuments extends React.Component {
     constructor(props) {
@@ -17,12 +18,14 @@ export default class SchemaDocuments extends React.Component {
 
         this.state = {
             schema: Schema.create(),
+            documents: [],
         };
     }
 
     componentDidMount() {
         this.subscriptions = [
             this.documentsSchemaStore.getStream().subscribe(s => this.setSchema(s)),
+            this.documentsSchemaStore.getDocumentsStream().subscribe(d => this.setDocuments(d)),
         ];
     }
 
@@ -32,6 +35,10 @@ export default class SchemaDocuments extends React.Component {
 
     setSchema(schema) {
         this.setState({ schema: schema });
+    }
+
+    setDocuments(documents) {
+        this.setState({ documents: documents });
     }
 
     render() {
@@ -45,6 +52,10 @@ export default class SchemaDocuments extends React.Component {
             </Section>
             <Section>
                 <List>
+                    {this.state.documents.map(d => <ListItem key={d.getId()}>
+                        {JSON.stringify(d)}
+                        <a href={this.urlFactory.get('documents.edit', d.getSchema().getId(), d.getId())}>Edit</a>
+                    </ListItem>)}
                 </List>
             </Section>
         </PageLayout>);
