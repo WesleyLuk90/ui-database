@@ -9,6 +9,7 @@ import Button from '../elements/Button';
 import DefaultDocumentEditor from './DefaultDocumentEditor';
 import ActionBarLeft from '../elements/ActionBarLeft';
 import InternalLink from '../elements/InternalLink';
+import Calendar from '../elements/Calendar';
 
 export default class EditDocument extends React.Component {
     constructor(props) {
@@ -41,6 +42,7 @@ export default class EditDocument extends React.Component {
             </Section>
             <Section>
                 <DefaultDocumentEditor document={this.props.document} />
+                <Calendar />
             </Section>
         </PageLayout>);
     }

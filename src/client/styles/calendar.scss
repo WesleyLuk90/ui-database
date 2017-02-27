@@ -1,0 +1,46 @@
+.calendar {
+    width: 230px;
+
+    &__table {
+        margin: 0 auto;
+    }
+
+    &__date {
+        @extend .btn;
+        @extend .btn-default;
+        border: none;
+        padding: 3px 5px;
+        width: 26px;
+        height: 26px;
+        margin: 2px;
+
+        &--selected {
+            @extend .btn-primary;
+        }
+
+        &.calendar__date--far {
+            @extend .text-muted;
+        }
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__days {
+        text-align: center;
+    }
+
+    &__previous {
+        @extend .btn;
+        @extend .btn-default;
+        border: none;
+    }
+
+    &__next {
+        @extend .btn;
+        @extend .btn-default;
+        border: none;
+    }
+}
