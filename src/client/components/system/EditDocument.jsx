@@ -9,7 +9,7 @@ import Button from '../elements/Button';
 import DefaultDocumentEditor from './DefaultDocumentEditor';
 import ActionBarLeft from '../elements/ActionBarLeft';
 import InternalLink from '../elements/InternalLink';
-import Calendar from '../elements/Calendar';
+import TimeSelector from '../elements/TimeSelector';
 
 export default class EditDocument extends React.Component {
     constructor(props) {
@@ -18,6 +18,10 @@ export default class EditDocument extends React.Component {
         this.documentService = this.props.appModule.get('DocumentService');
         this.errorService = this.props.appModule.get('ErrorService');
         this.locationService = this.props.appModule.get('LocationService');
+
+        this.state = {
+            value: 'c',
+        };
     }
 
     save() {
@@ -42,7 +46,7 @@ export default class EditDocument extends React.Component {
             </Section>
             <Section>
                 <DefaultDocumentEditor document={this.props.document} />
-                <Calendar />
+                <TimeSelector />
             </Section>
         </PageLayout>);
     }

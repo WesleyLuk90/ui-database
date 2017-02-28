@@ -27,6 +27,11 @@
 .button {
     @extend .btn;
     @extend .btn-primary;
+
+    &.button--plain {
+        @extend .btn-default;
+        border: none;
+    }
 }
 
 .action-bar {
@@ -59,5 +64,18 @@
 
     &__control {
         @extend .form-control;
+    }
+}
+
+.vertical-scroll-selector {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__value {
+        font-size: 1.5em;
+        padding: 7px 0;
+        font-weight: bold;
     }
 }

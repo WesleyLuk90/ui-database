@@ -23,6 +23,7 @@ module.exports = function configure(config) {
                 'react/lib/ExecutionEnvironment': true,
                 'react/lib/ReactContext': true,
             };
+            webpack.devtool = 'inline-source-map';
             return webpack;
         })(),
 

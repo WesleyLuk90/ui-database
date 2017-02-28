@@ -31,3 +31,8 @@
 .close-button {
     @extend .close;
 }
+
+.time-selector {
+    display: flex;
+    width: 150px;
+}
