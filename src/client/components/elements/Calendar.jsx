@@ -138,7 +138,6 @@ export default class Calendar extends React.Component {
                     {this.generateCalendar(first)}
                 </tbody>
             </table>
-            {JSON.stringify(this.state)}
         </div>);
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import Field from '../../models/Field';
 import TextInput from '../elements/TextInput';
+import DatetimePicker from '../elements/DatetimePicker';
 
 export default class DefaultValueEditor extends React.Component {
 
@@ -14,6 +15,8 @@ export default class DefaultValueEditor extends React.Component {
                 value={this.props.value || ''}
                 onChange={e => this.props.onChange(e.target.value)}
             />);
+        } else if (fieldType === 'datetime') {
+            return (<DatetimePicker value={this.props.value} onChange={v => this.props.onChange(v)} />);
         }
         return `No Input for ${fieldType}`;
     }

@@ -14,46 +14,46 @@ const HALF_DAYS = ['AM', 'PM'];
 
 export default class TimeSelector extends React.Component {
     getHours() {
-        if (this.props.hours == null) {
+        if (this.props.hour == null) {
             return '12';
         }
-        const hours = parseInt(this.props.hours, 10);
-        if (hours === 0 || hours === 12) {
+        const hour = parseInt(this.props.hour, 10);
+        if (hour === 0 || hour === 12) {
             return '12';
         }
-        if (hours > 0 && hours < 24) {
-            return `${hours % 12}`;
+        if (hour > 0 && hour < 24) {
+            return `${hour % 12}`;
         }
         return '12';
     }
 
     getMinutes() {
-        if (this.props.minutes == null) {
+        if (this.props.minute == null) {
             return '00';
         }
-        const minutes = parseInt(this.props.minutes, 10);
-        if (minutes >= 0 && minutes < 60) {
-            return _.padStart(minutes, 2, '0');
+        const minute = parseInt(this.props.minute, 10);
+        if (minute >= 0 && minute < 60) {
+            return _.padStart(minute, 2, '0');
         }
         return '00';
     }
 
     getHalfDay() {
-        if (this.props.hours == null) {
+        if (this.props.hour == null) {
             return 'AM';
         }
-        if (this.props.hours >= 0 && this.props.hours < 12) {
+        if (this.props.hour >= 0 && this.props.hour < 12) {
             return 'AM';
         }
         return 'PM';
     }
 
-    setHours(hours) {
-        this.triggerOnChange(hours, this.getMinutes(), this.getHalfDay());
+    setHours(hour) {
+        this.triggerOnChange(hour, this.getMinutes(), this.getHalfDay());
     }
 
-    setMinutes(minutes) {
-        this.triggerOnChange(this.getHours(), minutes, this.getHalfDay());
+    setMinutes(minute) {
+        this.triggerOnChange(this.getHours(), minute, this.getHalfDay());
     }
 
     setHalfDay(halfDay) {
@@ -61,16 +61,16 @@ export default class TimeSelector extends React.Component {
     }
 
     triggerOnChange(newHours, newMinutes, halfDay) {
-        let hours = parseInt(newHours, 10);
-        const minutes = parseInt(newMinutes, 10);
+        let hour = parseInt(newHours, 10);
+        const minute = parseInt(newMinutes, 10);
         if (halfDay === 'AM') {
-            if (hours === 12) {
-                hours -= 12;
+            if (hour === 12) {
+                hour -= 12;
             }
-        } else if (hours !== 12) {
-            hours += 12;
+        } else if (hour !== 12) {
+            hour += 12;
         }
-        this.props.onChange(hours, minutes);
+        this.props.onChange(hour, minute);
     }
 
     render() {
@@ -90,12 +90,12 @@ export default class TimeSelector extends React.Component {
 
 TimeSelector.propTypes = {
     onChange: React.PropTypes.func,
-    hours: React.PropTypes.number,
-    minutes: React.PropTypes.number,
+    hour: React.PropTypes.number,
+    minute: React.PropTypes.number,
 };
 
 TimeSelector.defaultProps = {
     onChange: () => {},
-    hours: null,
-    minutes: null,
+    hour: null,
+    minute: null,
 };

@@ -46,7 +46,6 @@ export default class EditDocument extends React.Component {
             </Section>
             <Section>
                 <DefaultDocumentEditor document={this.props.document} />
-                <TimeSelector />
             </Section>
         </PageLayout>);
     }
