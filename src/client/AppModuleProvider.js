@@ -4,7 +4,6 @@ import superagent from 'superagent';
 import AppModule from './AppModule';
 import LocationBinding from './bindings/LocationBinding';
 import RoutingService from './services/RoutingService';
-import StateBindings from './bindings/StateBindings';
 import Logger from './services/Logger';
 import SchemaService from './services/SchemaService';
 import HttpService from './services/HttpService';
@@ -15,6 +14,7 @@ import UrlFactory from './services/UrlFactory';
 import DocumentsSchemaStore from './stores/DocumentsSchemaStore';
 import DocumentService from './services/DocumentService';
 import LocationService from './services/LocationService';
+import StatesProvider from './bindings/StatesProvider';
 
 Bottle.config.strict = true;
 
@@ -25,7 +25,7 @@ export default class AppModuleProvider {
         bottle.value('location', window.location);
         bottle.register(LocationBinding);
         bottle.register(RoutingService);
-        bottle.register(StateBindings);
+        bottle.register(StatesProvider);
         bottle.register(HttpService);
         bottle.register(SchemaService);
         bottle.register(DocumentService);

@@ -27,7 +27,7 @@ export default class RoutingService {
         const newState = state;
         if (typeof state.url === 'string') {
             const escapedRegex = state.url.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
-            const tokenizedRegex = escapedRegex.replace(RoutingService.getShorthandRegex(), '([a-zA-Z0-9\\-]+)');
+            const tokenizedRegex = escapedRegex.replace(RoutingService.getShorthandRegex(), '([a-zA-Z0-9_\\-]+)');
             newState._originalUrl = state.url;
             newState.url = new RegExp(`^${tokenizedRegex}$`);
         }

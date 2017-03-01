@@ -12,7 +12,7 @@ import SchemaDocuments from '../components/system/SchemaDocuments';
 import NewDocument from '../components/system/NewDocument';
 import EditDocument from '../components/system/EditDocument';
 
-export default class StateBindings {
+export default class StatesProvider {
     constructor(routingService) {
         assert.ok(routingService instanceof RoutingService);
         this.routingService = routingService;
@@ -88,5 +88,5 @@ export default class StateBindings {
     }
 }
 
-StateBindings.$name = 'StateBindings';
-StateBindings.$inject = ['RoutingService'];
+StatesProvider.$name = 'StatesProvider';
+StatesProvider.$inject = ['RoutingService'];

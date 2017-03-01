@@ -10,8 +10,8 @@ export default function boot() {
     const errorService = appModule.get('ErrorService');
     routingService.getErrorStream().subscribe(e => errorService.handleError(e));
 
-    const stateBindings = appModule.get('StateBindings');
-    stateBindings.bind(appModule);
+    const statesProvider = appModule.get('StatesProvider');
+    statesProvider.bind(appModule);
 
     const binder = appModule.get('LocationBinding');
     binder.bind();

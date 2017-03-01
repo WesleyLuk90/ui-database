@@ -4,8 +4,8 @@ import AppModuleProvider from '../../../src/client/AppModuleProvider';
 export default function makeAppWithRoutes() {
     const appModule = AppModuleProvider.create();
 
-    const stateBindings = appModule.get('StateBindings');
-    stateBindings.bind(appModule);
+    const statesProvider = appModule.get('StatesProvider');
+    statesProvider.bind(appModule);
 
     const service = appModule.get('HttpService');
     spyOn(service, 'get').and.callFake((url) => {
