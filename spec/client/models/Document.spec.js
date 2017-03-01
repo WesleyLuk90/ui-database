@@ -8,12 +8,15 @@ describe('Document', () => {
         schema.addField(FieldType.getType('text').newField().setId('name'));
         schema.addField(FieldType.getType('text').newField().setId('description'));
         schema.addField(FieldType.getType('number').newField().setId('count'));
+        schema.addField(FieldType.getType('datetime').newField().setId('date'));
+        const date = new Date();
         const data = {
             id: 'some-id',
             data: {
                 name: 'stuff',
                 description: 'things',
                 count: 10,
+                date: date.toJSON(),
             },
         };
         const doc = Document.fromJSON(data, schema);
@@ -22,6 +25,7 @@ describe('Document', () => {
         expect(doc.getValue('name')).toBe('stuff');
         expect(doc.getValue('description')).toBe('things');
         expect(doc.getValue('count')).toBe(10);
+        expect(doc.getValue('date')).toEqual(date);
     });
 
     it('should create with just a schema', () => {

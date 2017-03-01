@@ -8,7 +8,14 @@ export default class Document {
 
         const doc = new Document(schema);
         doc.setId(data.id);
-        schema.getFields().forEach(field => doc.setValue(field.getId(), data.data[field.getId()]));
+        schema.getFields().forEach((field) => {
+            const value = data.data[field.getId()];
+            if (field.getType() === 'datetime' && value != null) {
+                doc.setValue(field.getId(), new Date(value));
+            } else {
+                doc.setValue(field.getId(), value);
+            }
+        });
 
         return doc;
     }
