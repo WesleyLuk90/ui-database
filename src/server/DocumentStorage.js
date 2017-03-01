@@ -15,7 +15,7 @@ module.exports = class DocumentStorage {
 
     getCollection(schema) {
         assert(typeof schema === 'string');
-        return this.database.getCollection(schema);
+        return this.database.getCollection(`doc_${schema}`);
     }
 
     clear(schema) {
