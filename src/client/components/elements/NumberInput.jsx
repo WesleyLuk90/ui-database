@@ -7,6 +7,10 @@ export default class NumberInput extends React.Component {
         this.id = `number-input__${_.uniqueId()}`;
     }
 
+    onChange(e) {
+        this.props.onChange(parseFloat(e.target.value));
+    }
+
     render() {
         return (<div className="number-input">
             <label className="number-input__label" htmlFor={this.id}>{this.props.label}</label>
@@ -15,8 +19,8 @@ export default class NumberInput extends React.Component {
                 className="number-input__control"
                 id={this.id}
                 name={this.id}
-                onChange={this.props.onChange}
-                value={this.props.value}
+                onChange={e => this.onChange(e)}
+                value={this.props.value || ''}
                 placeholder={this.props.placeholder}
             />
         </div>);
@@ -25,12 +29,13 @@ export default class NumberInput extends React.Component {
 
 NumberInput.propTypes = {
     label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.number.isRequired,
+    value: React.PropTypes.number,
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
 };
 
 NumberInput.defaultProps = {
     onChange: null,
+    value: null,
     placeholder: null,
 };

@@ -3,13 +3,13 @@ import TextInput from '../elements/TextInput';
 import Field from '../../models/Field';
 
 export default class FieldEditor extends React.Component {
-    onNameChange(e) {
-        this.props.field.setName(e.target.value);
+    onNameChange(name) {
+        this.props.field.setName(name);
         this.forceUpdate();
     }
 
-    onIdChange(e) {
-        this.props.field.setId(e.target.value);
+    onIdChange(id) {
+        this.props.field.setId(id);
         this.forceUpdate();
     }
 
@@ -17,8 +17,8 @@ export default class FieldEditor extends React.Component {
         const field = this.props.field;
         return (<div className="field-editor">
             Type: {field.getType()}<br />
-            <TextInput label="Name" value={field.getName()} onChange={e => this.onNameChange(e)} />
-            <TextInput label="Id" value={field.getId()} onChange={e => this.onIdChange(e)} />
+            <TextInput label="Name" value={field.getName()} onChange={v => this.onNameChange(v)} />
+            <TextInput label="Id" value={field.getId()} onChange={v => this.onIdChange(v)} />
         </div>);
     }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import AppModule from '../../AppModule';
 import Card from '../elements/Card';
 import Schema from '../../models/Schema';
 import Section from '../elements/Section';
@@ -15,13 +14,13 @@ export default class SchemaEditor extends React.Component {
         this.onIdChange = this.onIdChange.bind(this);
     }
 
-    onNameChange(e) {
-        this.props.schema.setName(e.target.value);
+    onNameChange(name) {
+        this.props.schema.setName(name);
         this.forceUpdate();
     }
 
-    onIdChange(e) {
-        this.props.schema.setId(e.target.value);
+    onIdChange(name) {
+        this.props.schema.setId(name);
         this.forceUpdate();
     }
 

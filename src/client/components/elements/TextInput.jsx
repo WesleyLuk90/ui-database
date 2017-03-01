@@ -7,6 +7,10 @@ export default class TextInput extends React.Component {
         this.id = `text-input__${_.uniqueId()}`;
     }
 
+    onChange(e) {
+        this.props.onChange(e.target.value);
+    }
+
     render() {
         return (<div className="text-input">
             <label className="text-input__label" htmlFor={this.id}>{this.props.label}</label>
@@ -15,7 +19,7 @@ export default class TextInput extends React.Component {
                 className="text-input__control"
                 id={this.id}
                 name={this.id}
-                onChange={this.props.onChange}
+                onChange={e => this.onChange(e)}
                 value={this.props.value}
                 placeholder={this.props.placeholder}
             />

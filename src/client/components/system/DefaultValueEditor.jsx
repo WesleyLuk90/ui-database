@@ -14,14 +14,14 @@ export default class DefaultValueEditor extends React.Component {
                 label={field.getName()}
                 placeholder={field.getName()}
                 value={this.props.value || ''}
-                onChange={e => this.props.onChange(e.target.value)}
+                onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'number') {
             return (<NumberInput
                 label={field.getName()}
                 placeholder={field.getName()}
-                value={this.props.value || ''}
-                onChange={e => this.props.onChange(e.target.value)}
+                value={this.props.value || null}
+                onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'datetime') {
             return (<DatetimePicker value={this.props.value} onChange={v => this.props.onChange(v)} />);
