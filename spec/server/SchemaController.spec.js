@@ -26,6 +26,10 @@ describe('SchemaController', () => {
             body: {
                 name: 'my schema',
                 id: 'my_schema',
+                fields: [
+                    { id: 'a' },
+                    { id: 'b' },
+                ],
             },
         };
         controller.create(request)
@@ -33,6 +37,9 @@ describe('SchemaController', () => {
                 expect(schemaValidator.validate).toHaveBeenCalled();
                 expect(schema.getId()).toBe('my_schema');
                 expect(schema.getName()).toBe('my schema');
+                expect(schema.getFields().length).toBe(2);
+                expect(schema.getFields()[0]).toEqual({ id: 'a' });
+                expect(schema.getFields()[1]).toEqual({ id: 'b' });
             })
             .catch(fail)
             .then(done);
@@ -103,7 +110,7 @@ describe('SchemaController', () => {
         });
 
         it('should expose create', (done) => {
-            superagent.put(`${server.getBaseUrl()}/api/schema/`, { name: 'My Schema', id: 'my_schema' })
+            superagent.put(`${server.getBaseUrl()}/api/schema/`, { name: 'My Schema', id: 'my_schema', fields: [] })
                 .then((res) => {
                     const schema = res.body.result;
                     expect(schema.name).toBe('My Schema');

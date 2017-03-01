@@ -14,7 +14,8 @@ module.exports = class SchemaController extends BaseController {
     }
 
     create(request) {
-        const schema = Schema.create(request.body.name, request.body.id);
+        const schema = Schema.create(request.body.name, request.body.id)
+            .setFields(request.body.fields);
         this.schemaValidator.validate(schema);
         return this.schemaStorage.create(schema);
     }
