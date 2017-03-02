@@ -12,6 +12,7 @@ module.exports = class ListOptions {
     setLimit(limit) {
         assert(typeof limit === 'number' && limit >= 0);
         this.limit = limit;
+        return this;
     }
 
     getLimit() {

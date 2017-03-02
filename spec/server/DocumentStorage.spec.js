@@ -5,6 +5,7 @@ const Document = require('../../src/server/Document');
 const Schema = require('../../src/server/Schema');
 const DocumentReference = require('../../src/server/DocumentReference');
 const ListResults = require('../../src/server/ListResults');
+const ListOptions = require('../../src/server/ListOptions');
 
 describe('DocumentStorage', () => {
     const testSchema = 'test_schema';
@@ -55,17 +56,33 @@ describe('DocumentStorage', () => {
             .then(done);
     });
 
-    it('should list documents', (done) => {
-        documentStorage.create(Document.create(testSchema, null, { some: 'data' }))
-            .then(() => documentStorage.create(Document.create(testSchema, null, { some: 'data' })))
-            .then(() => documentStorage.list(testSchema))
-            .then((results) => {
-                expect(results instanceof ListResults).toBe(true);
-                expect(results.getCount()).toBe(2);
-                expect(results.getTotal()).toBe(2);
-                results.get().forEach(doc => expect(doc instanceof Document).toBe(true));
-            })
-            .catch(fail)
-            .then(done);
+    describe('list', () => {
+        it('should list documents', (done) => {
+            documentStorage.create(Document.create(testSchema, null, { some: 'data' }))
+                .then(() => documentStorage.create(Document.create(testSchema, null, { some: 'data' })))
+                .then(() => documentStorage.list(testSchema))
+                .then((results) => {
+                    expect(results instanceof ListResults).toBe(true);
+                    expect(results.getCount()).toBe(2);
+                    expect(results.getTotal()).toBe(2);
+                    results.get().forEach(doc => expect(doc instanceof Document).toBe(true));
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should list with limit', (done) => {
+            documentStorage.create(Document.create(testSchema, null, { some: 'data' }))
+                .then(() => documentStorage.create(Document.create(testSchema, null, { some: 'data' })))
+                .then(() => documentStorage.list(testSchema, ListOptions.create().setLimit(1)))
+                .then((results) => {
+                    expect(results instanceof ListResults).toBe(true);
+                    expect(results.getCount()).toBe(1);
+                    expect(results.getTotal()).toBe(2);
+                    results.get().forEach(doc => expect(doc instanceof Document).toBe(true));
+                })
+                .catch(fail)
+                .then(done);
+        });
     });
 });

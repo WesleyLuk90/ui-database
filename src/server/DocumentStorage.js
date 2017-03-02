@@ -7,6 +7,7 @@ const DocumentReference = require('./DocumentReference');
 const NotFoundError = require('./errors/NotFoundError');
 const CursorVisitor = require('./CursorVisitor');
 const ListResults = require('./ListResults');
+const ListOptions = require('./ListOptions');
 
 module.exports = class DocumentStorage {
     constructor(database) {
@@ -77,15 +78,21 @@ module.exports = class DocumentStorage {
             });
     }
 
-    list(schema) {
+    list(schema, optionsOrNull) {
         assert(typeof schema === 'string' && schema);
+        const options = optionsOrNull == null ? ListOptions.create() : optionsOrNull;
+        assert(options instanceof ListOptions);
 
         return this.getCollection(schema)
             .then((col) => {
                 const results = [];
                 const cursor = col.find({});
                 const visitor = new CursorVisitor(cursor);
-                return visitor.visit(doc => results.push(this.fromObject(doc)))
+                return visitor
+                    .visit((doc) => {
+                        results.push(this.fromObject(doc));
+                        return results.length < options.getLimit();
+                    })
                     .then(() => cursor.count())
                     .then(count => ListResults.create(results).setTotal(count));
             });
