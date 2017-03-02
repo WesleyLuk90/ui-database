@@ -4,6 +4,7 @@ const Config = require('../../src/server/Config');
 const Document = require('../../src/server/Document');
 const Schema = require('../../src/server/Schema');
 const DocumentReference = require('../../src/server/DocumentReference');
+const ListResults = require('../../src/server/ListResults');
 
 describe('DocumentStorage', () => {
     const testSchema = 'test_schema';
@@ -59,8 +60,10 @@ describe('DocumentStorage', () => {
             .then(() => documentStorage.create(Document.create(testSchema, null, { some: 'data' })))
             .then(() => documentStorage.list(testSchema))
             .then((results) => {
-                expect(results.length).toBe(2);
-                results.forEach(doc => expect(doc instanceof Document).toBe(true));
+                expect(results instanceof ListResults).toBe(true);
+                expect(results.getCount()).toBe(2);
+                expect(results.getTotal()).toBe(2);
+                results.get().forEach(doc => expect(doc instanceof Document).toBe(true));
             })
             .catch(fail)
             .then(done);

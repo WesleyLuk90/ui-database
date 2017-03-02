@@ -6,6 +6,7 @@ const uuid = require('./uuid');
 const DocumentReference = require('./DocumentReference');
 const NotFoundError = require('./errors/NotFoundError');
 const CursorVisitor = require('./CursorVisitor');
+const ListResults = require('./ListResults');
 
 module.exports = class DocumentStorage {
     constructor(database) {
@@ -82,9 +83,11 @@ module.exports = class DocumentStorage {
         return this.getCollection(schema)
             .then((col) => {
                 const results = [];
-                const visitor = new CursorVisitor(col.find({}));
+                const cursor = col.find({});
+                const visitor = new CursorVisitor(cursor);
                 return visitor.visit(doc => results.push(this.fromObject(doc)))
-                    .then(() => results);
+                    .then(() => cursor.count())
+                    .then(count => ListResults.create(results).setTotal(count));
             });
     }
 

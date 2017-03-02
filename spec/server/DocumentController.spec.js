@@ -6,6 +6,7 @@ const Schema = require('../../src/server/Schema');
 const Document = require('../../src/server/Document');
 const ServerToolkit = require('./ServerToolkit');
 const superagent = require('superagent');
+const ListResults = require('../../src/server/ListResults');
 
 describe('DocumentController', () => {
     let controller;
@@ -92,7 +93,10 @@ describe('DocumentController', () => {
     it('should list', (done) => {
         documentStorage.create(Document.create(testSchema, null, { more: 'data' }))
             .then(() => controller.list({ params: { schema: testSchema } }))
-            .then((documents) => {
+            .then((results) => {
+                expect(results instanceof ListResults).toBe(true);
+                expect(results.getTotal()).toBe(1);
+                const documents = results.get();
                 expect(Array.isArray(documents)).toBe(true);
                 expect(documents.length).toBe(1);
                 expect(documents[0].getId()).toBeTruthy();
@@ -133,6 +137,7 @@ describe('DocumentController', () => {
             superagent.get(`${server.getBaseUrl()}/api/document/test_schema`)
                 .then((res) => {
                     expect(res.body.result).toEqual([]);
+                    expect(res.body.total).toEqual(0);
                 })
                 .catch(fail)
                 .then(done);
