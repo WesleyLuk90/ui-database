@@ -9,13 +9,16 @@ const CursorVisitor = require('./CursorVisitor');
 const ListResults = require('./ListResults');
 const ListOptions = require('./ListOptions');
 const SchemaStorage = require('./SchemaStorage');
+const DescriptorPopulator = require('./DescriptorPopulator');
 
 class DocumentStorage {
-    constructor(database, schemaStorage) {
+    constructor(database, schemaStorage, descriptorPopulator) {
         assert(database instanceof Database);
         assert(schemaStorage instanceof SchemaStorage);
+        assert(descriptorPopulator instanceof DescriptorPopulator);
         this.database = database;
         this.schemaStorage = schemaStorage;
+        this.descriptorPopulator = descriptorPopulator;
     }
 
     getCollection(schema) {
@@ -34,19 +37,17 @@ class DocumentStorage {
         assert(doc instanceof Document);
         assert(!doc.getId(), 'Document already has an id');
 
-        const objectToInsert = this.toObject(doc);
-        objectToInsert.updatedAt = new Date().toJSON();
-        objectToInsert.createdAt = new Date().toJSON();
-
-        return this.getCollection(doc.getSchema())
-            .then(col => col.insert(objectToInsert))
-            .then(() => {
-                const documentToReturn = doc;
-                documentToReturn.setId(objectToInsert._id);
-                documentToReturn.setCreatedAt(new Date(objectToInsert.createdAt));
-                documentToReturn.setUpdatedAt(new Date(objectToInsert.updatedAt));
-                return documentToReturn;
-            });
+        return this.preprocessToNewObj(doc)
+            .then(objectToInsert => this.getCollection(doc.getSchema())
+                .then(col => col.insert(objectToInsert))
+                .then(() => {
+                    const documentToReturn = doc;
+                    documentToReturn.setId(objectToInsert._id);
+                    documentToReturn.setDescriptor(doc.descriptor);
+                    documentToReturn.setCreatedAt(new Date(objectToInsert.createdAt));
+                    documentToReturn.setUpdatedAt(new Date(objectToInsert.updatedAt));
+                    return documentToReturn;
+                }));
     }
 
     get(documentReference) {
@@ -66,19 +67,15 @@ class DocumentStorage {
         assert(doc instanceof Document);
         assert(doc.getId());
 
-        const toUpdate = {
-            data: doc.getData(),
-            updatedAt: new Date().toJSON(),
-        };
-
-        return this.getCollection(doc.getSchema())
-            .then(col => col.updateOne({ _id: doc.getId() }, { $set: toUpdate }))
-            .then((res) => {
-                if (res.result.nModified !== 1) {
-                    throw new NotFoundError('document', doc.getId());
-                }
-                return this.get(doc.toReference());
-            });
+        return this.preprocessToObject(doc)
+            .then(dataToUpdate => this.getCollection(doc.getSchema())
+                .then(col => col.updateOne({ _id: doc.getId() }, { $set: dataToUpdate }))
+                .then((res) => {
+                    if (res.result.nModified !== 1) {
+                        throw new NotFoundError('document', doc.getId());
+                    }
+                    return this.get(doc.toReference());
+                }));
     }
 
     list(schema, optionsOrNull) {
@@ -101,23 +98,38 @@ class DocumentStorage {
             });
     }
 
-    toObject(doc) {
-        assert(doc instanceof Document);
+    preprocessToObject(doc) {
+        return this.schemaStorage.get(doc.getSchema())
+            .then((schema) => {
+                this.descriptorPopulator.populate(doc, schema);
+                return {
+                    data: doc.getData(),
+                    descriptor: doc.getDescriptor(),
+                    updatedAt: new Date().toJSON(),
+                };
+            });
+    }
 
-        return {
-            _id: doc.getId() || uuid(),
-            schema: doc.getSchema(),
-            data: doc.getData(),
-        };
+    preprocessToNewObj(doc) {
+        assert(!doc.getId());
+        return this.preprocessToObject(doc)
+            .then((object) => {
+                const newObject = object;
+                newObject._id = uuid();
+                newObject.schema = doc.getSchema();
+                newObject.createdAt = new Date().toJSON();
+                return newObject;
+            });
     }
 
     fromObject(data) {
         return Document.create(data.schema, data._id, data.data)
+            .setDescriptor(data.descriptor || '')
             .setUpdatedAt(new Date(data.updatedAt))
             .setCreatedAt(new Date(data.createdAt));
     }
 }
 
 DocumentStorage.$name = 'DocumentStorage';
-DocumentStorage.$inject = ['Database', 'SchemaStorage'];
+DocumentStorage.$inject = ['Database', 'SchemaStorage', 'DescriptorPopulator'];
 module.exports = DocumentStorage;

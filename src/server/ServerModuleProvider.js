@@ -9,6 +9,7 @@ const Server = require('./Server');
 const SchemaValidator = require('./SchemaValidator');
 const SchemaStorage = require('./SchemaStorage');
 const SchemaController = require('./SchemaController');
+const DescriptorPopulator = require('./DescriptorPopulator');
 
 class ServerModuleProvider {
     static create() {
@@ -22,6 +23,7 @@ class ServerModuleProvider {
         module.register(SchemaController);
         module.register(SchemaStorage);
         module.register(SchemaValidator);
+        module.register(DescriptorPopulator);
         module.register(Server);
         return module;
     }

@@ -94,7 +94,9 @@ describe('DocumentStorage', () => {
             documentStorage.create(Document.create(testSchema, null, { id: '7', name: 'abc' }))
                 .then((created) => {
                     expect(created.getDescriptor()).toBe('7 abc');
+                    return documentStorage.get(DocumentReference.create(created.getSchema(), created.getId()));
                 })
+                .then(foundDocument => expect(foundDocument.getDescriptor()).toBe('7 abc'))
                 .catch(fail)
                 .then(done);
         });

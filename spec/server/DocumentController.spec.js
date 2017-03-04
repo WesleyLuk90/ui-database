@@ -1,7 +1,8 @@
+const superagent = require('superagent');
+const Q = require('q');
 const Schema = require('../../src/server/Schema');
 const Document = require('../../src/server/Document');
 const ServerToolkit = require('./ServerToolkit');
-const superagent = require('superagent');
 const ListResults = require('../../src/server/ListResults');
 const ModuleHarness = require('./ModuleHarness');
 
@@ -12,6 +13,8 @@ describe('DocumentController', () => {
     beforeEach((done) => {
         const module = ModuleHarness.create();
         documentStorage = module.get('DocumentStorage');
+        const schemaStorage = module.get('SchemaStorage');
+        spyOn(schemaStorage, 'get').and.returnValue(Q.when(Schema.create(testSchema, testSchema).setDescriptor([])));
         controller = module.get('DocumentController');
         documentStorage.clear(Schema.create('Test Schema', testSchema))
             .catch(fail)
@@ -105,7 +108,13 @@ describe('DocumentController', () => {
     });
 
     describe('api', () => {
-        const server = ServerToolkit.createServer();
+        let schemaStorage;
+        const server = ServerToolkit.createServer((module) => {
+            schemaStorage = module.get('SchemaStorage');
+        });
+        beforeEach(() => {
+            spyOn(schemaStorage, 'get').and.returnValue(Q.when(Schema.create(testSchema, testSchema).setDescriptor([])));
+        });
         it('should expose get', (done) => {
             superagent.get(`${server.getBaseUrl()}/api/document/test_schema/id123`)
                 .then((res) => {

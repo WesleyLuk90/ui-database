@@ -47,6 +47,14 @@ class Document {
         return this.data;
     }
 
+    getValue(fieldId) {
+        assert(typeof fieldId === 'string');
+        if (this.data[fieldId]) {
+            return this.data[fieldId];
+        }
+        return null;
+    }
+
     setCreatedAt(date) {
         assert.ok(date instanceof Date);
 
