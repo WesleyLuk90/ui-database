@@ -10,6 +10,13 @@ module.exports = class Schema {
         this.id = null;
         this.descriptor = [];
     }
+
+    copy() {
+        return Schema.create(this.getName(), this.getId())
+            .setFields(this.getFields().slice())
+            .setDescriptor(this.getDescriptor().slice());
+    }
+
     getId() {
         return this.id;
     }

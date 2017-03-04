@@ -21,5 +21,10 @@ module.exports = class SchemaValidator {
             ValidationError.validate(!ids.has(field.id), `The field with id '${field.id}' is duplicated`);
             ids.add(field.id);
         });
+
+        schema.getDescriptor().forEach((field) => {
+            ValidationError.validate(typeof field === 'string', 'Descriptor must be all field ids');
+            ValidationError.validate(ids.has(field), `Field '${field}' in descriptor does not exist on the schema`);
+        });
     }
 };

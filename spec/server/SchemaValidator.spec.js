@@ -33,14 +33,27 @@ describe('SchemaValidator', () => {
     });
 
     describe('descriptor', () => {
-        it('should find valid schemas', () => {
-            const schema = Schema.create('things', 'things')
-                .setFields([
-                    { id: 'name', name: 'name', type: 'string' },
-                    { id: 'id', name: 'id', type: 'number' },
-                ])
+        const baseSchema = Schema.create('things', 'things')
+            .setFields([
+                { id: 'name', name: 'name', type: 'string' },
+                { id: 'id', name: 'id', type: 'number' },
+            ]);
+        it('should have valid descriptor', () => {
+            const schema = baseSchema.copy()
                 .setDescriptor(['name', 'id']);
             expect(() => validator.validate(schema)).not.toThrowError();
+        });
+
+        it('should check descriptors are fields', () => {
+            const schema = baseSchema.copy()
+                .setDescriptor(['name', 'not_field']);
+            validationError(schema, 'Field \'not_field\' in descriptor does not exist on the schema');
+        });
+
+        it('should check descriptors are strings', () => {
+            const schema = baseSchema.copy()
+                .setDescriptor([{}]);
+            validationError(schema, 'Descriptor must be all field ids');
         });
     });
 });
