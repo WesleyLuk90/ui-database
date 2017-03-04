@@ -134,7 +134,7 @@ describe('SchemaController', () => {
             schemaStorage.create(Schema.create('My Schema', 'my_schema'))
                 .then(() => superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'my_schema', name: 'New Schema name', fields: [] }))
                 .then((res) => {
-                    expect(res.body.result).toEqual({ id: 'my_schema', name: 'New Schema name', fields: [] });
+                    expect(res.body.result).toEqual({ id: 'my_schema', name: 'New Schema name', fields: [], descriptor: [] });
                 })
                 .catch(fail)
                 .then(done);
