@@ -1,6 +1,5 @@
 const bottlejs = require('bottlejs');
 const assert = require('assert');
-const ApiRouter = require('./ApiRouter');
 const Config = require('./Config');
 const Database = require('./Database');
 const DocumentController = require('./DocumentController');
@@ -15,7 +14,6 @@ class ServerModuleProvider {
     static create() {
         bottlejs.config.strict = true;
         const bottle = new bottlejs.Bottle();
-        bottle.register(ApiRouter);
         bottle.register(Config);
         bottle.register(Database);
         bottle.register(DocumentController);
@@ -37,4 +35,6 @@ class ServerModuleProvider {
         assert(foundModule, `Unknown module ${module}`);
         return foundModule;
     }
-};
+}
+
+module.exports = ServerModuleProvider;

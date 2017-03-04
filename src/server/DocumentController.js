@@ -40,4 +40,7 @@ class DocumentController extends BaseController {
         return this.documentStorage
             .list(request.params.schema);
     }
-};
+}
+DocumentController.$name = 'DocumentController';
+DocumentController.$inject = ['DocumentStorage'];
+module.exports = DocumentController;

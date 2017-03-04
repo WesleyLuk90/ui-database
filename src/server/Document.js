@@ -66,4 +66,6 @@ class Document {
     getUpdatedAt() {
         return this.updatedAt;
     }
-};
+}
+
+module.exports = Document;

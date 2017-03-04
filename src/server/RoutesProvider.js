@@ -67,4 +67,6 @@ class RoutesProvider {
         this.loadRoutes(server);
         this.loadErrorHandlers(server);
     }
-};
+}
+
+module.exports = RoutesProvider;

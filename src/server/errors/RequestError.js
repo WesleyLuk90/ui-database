@@ -8,4 +8,6 @@ class RequestError extends Error {
             this.stack = (new Error(message)).stack;
         }
     }
-};
+}
+
+module.exports = RequestError;

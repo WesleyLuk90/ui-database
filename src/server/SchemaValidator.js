@@ -29,4 +29,7 @@ class SchemaValidator {
             ValidationError.validate(ids.has(field), `Field '${field}' in descriptor does not exist on the schema`);
         });
     }
-};
+}
+
+SchemaValidator.$name = 'SchemaValidator';
+module.exports = SchemaValidator;

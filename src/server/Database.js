@@ -29,4 +29,6 @@ class Database {
     }
 }
 
+Database.$name = 'Database';
+Database.$inject = ['Config'];
 module.exports = Database;

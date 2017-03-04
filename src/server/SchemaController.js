@@ -37,4 +37,8 @@ class SchemaController extends BaseController {
         assert(request);
         return this.schemaStorage.list();
     }
-};
+}
+
+SchemaController.$name = 'SchemaController';
+SchemaController.$inject = ['SchemaStorage', 'SchemaValidator'];
+module.exports = SchemaController;

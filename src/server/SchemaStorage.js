@@ -95,4 +95,7 @@ class SchemaStorage {
         schema.setDescriptor(data.descriptor || []);
         return schema;
     }
-};
+}
+SchemaStorage.$name = 'SchemaStorage';
+SchemaStorage.$inject = ['Database'];
+module.exports = SchemaStorage;

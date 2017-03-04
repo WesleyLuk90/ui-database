@@ -1,8 +1,8 @@
 const assert = require('assert');
 
-class DocumentReferernce {
+class DocumentReference {
     static create(schema, id) {
-        return new DocumentReferernce().setId(id).setSchema(schema);
+        return new DocumentReference().setId(id).setSchema(schema);
     }
 
     constructor() {
@@ -29,4 +29,6 @@ class DocumentReferernce {
     getSchema() {
         return this.schema;
     }
-};
+}
+
+module.exports = DocumentReference;

@@ -18,4 +18,6 @@ class ListOptions {
     getLimit() {
         return this.limit;
     }
-};
+}
+
+module.exports = ListOptions;

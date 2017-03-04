@@ -63,4 +63,6 @@ class Schema {
     getFields() {
         return this.fields;
     }
-};
+}
+
+module.exports = Schema;

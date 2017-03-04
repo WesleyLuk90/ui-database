@@ -42,4 +42,6 @@ class ListResults {
             total: this.getTotal(),
         };
     }
-};
+}
+
+module.exports = ListResults;

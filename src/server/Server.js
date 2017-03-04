@@ -33,4 +33,8 @@ class Server {
             this.httpServer = null;
         });
     }
-};
+}
+
+Server.$name = 'Server';
+Server.$inject = ['Config'];
+module.exports = Server;
