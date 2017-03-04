@@ -8,6 +8,7 @@ module.exports = class Schema {
         this.name = null;
         this.fields = null;
         this.id = null;
+        this.descriptor = [];
     }
     getId() {
         return this.id;
@@ -16,6 +17,11 @@ module.exports = class Schema {
     setId(id) {
         this.id = id;
         return this;
+    }
+
+    setDescriptor(descriptor) {
+        assert(Array.isArray(descriptor));
+        this.descriptor = [];
     }
 
     getName() {

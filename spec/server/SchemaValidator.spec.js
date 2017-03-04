@@ -31,4 +31,16 @@ describe('SchemaValidator', () => {
 
         validationError(Schema.create('abc', 'abc').addField({ id: 'id', name: 'field', type: 'type' }).addField({ id: 'id', name: 'field', type: 'type' }), 'The field with id \'id\' is duplicated');
     });
+
+    describe('descriptor', () => {
+        it('should find valid schemas', () => {
+            const schema = Schema.create('things', 'things')
+                .setFields([
+                    { id: 'name', name: 'name', type: 'string' },
+                    { id: 'id', name: 'id', type: 'number' },
+                ])
+                .setDescriptor(['name', 'id']);
+            expect(() => validator.validate(schema)).not.toThrowError();
+        });
+    });
 });
