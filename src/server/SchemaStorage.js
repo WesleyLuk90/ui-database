@@ -91,8 +91,8 @@ module.exports = class SchemaStorage {
         const schema = new Schema();
         schema.setId(data._id);
         schema.setName(data.name);
-        schema.setFields(data.fields);
-        schema.setDescriptor(data.descriptor);
+        schema.setFields(data.fields || []);
+        schema.setDescriptor(data.descriptor || []);
         return schema;
     }
 };

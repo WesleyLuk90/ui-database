@@ -13,6 +13,19 @@ describe('SchemaStorage', () => {
             .then(done);
     });
 
+    it('should populate defaults for missing fields', (done) => {
+        const schema = Schema.create('my-schema', 'my_schema');
+        schemaStorage.create(schema)
+            .then(() => expect(schema.getId()).toBeTruthy())
+            .then(() => schemaStorage.get('my_schema'))
+            .then((foundSchema) => {
+                expect(foundSchema.getFields()).toEqual([]);
+                expect(foundSchema.getDescriptor()).toEqual([]);
+            })
+            .catch(fail)
+            .then(done);
+    });
+
     it('should create schemas', (done) => {
         const schema = Schema.create('my-schema', 'my_schema')
             .setFields([{ id: 'a' }, { id: 'b' }])
@@ -44,7 +57,9 @@ describe('SchemaStorage', () => {
     });
 
     it('should update schemas', (done) => {
-        const schema = Schema.create('my-schema', 'my_schema');
+        const schema = Schema.create('my-schema', 'my_schema')
+            .setFields([])
+            .setDescriptor([]);
         schemaStorage.create(schema)
             .then(() => {
                 schema.setFields([{ type: 'String' }]);
