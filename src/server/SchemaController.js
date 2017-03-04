@@ -13,18 +13,20 @@ module.exports = class SchemaController extends BaseController {
         this.schemaValidator = schemaValidator;
     }
 
-    create(request) {
-        const schema = Schema.create(request.body.name, request.body.id)
-            .setFields(request.body.fields);
+    schemaFromBody(body) {
+        const schema = Schema.create(body.name, body.id)
+            .setFields(body.fields)
+            .setDescriptor(body.descriptor);
         this.schemaValidator.validate(schema);
-        return this.schemaStorage.create(schema);
+        return schema;
+    }
+
+    create(request) {
+        return this.schemaStorage.create(this.schemaFromBody(request.body));
     }
 
     update(request) {
-        const schema = Schema.create(request.body.name, request.body.id)
-            .setFields(request.body.fields);
-        this.schemaValidator.validate(schema);
-        return this.schemaStorage.update(schema);
+        return this.schemaStorage.update(this.schemaFromBody(request.body));
     }
 
     get(request) {

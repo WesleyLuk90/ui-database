@@ -1,20 +1,26 @@
-const assert = require('assert');
+function copyArrayOrNull(array) {
+    if (array == null) {
+        return null;
+    }
+    return array.slice();
+}
 
 module.exports = class Schema {
     static create(name, id) {
-        return new Schema().setName(name).setId(id).setFields([]);
+        return new Schema().setName(name).setId(id);
     }
+
     constructor() {
         this.name = null;
         this.fields = null;
         this.id = null;
-        this.descriptor = [];
+        this.descriptor = null;
     }
 
     copy() {
         return Schema.create(this.getName(), this.getId())
-            .setFields(this.getFields().slice())
-            .setDescriptor(this.getDescriptor().slice());
+            .setFields(copyArrayOrNull(this.getFields()))
+            .setDescriptor(copyArrayOrNull(this.getDescriptor()));
     }
 
     getId() {
@@ -27,9 +33,7 @@ module.exports = class Schema {
     }
 
     setDescriptor(descriptor) {
-        if (descriptor != null) {
-            this.descriptor = descriptor;
-        }
+        this.descriptor = descriptor;
         return this;
     }
 
@@ -47,8 +51,6 @@ module.exports = class Schema {
     }
 
     setFields(fields) {
-        assert(Array.isArray(fields));
-
         this.fields = fields;
         return this;
     }

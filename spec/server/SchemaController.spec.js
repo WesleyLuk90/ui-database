@@ -21,6 +21,11 @@ describe('SchemaController', () => {
             .then(done);
     });
 
+    it('should validate when creating a schema', () => {
+        controller.schemaFromBody({ id: 'a', name: 'a', descriptor: [] });
+        expect(schemaValidator.validate).toHaveBeenCalled();
+    });
+
     it('should create', (done) => {
         const request = {
             body: {
@@ -30,6 +35,7 @@ describe('SchemaController', () => {
                     { id: 'a' },
                     { id: 'b' },
                 ],
+                descriptor: [],
             },
         };
         controller.create(request)
@@ -96,7 +102,7 @@ describe('SchemaController', () => {
             .then(done);
     });
 
-    describe('api', () => {
+    describe('integration test', () => {
         const server = ServerToolkit.createServer();
         it('should expose get', (done) => {
             superagent.get(`${server.getBaseUrl()}/api/schema/invalid-schema-id`)
@@ -110,7 +116,7 @@ describe('SchemaController', () => {
         });
 
         it('should expose create', (done) => {
-            superagent.put(`${server.getBaseUrl()}/api/schema/`, { name: 'My Schema', id: 'my_schema', fields: [] })
+            superagent.put(`${server.getBaseUrl()}/api/schema/`, { name: 'My Schema', id: 'my_schema', fields: [], descriptor: [] })
                 .then((res) => {
                     const schema = res.body.result;
                     expect(schema.name).toBe('My Schema');
@@ -131,10 +137,14 @@ describe('SchemaController', () => {
         });
 
         it('should update', (done) => {
-            schemaStorage.create(Schema.create('My Schema', 'my_schema'))
-                .then(() => superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'my_schema', name: 'New Schema name', fields: [] }))
+            const schema = Schema
+                .create('My Schema', 'my_schema')
+                .setFields([{ id: 'a', name: 'a', type: 'text' }])
+                .setDescriptor(['a']);
+            schemaStorage.create(schema)
+                .then(() => superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'my_schema', name: 'New Schema name', fields: schema.getFields(), descriptor: schema.getDescriptor() }))
                 .then((res) => {
-                    expect(res.body.result).toEqual({ id: 'my_schema', name: 'New Schema name', fields: [], descriptor: [] });
+                    expect(res.body.result).toEqual({ id: 'my_schema', name: 'New Schema name', fields: schema.getFields(), descriptor: schema.getDescriptor() });
                 })
                 .catch(fail)
                 .then(done);

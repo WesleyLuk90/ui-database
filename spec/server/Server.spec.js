@@ -18,7 +18,7 @@ describe('Server', () => {
     });
 
     it('should handle errors', (done) => {
-        superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'invalid_id', name: 'thing', fields: [] })
+        superagent.post(`${server.getBaseUrl()}/api/schema/`, { id: 'invalid_id', name: 'thing', fields: [], descriptor: [] })
             .then(fail)
             .catch((e) => {
                 expect(e.status).toBe(400);

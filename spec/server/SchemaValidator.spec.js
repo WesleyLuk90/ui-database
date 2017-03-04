@@ -25,11 +25,12 @@ describe('SchemaValidator', () => {
     });
 
     it('should validate fields', () => {
-        validationError(Schema.create('abc', 'abc').addField({ id: '', name: 'field', type: 'name' }), 'All fields require an id');
-        validationError(Schema.create('abc', 'abc').addField({ id: 'id', name: '', type: 'name' }), 'All fields require a name');
-        validationError(Schema.create('abc', 'abc').addField({ id: 'id', name: 'field', type: '' }), 'All fields require a type');
+        validationError(Schema.create('abc', 'abc').setFields([]).addField({ id: '', name: 'field', type: 'name' }), 'All fields require an id');
+        validationError(Schema.create('abc', 'abc').setFields([]).addField({ id: 'id', name: '', type: 'name' }), 'All fields require a name');
+        validationError(Schema.create('abc', 'abc').setFields([]).addField({ id: 'id', name: 'field', type: '' }), 'All fields require a type');
+        validationError(Schema.create('abc', 'abc'), 'Fields are required');
 
-        validationError(Schema.create('abc', 'abc').addField({ id: 'id', name: 'field', type: 'type' }).addField({ id: 'id', name: 'field', type: 'type' }), 'The field with id \'id\' is duplicated');
+        validationError(Schema.create('abc', 'abc').setFields([]).addField({ id: 'id', name: 'field', type: 'type' }).addField({ id: 'id', name: 'field', type: 'type' }), 'The field with id \'id\' is duplicated');
     });
 
     describe('descriptor', () => {
@@ -42,6 +43,11 @@ describe('SchemaValidator', () => {
             const schema = baseSchema.copy()
                 .setDescriptor(['name', 'id']);
             expect(() => validator.validate(schema)).not.toThrowError();
+        });
+
+        it('should have valid descriptor', () => {
+            const schema = baseSchema.copy();
+            validationError(schema, 'Descriptor is required');
         });
 
         it('should check descriptors are fields', () => {

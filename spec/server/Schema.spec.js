@@ -7,7 +7,9 @@ describe('Schema', () => {
     });
 
     it('should be copyable', () => {
-        const schema = Schema.create();
+        const schema = Schema.create('name', 'id')
+            .setFields([])
+            .setDescriptor([]);
         const copy = schema.copy();
         expect(copy).not.toBe(schema);
         expect(copy.getFields()).not.toBe(schema.getFields());
