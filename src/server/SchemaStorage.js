@@ -79,18 +79,20 @@ module.exports = class SchemaStorage {
     toObject(schema) {
         assert(schema instanceof Schema);
         return {
-            _id: schema.id,
-            name: schema.name,
-            fields: schema.fields,
+            _id: schema.getId(),
+            name: schema.getName(),
+            fields: schema.getFields(),
+            descriptor: schema.getDescriptor(),
         };
     }
 
     fromObject(data) {
         assert(data);
         const schema = new Schema();
-        schema.id = data._id;
-        schema.name = data.name;
-        schema.fields = data.fields;
+        schema.setId(data._id);
+        schema.setName(data.name);
+        schema.setFields(data.fields);
+        schema.setDescriptor(data.descriptor);
         return schema;
     }
 };

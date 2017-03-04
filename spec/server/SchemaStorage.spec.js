@@ -15,7 +15,8 @@ describe('SchemaStorage', () => {
 
     it('should create schemas', (done) => {
         const schema = Schema.create('my-schema', 'my_schema')
-            .setFields([{ id: 'a' }, { id: 'b' }]);
+            .setFields([{ id: 'a' }, { id: 'b' }])
+            .setDescriptor(['a']);
         schemaStorage.create(schema)
             .then(() => expect(schema.getId()).toBeTruthy())
             .then(() => schemaStorage.get('my_schema'))

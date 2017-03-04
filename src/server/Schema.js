@@ -27,8 +27,9 @@ module.exports = class Schema {
     }
 
     setDescriptor(descriptor) {
-        assert(Array.isArray(descriptor));
-        this.descriptor = descriptor;
+        if (descriptor != null) {
+            this.descriptor = descriptor;
+        }
         return this;
     }
 
