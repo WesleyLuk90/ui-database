@@ -14,4 +14,19 @@ describe('Schema', () => {
         expect(copy.getDescriptor()).not.toBe(schema.getDescriptor());
         expect(copy).toEqual(schema);
     });
+
+    it('should set id and name', () => {
+        const schema = Schema.create('name', 'id');
+        expect(schema.getName()).toBe('name');
+        expect(schema.getId()).toBe('id');
+    });
+
+    it('should set fields', () => {
+        const fields = [
+            { id: 'a', name: 'a', type: 'text' },
+            { id: 'b', name: 'b', type: 'text' },
+        ];
+        const schema = Schema.create().setFields(fields);
+        expect(schema.getFields()).toEqual(fields);
+    });
 });
