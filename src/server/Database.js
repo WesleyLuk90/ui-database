@@ -2,7 +2,7 @@ const assert = require('assert');
 const Config = require('./Config');
 const MongoClient = require('mongodb').MongoClient;
 
-module.exports = class Database {
+class Database {
     constructor(config) {
         assert(config instanceof Config);
         this.config = config;
@@ -27,4 +27,6 @@ module.exports = class Database {
         }
         return `mongodb://${userString}${this.config.getDbHost()}:${this.config.getDbPort()}/${this.config.getDbDatabase()}`;
     }
-};
+}
+
+module.exports = Database;

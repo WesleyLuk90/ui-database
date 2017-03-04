@@ -2,7 +2,7 @@ const assert = require('assert');
 const Schema = require('./Schema');
 const ValidationError = require('./errors/ValidationError');
 
-module.exports = class SchemaValidator {
+class SchemaValidator {
     validate(schema) {
         assert(schema instanceof Schema);
 

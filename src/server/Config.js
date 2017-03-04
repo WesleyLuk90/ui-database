@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-module.exports = class Config {
+class Config {
     getDbHost() {
         return this.env('DB_HOST', 'localhost');
     }
@@ -29,4 +29,6 @@ module.exports = class Config {
         }
         return defaultValue;
     }
-};
+}
+
+module.exports = Config;

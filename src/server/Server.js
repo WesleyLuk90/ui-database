@@ -2,7 +2,7 @@ const express = require('express');
 const Q = require('q');
 const assert = require('assert');
 
-module.exports = class Server {
+class Server {
     constructor(config) {
         this.config = config;
         this.app = express();

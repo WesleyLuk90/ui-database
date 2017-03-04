@@ -4,7 +4,7 @@ const Document = require('./Document');
 const DocumentReference = require('./DocumentReference');
 const BaseController = require('./BaseController');
 
-module.exports = class DocumentController extends BaseController {
+class DocumentController extends BaseController {
     constructor(documentStorage) {
         super();
         assert(documentStorage instanceof DocumentStorage);

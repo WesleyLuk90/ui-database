@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-module.exports = class BaseController {
+class BaseController {
     getRouteHandler(method) {
         assert(typeof this[method] === 'function');
         return (req, res, next) => this[method](req)
@@ -12,4 +12,6 @@ module.exports = class BaseController {
             })
             .catch(e => next(e));
     }
-};
+}
+
+module.exports = BaseController;

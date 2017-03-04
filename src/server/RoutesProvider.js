@@ -11,7 +11,7 @@ const DocumentController = require('./DocumentController');
 const DocumentStorage = require('./DocumentStorage');
 const SchemaValidator = require('./SchemaValidator');
 
-module.exports = class RoutesProvider {
+class RoutesProvider {
     constructor(database) {
         assert(database instanceof Database);
 

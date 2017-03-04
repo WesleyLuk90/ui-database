@@ -1,7 +1,7 @@
 const assert = require('assert');
 const DocumentReference = require('./DocumentReference');
 
-module.exports = class Document {
+class Document {
     static create(schema, id, data) {
         return new Document().setSchema(schema).setId(id).setData(data);
     }

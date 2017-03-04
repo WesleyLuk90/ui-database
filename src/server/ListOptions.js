@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-module.exports = class ListOptions {
+class ListOptions {
     static create() {
         return new ListOptions();
     }

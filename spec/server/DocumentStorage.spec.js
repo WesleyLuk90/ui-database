@@ -1,3 +1,4 @@
+const Q = require('q');
 const DocumentStorage = require('../../src/server/DocumentStorage');
 const Database = require('../../src/server/Database');
 const Config = require('../../src/server/Config');
@@ -6,14 +7,19 @@ const Schema = require('../../src/server/Schema');
 const DocumentReference = require('../../src/server/DocumentReference');
 const ListResults = require('../../src/server/ListResults');
 const ListOptions = require('../../src/server/ListOptions');
+const SchemaStorage = require('../../src/server/SchemaStorage');
 
 describe('DocumentStorage', () => {
     const testSchema = 'test_schema';
     let documentStorage;
+    let schemaStorage;
 
     beforeEach((done) => {
-        documentStorage = new DocumentStorage(new Database(new Config()));
-
+        const db = new Database(new Config());
+        schemaStorage = new SchemaStorage(db);
+        documentStorage = new DocumentStorage(db);
+        spyOn(schemaStorage, 'get').and.returnValue(Q.when(Schema.create('name', 'id')
+            .setDescriptor(['id', 'name'])));
         documentStorage.clear(Schema.create(testSchema, testSchema))
             .catch(fail)
             .then(done);
@@ -80,6 +86,17 @@ describe('DocumentStorage', () => {
                     expect(results.getCount()).toBe(1);
                     expect(results.getTotal()).toBe(2);
                     results.get().forEach(doc => expect(doc instanceof Document).toBe(true));
+                })
+                .catch(fail)
+                .then(done);
+        });
+    });
+
+    describe('descriptor', () => {
+        it('should populate a descriptor', (done) => {
+            documentStorage.create(Document.create(testSchema, null, { id: '7', name: 'abc' }))
+                .then((created) => {
+                    expect(created.getDescriptor()).toBe('7 abc');
                 })
                 .catch(fail)
                 .then(done);

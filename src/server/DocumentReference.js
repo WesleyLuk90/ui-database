@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-module.exports = class DocumentReferernce {
+class DocumentReferernce {
     static create(schema, id) {
         return new DocumentReferernce().setId(id).setSchema(schema);
     }

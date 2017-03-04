@@ -8,11 +8,14 @@ const NotFoundError = require('./errors/NotFoundError');
 const CursorVisitor = require('./CursorVisitor');
 const ListResults = require('./ListResults');
 const ListOptions = require('./ListOptions');
+const SchemaStorage = require('./SchemaStorage');
 
-module.exports = class DocumentStorage {
-    constructor(database) {
+class DocumentStorage {
+    constructor(database, schemaStorage) {
         assert(database instanceof Database);
+        assert(schemaStorage instanceof SchemaStorage);
         this.database = database;
+        this.schemaStorage = schemaStorage;
     }
 
     getCollection(schema) {
@@ -113,4 +116,8 @@ module.exports = class DocumentStorage {
             .setUpdatedAt(new Date(data.updatedAt))
             .setCreatedAt(new Date(data.createdAt));
     }
-};
+}
+
+DocumentStorage.$name = 'DocumentStorage';
+DocumentStorage.$inject = ['Database', 'SchemaStorage'];
+module.exports = DocumentStorage;

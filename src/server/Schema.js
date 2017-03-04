@@ -5,7 +5,7 @@ function copyArrayOrNull(array) {
     return array.slice();
 }
 
-module.exports = class Schema {
+class Schema {
     static create(name, id) {
         return new Schema().setName(name).setId(id);
     }

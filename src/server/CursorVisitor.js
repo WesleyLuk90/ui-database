@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-module.exports = class CursorVisitor {
+class CursorVisitor {
     constructor(cursor) {
         assert(cursor);
         this.cursor = cursor;
@@ -14,4 +14,6 @@ module.exports = class CursorVisitor {
             return this.visit(visitor);
         });
     }
-};
+}
+
+module.exports = CursorVisitor;

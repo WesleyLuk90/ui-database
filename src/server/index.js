@@ -1,15 +1,10 @@
-const Config = require('./Config');
-const RoutesProvider = require('./RoutesProvider');
-const Database = require('./Database');
-const Server = require('./Server');
+const ServerModuleProvider = require('./ServerModuleProvider');
 
 function main() {
-    const config = new Config();
-    const routesProvider = new RoutesProvider(new Database(config));
-    const server = new Server(config);
-
+    const module = ServerModuleProvider.create();
+    const routesProvider = module.get('RoutesProvider');
+    const server = module.get('Server');
     routesProvider.provide(server);
-
     server.start();
 }
 

@@ -4,7 +4,7 @@ const Schema = require('./Schema');
 const BaseController = require('./BaseController');
 const SchemaValidator = require('./SchemaValidator');
 
-module.exports = class SchemaController extends BaseController {
+class SchemaController extends BaseController {
     constructor(schemaStorage, schemaValidator) {
         super();
         assert(schemaStorage instanceof SchemaStorage);

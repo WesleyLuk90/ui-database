@@ -5,7 +5,7 @@ const CursorVisitor = require('./CursorVisitor');
 const NotFoundError = require('./errors/NotFoundError');
 const DuplicateKeyError = require('./errors/DuplicateKeyError');
 
-module.exports = class SchemaStorage {
+class SchemaStorage {
     constructor(database) {
         assert(database instanceof Database);
         this.database = database;
