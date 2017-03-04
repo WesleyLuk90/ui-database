@@ -31,4 +31,5 @@ class Config {
     }
 }
 
+Config.$name = 'Config';
 module.exports = Config;

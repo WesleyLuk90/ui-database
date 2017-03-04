@@ -1,13 +1,12 @@
-const SchemaStorage = require('../../src/server/SchemaStorage');
-const Database = require('../../src/server/Database');
-const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
+const ModuleHarness = require('./ModuleHarness');
 
 describe('SchemaStorage', () => {
     let schemaStorage;
 
     beforeEach((done) => {
-        schemaStorage = new SchemaStorage(new Database(new Config()));
+        const module = ModuleHarness.create();
+        schemaStorage = module.get('SchemaStorage');
         schemaStorage.clear()
             .catch(fail)
             .then(done);

@@ -13,20 +13,27 @@ const SchemaController = require('./SchemaController');
 class ServerModuleProvider {
     static create() {
         bottlejs.config.strict = true;
-        const bottle = new bottlejs.Bottle();
-        bottle.register(Config);
-        bottle.register(Database);
-        bottle.register(DocumentController);
-        bottle.register(DocumentStorage);
-        bottle.register(RoutesProvider);
-        bottle.register(SchemaController);
-        bottle.register(SchemaStorage);
-        bottle.register(SchemaValidator);
-        bottle.register(Server);
-        return new ServerModuleProvider(bottle);
+        const module = new ServerModuleProvider();
+        module.register(Config);
+        module.register(Database);
+        module.register(DocumentController);
+        module.register(DocumentStorage);
+        module.register(RoutesProvider);
+        module.register(SchemaController);
+        module.register(SchemaStorage);
+        module.register(SchemaValidator);
+        module.register(Server);
+        return module;
     }
-    constructor(bottle) {
-        this.bottle = bottle;
+    constructor() {
+        this.bottle = new bottlejs.Bottle();
+    }
+
+    register(klass) {
+        if (!klass.$name) {
+            throw new Error(`Injected class is missing name ${klass}`);
+        }
+        this.bottle.register(klass);
     }
 
     get(module) {

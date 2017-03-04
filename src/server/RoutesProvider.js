@@ -2,20 +2,17 @@ const assert = require('assert');
 const Server = require('./Server');
 const express = require('express');
 const path = require('path');
-const Database = require('./Database');
 const bodyParser = require('body-parser');
 const SchemaController = require('./SchemaController');
-const SchemaStorage = require('./SchemaStorage');
 const RequestError = require('./errors/RequestError');
 const DocumentController = require('./DocumentController');
-const DocumentStorage = require('./DocumentStorage');
-const SchemaValidator = require('./SchemaValidator');
 
 class RoutesProvider {
-    constructor(database) {
-        assert(database instanceof Database);
-
-        this.database = database;
+    constructor(schemaController, documentController) {
+        assert(schemaController instanceof SchemaController);
+        assert(documentController instanceof DocumentController);
+        this.schemaController = schemaController;
+        this.documentController = documentController;
     }
 
     loadMiddleware(server) {
@@ -25,19 +22,16 @@ class RoutesProvider {
     }
 
     loadRoutes(server) {
-        const schemaController =
-            new SchemaController(new SchemaStorage(this.database), new SchemaValidator());
         const app = server.getApp();
-        app.get('/api/schema/:id', schemaController.getRouteHandler('get'));
-        app.put('/api/schema/', schemaController.getRouteHandler('create'));
-        app.get('/api/schema/', schemaController.getRouteHandler('list'));
-        app.post('/api/schema/', schemaController.getRouteHandler('update'));
+        app.get('/api/schema/:id', this.schemaController.getRouteHandler('get'));
+        app.put('/api/schema/', this.schemaController.getRouteHandler('create'));
+        app.get('/api/schema/', this.schemaController.getRouteHandler('list'));
+        app.post('/api/schema/', this.schemaController.getRouteHandler('update'));
 
-        const documentController = new DocumentController(new DocumentStorage(this.database));
-        app.get('/api/document/:schema/:id', documentController.getRouteHandler('get'));
-        app.put('/api/document/:schema/', documentController.getRouteHandler('create'));
-        app.get('/api/document/:schema/', documentController.getRouteHandler('list'));
-        app.post('/api/document/:schema/:id', documentController.getRouteHandler('update'));
+        app.get('/api/document/:schema/:id', this.documentController.getRouteHandler('get'));
+        app.put('/api/document/:schema/', this.documentController.getRouteHandler('create'));
+        app.get('/api/document/:schema/', this.documentController.getRouteHandler('list'));
+        app.post('/api/document/:schema/:id', this.documentController.getRouteHandler('update'));
     }
 
     loadErrorHandlers(server) {
@@ -68,5 +62,8 @@ class RoutesProvider {
         this.loadErrorHandlers(server);
     }
 }
+
+RoutesProvider.$name = 'RoutesProvider';
+RoutesProvider.$inject = ['SchemaController', 'DocumentController'];
 
 module.exports = RoutesProvider;

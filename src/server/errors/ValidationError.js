@@ -8,4 +8,6 @@ class ValidationError extends RequestError {
             throw new ValidationError(message);
         }
     }
-};
+}
+
+module.exports = ValidationError;

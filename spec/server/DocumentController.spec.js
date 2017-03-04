@@ -1,20 +1,18 @@
-const DocumentController = require('../../src/server/DocumentController');
-const DocumentStorage = require('../../src/server/DocumentStorage');
-const Database = require('../../src/server/Database');
-const Config = require('../../src/server/Config');
 const Schema = require('../../src/server/Schema');
 const Document = require('../../src/server/Document');
 const ServerToolkit = require('./ServerToolkit');
 const superagent = require('superagent');
 const ListResults = require('../../src/server/ListResults');
+const ModuleHarness = require('./ModuleHarness');
 
 describe('DocumentController', () => {
     let controller;
     let documentStorage;
     const testSchema = 'test_schema';
     beforeEach((done) => {
-        documentStorage = new DocumentStorage(new Database(new Config()));
-        controller = new DocumentController(documentStorage);
+        const module = ModuleHarness.create();
+        documentStorage = module.get('DocumentStorage');
+        controller = module.get('DocumentController');
         documentStorage.clear(Schema.create('Test Schema', testSchema))
             .catch(fail)
             .then(done);

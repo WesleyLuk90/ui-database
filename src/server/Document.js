@@ -12,6 +12,7 @@ class Document {
         this.data = null;
         this.createdAt = null;
         this.updatedAt = null;
+        this.descriptor = '';
     }
 
     toReference() {
@@ -65,6 +66,16 @@ class Document {
 
     getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    setDescriptor(string) {
+        assert(typeof string === 'string');
+        this.descriptor = string;
+        return this;
+    }
+
+    getDescriptor() {
+        return this.descriptor;
     }
 }
 

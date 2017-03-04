@@ -4,4 +4,6 @@ class DuplicateKeyError extends RequestError {
     constructor(name, id) {
         super(`The ${name} with id '${id}' already exists`);
     }
-};
+}
+
+module.exports = DuplicateKeyError;

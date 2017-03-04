@@ -1,13 +1,10 @@
 const Q = require('q');
-const DocumentStorage = require('../../src/server/DocumentStorage');
-const Database = require('../../src/server/Database');
-const Config = require('../../src/server/Config');
 const Document = require('../../src/server/Document');
 const Schema = require('../../src/server/Schema');
 const DocumentReference = require('../../src/server/DocumentReference');
 const ListResults = require('../../src/server/ListResults');
 const ListOptions = require('../../src/server/ListOptions');
-const SchemaStorage = require('../../src/server/SchemaStorage');
+const ModuleHarness = require('./ModuleHarness');
 
 describe('DocumentStorage', () => {
     const testSchema = 'test_schema';
@@ -15,9 +12,9 @@ describe('DocumentStorage', () => {
     let schemaStorage;
 
     beforeEach((done) => {
-        const db = new Database(new Config());
-        schemaStorage = new SchemaStorage(db);
-        documentStorage = new DocumentStorage(db);
+        const module = ModuleHarness.create();
+        schemaStorage = module.get('SchemaStorage');
+        documentStorage = module.get('DocumentStorage');
         spyOn(schemaStorage, 'get').and.returnValue(Q.when(Schema.create('name', 'id')
             .setDescriptor(['id', 'name'])));
         documentStorage.clear(Schema.create(testSchema, testSchema))
