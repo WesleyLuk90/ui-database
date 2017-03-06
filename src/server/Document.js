@@ -1,4 +1,5 @@
 const assert = require('assert');
+const _ = require('lodash');
 const DocumentReference = require('./DocumentReference');
 
 class Document {
@@ -20,7 +21,7 @@ class Document {
     }
 
     setSchema(schema) {
-        assert(schema);
+        assert(typeof schema === 'string');
         this.schema = schema;
         return this;
     }
@@ -84,6 +85,10 @@ class Document {
 
     getDescriptor() {
         return this.descriptor;
+    }
+
+    copy() {
+        return Document.create(this.getSchema(), this.getId(), _.clone(this.getData()));
     }
 }
 

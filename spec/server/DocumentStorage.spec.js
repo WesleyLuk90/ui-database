@@ -101,4 +101,39 @@ describe('DocumentStorage', () => {
                 .then(done);
         });
     });
+
+    describe('integration test', () => {
+        let schema;
+        beforeEach((done) => {
+            schema = Schema.create('people', 'people')
+                .setFields([
+                    { id: 'first_name', name: 'First Name', type: 'text' },
+                    { id: 'last_name', name: 'Last Name', type: 'text' },
+                    { id: 'id', name: 'Id', type: 'number' },
+                ])
+                .setDescriptor(['first_name', 'last_name']);
+            schemaStorage.get.and.callThrough();
+            schemaStorage.create(schema)
+                .then(() => documentStorage.clear(schema))
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should search for documents by the descriptor', (done) => {
+            const baseDocument = Document.create(schema.getId(), null, null);
+            const docs = [
+                baseDocument.copy().setData({ first_name: 'John', last_name: 'Smith' }),
+                baseDocument.copy().setData({ first_name: 'John', last_name: 'Doe' }),
+                baseDocument.copy().setData({ first_name: 'Joseph', last_name: 'Doe' }),
+            ];
+            docs.map(doc => () => documentStorage.create(doc))
+                .reduce(Q.when, Q.when())
+                .then(() => documentStorage.list(schema.getId(), ListOptions.create().setSearch('John')))
+                .then((res) => {
+                    expect(res.getCount()).toBe(2);
+                })
+                .catch(fail)
+                .then(done);
+        });
+    });
 });

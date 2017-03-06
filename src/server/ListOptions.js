@@ -7,6 +7,7 @@ class ListOptions {
 
     constructor() {
         this.limit = 100;
+        this.text = null;
     }
 
     setLimit(limit) {
@@ -17,6 +18,16 @@ class ListOptions {
 
     getLimit() {
         return this.limit;
+    }
+
+    setSearch(text) {
+        assert(typeof text === 'string');
+        this.text = text;
+        return this;
+    }
+
+    getSearch() {
+        return this.text;
     }
 }
 

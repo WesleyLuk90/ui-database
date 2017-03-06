@@ -10,6 +10,7 @@ const SchemaValidator = require('./SchemaValidator');
 const SchemaStorage = require('./SchemaStorage');
 const SchemaController = require('./SchemaController');
 const DescriptorPopulator = require('./DescriptorPopulator');
+const DocumentCollectionProvider = require('./DocumentCollectionProvider');
 
 class ServerModuleProvider {
     static create() {
@@ -24,6 +25,7 @@ class ServerModuleProvider {
         module.register(SchemaStorage);
         module.register(SchemaValidator);
         module.register(DescriptorPopulator);
+        module.register(DocumentCollectionProvider);
         module.register(Server);
         return module;
     }

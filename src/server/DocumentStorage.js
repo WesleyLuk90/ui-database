@@ -1,5 +1,4 @@
 const assert = require('assert');
-const Database = require('./Database');
 const Schema = require('./Schema');
 const Document = require('./Document');
 const uuid = require('./uuid');
@@ -10,26 +9,22 @@ const ListResults = require('./ListResults');
 const ListOptions = require('./ListOptions');
 const SchemaStorage = require('./SchemaStorage');
 const DescriptorPopulator = require('./DescriptorPopulator');
+const DocumentCollectionProvider = require('./DocumentCollectionProvider');
 
 class DocumentStorage {
-    constructor(database, schemaStorage, descriptorPopulator) {
-        assert(database instanceof Database);
+    constructor(documentCollectionProvider, schemaStorage, descriptorPopulator) {
+        assert(documentCollectionProvider instanceof DocumentCollectionProvider);
         assert(schemaStorage instanceof SchemaStorage);
         assert(descriptorPopulator instanceof DescriptorPopulator);
-        this.database = database;
+        this.documentCollectionProvider = documentCollectionProvider;
         this.schemaStorage = schemaStorage;
         this.descriptorPopulator = descriptorPopulator;
-    }
-
-    getCollection(schema) {
-        assert(typeof schema === 'string');
-        return this.database.getCollection(`doc_${schema}`);
     }
 
     clear(schema) {
         assert(schema instanceof Schema, 'Requires a schema');
 
-        return this.getCollection(schema.getId())
+        return this.documentCollectionProvider.get(schema.getId())
             .then(col => col.remove({}));
     }
 
@@ -38,7 +33,7 @@ class DocumentStorage {
         assert(!doc.getId(), 'Document already has an id');
 
         return this.preprocessToNewObj(doc)
-            .then(objectToInsert => this.getCollection(doc.getSchema())
+            .then(objectToInsert => this.documentCollectionProvider.get(doc.getSchema())
                 .then(col => col.insert(objectToInsert))
                 .then(() => {
                     const documentToReturn = doc;
@@ -53,7 +48,7 @@ class DocumentStorage {
     get(documentReference) {
         assert(documentReference instanceof DocumentReference, 'Expected a document reference');
 
-        return this.getCollection(documentReference.getSchema())
+        return this.documentCollectionProvider.get(documentReference.getSchema())
             .then(col => col.findOne({ _id: documentReference.getId() }))
             .then((data) => {
                 if (!data) {
@@ -68,7 +63,7 @@ class DocumentStorage {
         assert(doc.getId());
 
         return this.preprocessToObject(doc)
-            .then(dataToUpdate => this.getCollection(doc.getSchema())
+            .then(dataToUpdate => this.documentCollectionProvider.get(doc.getSchema())
                 .then(col => col.updateOne({ _id: doc.getId() }, { $set: dataToUpdate }))
                 .then((res) => {
                     if (res.result.nModified !== 1) {
@@ -83,10 +78,15 @@ class DocumentStorage {
         const options = optionsOrNull == null ? ListOptions.create() : optionsOrNull;
         assert(options instanceof ListOptions);
 
-        return this.getCollection(schema)
+        return this.documentCollectionProvider.get(schema)
             .then((col) => {
                 const results = [];
-                const cursor = col.find({});
+                let cursor = null;
+                if (options.getSearch()) {
+                    cursor = col.find({ $text: { $search: options.getSearch() } });
+                } else {
+                    cursor = col.find({});
+                }
                 const visitor = new CursorVisitor(cursor);
                 return visitor
                     .visit((doc) => {
@@ -131,5 +131,5 @@ class DocumentStorage {
 }
 
 DocumentStorage.$name = 'DocumentStorage';
-DocumentStorage.$inject = ['Database', 'SchemaStorage', 'DescriptorPopulator'];
+DocumentStorage.$inject = ['DocumentCollectionProvider', 'SchemaStorage', 'DescriptorPopulator'];
 module.exports = DocumentStorage;
