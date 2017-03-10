@@ -3,6 +3,7 @@ const DocumentStorage = require('./DocumentStorage');
 const Document = require('./Document');
 const DocumentReference = require('./DocumentReference');
 const BaseController = require('./BaseController');
+const ListOptions = require('./ListOptions');
 
 class DocumentController extends BaseController {
     constructor(documentStorage) {
@@ -35,10 +36,18 @@ class DocumentController extends BaseController {
     }
 
     list(request) {
-        assert(request.params.schema);
+        const params = request.params;
+        assert(params.schema);
+        const options = ListOptions.create();
+        if (params.search) {
+            options.setSearch(params.search);
+        }
+        if (params.limit) {
+            options.setLimit(params.limit);
+        }
 
         return this.documentStorage
-            .list(request.params.schema);
+            .list(request.params.schema, options);
     }
 }
 DocumentController.$name = 'DocumentController';

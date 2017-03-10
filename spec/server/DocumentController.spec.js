@@ -5,6 +5,7 @@ const Document = require('../../src/server/Document');
 const ServerToolkit = require('./ServerToolkit');
 const ListResults = require('../../src/server/ListResults');
 const ModuleHarness = require('./ModuleHarness');
+const ListOptions = require('../../src/server/ListOptions');
 
 describe('DocumentController', () => {
     let controller;
@@ -91,20 +92,33 @@ describe('DocumentController', () => {
             .then(done);
     });
 
-    it('should list', (done) => {
-        documentStorage.create(Document.create(testSchema, null, { more: 'data' }))
-            .then(() => controller.list({ params: { schema: testSchema } }))
-            .then((results) => {
-                expect(results instanceof ListResults).toBe(true);
-                expect(results.getTotal()).toBe(1);
-                const documents = results.get();
-                expect(Array.isArray(documents)).toBe(true);
-                expect(documents.length).toBe(1);
-                expect(documents[0].getId()).toBeTruthy();
-                expect(documents[0].getSchema()).toBe(testSchema);
-            })
-            .catch(fail)
-            .then(done);
+    describe('list', () => {
+        it('should call documentStorage.list', (done) => {
+            spyOn(documentStorage, 'list').and.returnValue(Q.when({}));
+            controller.list({ params: { schema: testSchema, search: 'abc', limit: 10 } })
+                .then((results) => {
+                    expect(documentStorage.list).toHaveBeenCalledWith(testSchema, ListOptions.create().setLimit(10).setSearch('abc'));
+                    expect(results).toEqual({});
+                })
+                .catch(fail)
+                .then(done);
+        });
+
+        it('should list from the store', (done) => {
+            documentStorage.create(Document.create(testSchema, null, { more: 'data' }))
+                .then(() => controller.list({ params: { schema: testSchema } }))
+                .then((results) => {
+                    expect(results instanceof ListResults).toBe(true);
+                    expect(results.getTotal()).toBe(1);
+                    const documents = results.get();
+                    expect(Array.isArray(documents)).toBe(true);
+                    expect(documents.length).toBe(1);
+                    expect(documents[0].getId()).toBeTruthy();
+                    expect(documents[0].getSchema()).toBe(testSchema);
+                })
+                .catch(fail)
+                .then(done);
+        });
     });
 
     describe('api', () => {
