@@ -13,12 +13,14 @@ export default class Documents extends React.Component {
 
         this.state = {
             schemas: [],
+            counts: new Map(),
         };
     }
 
     componentDidMount() {
         this.subscriptions = [
             this.schemaListStore.getStream().subscribe(s => this.setSchemas(s)),
+            this.schemaListStore.getDocumentCountStream().subscribe(d => this.setDocumentCounts(d)),
         ];
     }
 
@@ -32,11 +34,22 @@ export default class Documents extends React.Component {
         });
     }
 
+    setDocumentCounts(counts) {
+        this.setState({
+            counts: counts,
+        });
+    }
+
+    getCount(schema) {
+        const count = this.state.counts;
+        return count.has(schema.getId()) ? count.get(schema.getId()) : 0;
+    }
+
     render() {
         return (<PageLayout title="Documents">
             <Section>
                 <List>
-                    {this.state.schemas.map(schema => <SchemaDocumentsListItem schema={schema} key={schema.getId()} appModule={this.props.appModule} />)}
+                    {this.state.schemas.map(schema => <SchemaDocumentsListItem schema={schema} count={this.getCount(schema)} key={schema.getId()} appModule={this.props.appModule} />)}
                 </List>
             </Section>
         </PageLayout>);

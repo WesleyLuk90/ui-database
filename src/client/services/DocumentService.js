@@ -41,6 +41,13 @@ export default class DocumentService {
             .then(res => res.result.map(d => Document.fromJSON(d, schema)));
     }
 
+    count(schema) {
+        assert(schema instanceof Schema);
+
+        return this.httpService.get(`/api/document/${schema.getId()}`)
+            .then(res => res.total);
+    }
+
     update(doc) {
         assert(doc instanceof Document);
         const schema = doc.getSchema();
