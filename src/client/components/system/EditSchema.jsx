@@ -32,7 +32,7 @@ export default class EditSchema extends React.Component {
                     </ActionBarRight>
                 </ActionBar>
             </Section>
-            <SchemaEditor appModule={this.props.appModule} schema={this.props.schema} />
+            <SchemaEditor appModule={this.props.appModule} schema={this.props.schema} isNew={false} />
         </PageLayout>);
     }
 }

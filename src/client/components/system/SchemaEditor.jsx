@@ -58,13 +58,13 @@ export default class SchemaEditor extends React.Component {
                         label="Internal ID"
                         value={this.props.schema.id}
                         onChange={this.onIdChange}
-                        disabled={!this.props.schema.isNew()}
+                        disabled={!this.props.isNew}
                     />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />
                 </Section>
-                <Section title="New Fields" hidden={newFields.length === 0 && !this.props.schema.isNew()}>
+                <Section title="New Fields" hidden={newFields.length === 0 && !this.props.isNew}>
                     <SchemaFieldList fields={newFields} isNew />
                 </Section>
             </div>
@@ -75,4 +75,5 @@ export default class SchemaEditor extends React.Component {
 SchemaEditor.propTypes = {
     // appModule: React.PropTypes.instanceOf(AppModule).isRequired,
     schema: React.PropTypes.instanceOf(Schema).isRequired,
+    isNew: React.PropTypes.bool.isRequired,
 };

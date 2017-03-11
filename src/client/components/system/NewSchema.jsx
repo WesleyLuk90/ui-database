@@ -37,7 +37,7 @@ export default class NewSchema extends React.Component {
                     </ActionBarRight>
                 </ActionBar>
             </Section>
-            <SchemaEditor appModule={this.props.appModule} schema={this.state.schema} />
+            <SchemaEditor appModule={this.props.appModule} schema={this.state.schema} isNew />
         </PageLayout>);
     }
 }
