@@ -65,6 +65,10 @@ export default class Schema {
         return field;
     }
 
+    isNew() {
+        return !this.id;
+    }
+
     toJSON() {
         return {
             name: this.name,

@@ -11,4 +11,11 @@ describe('Field', () => {
         expect(field.getName()).toBe('Name');
         expect(field.getId()).toBe('id');
     });
+
+    it('should check is new', () => {
+        const field = Field.create('text');
+        expect(field.isNew()).toBe(true);
+        field.setId('a');
+        expect(field.isNew()).toBe(false);
+    });
 });

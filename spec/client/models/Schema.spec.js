@@ -48,4 +48,11 @@ describe('Schema', () => {
         expect(roundTrip).not.toBe(schema);
         expect(roundTrip).toEqual(schema);
     });
+
+    it('should check is new', () => {
+        const schema = Schema.create();
+        expect(schema.isNew()).toBe(true);
+        schema.setId('a');
+        expect(schema.isNew()).toBe(false);
+    });
 });

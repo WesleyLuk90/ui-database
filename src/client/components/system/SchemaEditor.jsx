@@ -30,11 +30,11 @@ export default class SchemaEditor extends React.Component {
     }
 
     getNewFields() {
-        return this.props.schema.fields.filter(f => !f.getId());
+        return this.props.schema.fields.filter(f => f.isNew());
     }
 
     getExistingFields() {
-        return this.props.schema.fields.filter(f => f.getId());
+        return this.props.schema.fields.filter(f => !f.isNew());
     }
 
     render() {
@@ -56,6 +56,7 @@ export default class SchemaEditor extends React.Component {
                         label="Internal ID"
                         value={this.props.schema.id}
                         onChange={this.onIdChange}
+                        disabled={!this.props.schema.isNew()}
                     />
                 </Section>
                 <Section title="Fields">

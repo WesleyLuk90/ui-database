@@ -46,6 +46,10 @@ export default class Field {
         return this;
     }
 
+    isNew() {
+        return !this.id;
+    }
+
     toJSON() {
         return {
             id: this.id,
