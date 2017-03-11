@@ -79,4 +79,39 @@ describe('SchemaStorage', () => {
             .catch(fail)
             .then(done);
     });
+
+    describe('integration test', () => {
+        it('should do crud', (done) => {
+            const schema = Schema.create('id', 'name')
+                .setFields([])
+                .setDescriptor([]);
+            schemaStorage.create(schema)
+                .then(() => schemaStorage.list())
+                .then((schemas) => { expect(schemas).toContain(schema); })
+                .then(() => {
+                    const updatedSchema = schema.copy().setName('name2');
+                    return schemaStorage.update(updatedSchema)
+                        .then(() => schemaStorage.list())
+                        .then((schemas) => {
+                            expect(schemas).toContain(updatedSchema);
+                            expect(schemas).not.toContain(schema);
+                        });
+                })
+                .catch(fail)
+                .then(done);
+        });
+    });
+
+    describe('edge cases', () => {
+        it('updating with no changes should not error', (done) => {
+            const schema = Schema.create('id', 'name')
+                .setFields([])
+                .setDescriptor([]);
+
+            schemaStorage.create(schema)
+                .then(() => schemaStorage.update(schema))
+                .catch(fail)
+                .then(done);
+        });
+    });
 });

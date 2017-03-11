@@ -14,3 +14,4 @@ rules:
             - 'lifecycle'
             - 'everything-else'
             - 'render'
+    react/no-array-index-key: [0]

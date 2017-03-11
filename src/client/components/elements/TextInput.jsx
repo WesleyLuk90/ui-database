@@ -8,7 +8,9 @@ export default class TextInput extends React.Component {
     }
 
     onChange(e) {
-        this.props.onChange(e.target.value);
+        if (!this.props.disabled) {
+            this.props.onChange(e.target.value);
+        }
     }
 
     render() {
@@ -22,6 +24,7 @@ export default class TextInput extends React.Component {
                 onChange={e => this.onChange(e)}
                 value={this.props.value}
                 placeholder={this.props.placeholder}
+                disabled={this.props.disabled}
             />
         </div>);
     }
@@ -32,9 +35,11 @@ TextInput.propTypes = {
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
+    disabled: React.PropTypes.bool,
 };
 
 TextInput.defaultProps = {
     onChange: null,
     placeholder: null,
+    disabled: false,
 };

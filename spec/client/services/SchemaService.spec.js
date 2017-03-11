@@ -11,10 +11,11 @@ describe('SchemaService', () => {
     ]);
 
     it('should create schemas', (done) => {
-        const schema = Schema.create();
-        schema.setName('My Schema');
-        schema.setId('my_schema');
-        schema.addField(Field.create('text').setName('Name').setId('name'));
+        const schema = Schema.create()
+            .setName('My Schema')
+            .setId('my_schema')
+            .addField(Field.create('text').setName('Name').setId('name'))
+            .setDescriptor(['j', 'k']);
 
         const schemaService = new SchemaService(httpService);
         httpService.put.and.callFake((url, data) => {
@@ -27,6 +28,7 @@ describe('SchemaService', () => {
                     type: 'text',
                     id: 'name',
                 }],
+                descriptor: ['j', 'k'],
             });
             return Q.when({
                 result: {
@@ -37,6 +39,7 @@ describe('SchemaService', () => {
                         type: 'text',
                         id: 'name',
                     }],
+                    descriptor: ['j', 'k'],
                 },
             });
         });
@@ -63,6 +66,7 @@ describe('SchemaService', () => {
                             type: 'text',
                             id: 'name',
                         }],
+                        descriptor: ['a'],
                     },
                     {
                         name: 'My Schema 2',
@@ -72,6 +76,7 @@ describe('SchemaService', () => {
                             type: 'text',
                             id: 'name',
                         }],
+                        descriptor: ['b'],
                     },
                 ],
             });
@@ -79,6 +84,8 @@ describe('SchemaService', () => {
         schemaService.list()
             .then((schemas) => {
                 expect(schemas.length).toBe(2);
+                expect(schemas[0].getDescriptor()).toEqual(['a']);
+                expect(schemas[1].getDescriptor()).toEqual(['b']);
             })
             .catch(fail)
             .then(done);
@@ -97,6 +104,7 @@ describe('SchemaService', () => {
                         type: 'text',
                         id: 'name',
                     }],
+                    descriptor: ['m'],
                 },
             });
         });
@@ -109,10 +117,11 @@ describe('SchemaService', () => {
     });
 
     it('should save schemas', (done) => {
-        const schema = Schema.create();
-        schema.setName('My Schema');
-        schema.setId('my_schema');
-        schema.addField(Field.create('text').setName('Name').setId('name'));
+        const schema = Schema.create()
+            .setName('My Schema')
+            .setId('my_schema')
+            .addField(Field.create('text').setName('Name').setId('name'))
+            .setDescriptor(['a', 'b']);
 
         const schemaService = new SchemaService(httpService);
         httpService.post.and.callFake((url) => {
@@ -126,6 +135,7 @@ describe('SchemaService', () => {
                         type: 'text',
                         id: 'name',
                     }],
+                    descriptor: ['a', 'b'],
                 },
             });
         });

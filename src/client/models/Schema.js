@@ -10,6 +10,7 @@ export default class Schema {
     static fromJSON(data) {
         const schema = Object.assign(Object.create(Schema.prototype), data);
         schema.fields = schema.fields.map(f => Field.fromJSON(f));
+        schema.descriptor = schema.descriptor.slice();
         return schema;
     }
 
@@ -17,6 +18,16 @@ export default class Schema {
         this.name = '';
         this.id = '';
         this.fields = [];
+        this.descriptor = [];
+    }
+
+    getDescriptor() {
+        return this.descriptor;
+    }
+
+    setDescriptor(descriptor) {
+        this.descriptor = descriptor;
+        return this;
     }
 
     setName(name) {
@@ -44,6 +55,7 @@ export default class Schema {
     addField(field) {
         assert(field instanceof Field);
         this.fields.push(field);
+        return this;
     }
 
     getField(fieldId) {
@@ -58,6 +70,7 @@ export default class Schema {
             name: this.name,
             id: this.id,
             fields: this.fields.map(f => f.toJSON()),
+            descriptor: this.descriptor.slice(),
         };
     }
 }

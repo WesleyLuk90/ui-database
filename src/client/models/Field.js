@@ -21,7 +21,7 @@ export default class Field {
     }
 
     setType(type) {
-        assert(FieldType.getType(type));
+        assert(FieldType.getType(type), 'type is required');
         this.type = type;
         return this;
     }

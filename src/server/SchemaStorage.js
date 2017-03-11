@@ -53,7 +53,7 @@ class SchemaStorage {
         return this.getCollection()
             .then(col => col.updateOne({ _id: schema.getId() }, { $set: dataToUpdate }))
             .then((res) => {
-                if (res.result.nModified !== 1) {
+                if (res.matchedCount !== 1) {
                     throw new NotFoundError('schema', schema.getId());
                 }
                 return schema;

@@ -20,9 +20,32 @@ describe('Schema', () => {
 
     it('should add fields', () => {
         const schema = Schema.create();
-        schema.addField(Field.create('text'));
+        expect(schema.addField(Field.create('text'))).toBe(schema);
         expect(schema.getFields()).toEqual([Field.create('text')]);
 
         expect(() => schema.addField({})).toThrow();
+    });
+
+    it('should set and get a name', () => {
+        const schema = Schema.create();
+        expect(schema.setName('name')).toBe(schema);
+        expect(schema.getName()).toEqual('name');
+    });
+
+    it('should set and get a descriptor', () => {
+        const schema = Schema.create();
+        expect(schema.setDescriptor(['a', 'b'])).toBe(schema);
+        expect(schema.getDescriptor()).toEqual(['a', 'b']);
+    });
+
+    it('should serialize and deserialize to the same', () => {
+        const schema = Schema.create()
+            .setId('a')
+            .setName('b')
+            .addField(Field.create('text'))
+            .setDescriptor('e');
+        const roundTrip = Schema.fromJSON(schema.toJSON());
+        expect(roundTrip).not.toBe(schema);
+        expect(roundTrip).toEqual(schema);
     });
 });

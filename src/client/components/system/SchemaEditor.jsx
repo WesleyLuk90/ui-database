@@ -29,6 +29,14 @@ export default class SchemaEditor extends React.Component {
         this.forceUpdate();
     }
 
+    getNewFields() {
+        return this.props.schema.fields.filter(f => !f.getId());
+    }
+
+    getExistingFields() {
+        return this.props.schema.fields.filter(f => f.getId());
+    }
+
     render() {
         return (<div className="schema-editor">
             <div className="schema-editor__toolbox">
@@ -51,7 +59,18 @@ export default class SchemaEditor extends React.Component {
                     />
                 </Section>
                 <Section title="Fields">
-                    {this.props.schema.getFields().map((f, i) => (<FieldEditor key={i} field={f} />))}
+                    <div className="schema-field-list">
+                        {this.getExistingFields().map((f, i) => (<div key={i} className="schema-field-list__field">
+                            <FieldEditor field={f} isNew={false} />
+                        </div>))}
+                    </div>
+                </Section>
+                <Section title="New Fields">
+                    <div className="schema-field-list">
+                        {this.getNewFields().map((f, i) => (<div key={i} className="schema-field-list__field">
+                            <FieldEditor field={f} isNew />
+                        </div>))}
+                    </div>
                 </Section>
             </div>
         </div>);
