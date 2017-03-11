@@ -3,7 +3,7 @@ import Card from '../elements/Card';
 import Schema from '../../models/Schema';
 import Section from '../elements/Section';
 import TextInput from '../elements/TextInput';
-import FieldEditor from './FieldEditor';
+import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
 
 export default class SchemaEditor extends React.Component {
@@ -38,6 +38,8 @@ export default class SchemaEditor extends React.Component {
     }
 
     render() {
+        const newFields = this.getNewFields();
+        const existingFields = this.getExistingFields();
         return (<div className="schema-editor">
             <div className="schema-editor__toolbox">
                 <Section>
@@ -59,19 +61,11 @@ export default class SchemaEditor extends React.Component {
                         disabled={!this.props.schema.isNew()}
                     />
                 </Section>
-                <Section title="Fields">
-                    <div className="schema-field-list">
-                        {this.getExistingFields().map((f, i) => (<div key={i} className="schema-field-list__field">
-                            <FieldEditor field={f} isNew={false} />
-                        </div>))}
-                    </div>
+                <Section title="Fields" hidden={existingFields.length === 0}>
+                    <SchemaFieldList fields={existingFields} isNew={false} />
                 </Section>
-                <Section title="New Fields">
-                    <div className="schema-field-list">
-                        {this.getNewFields().map((f, i) => (<div key={i} className="schema-field-list__field">
-                            <FieldEditor field={f} isNew />
-                        </div>))}
-                    </div>
+                <Section title="New Fields" hidden={newFields.length === 0 && !this.props.schema.isNew()}>
+                    <SchemaFieldList fields={newFields} isNew />
                 </Section>
             </div>
         </div>);
