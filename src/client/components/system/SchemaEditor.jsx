@@ -13,6 +13,10 @@ export default class SchemaEditor extends React.Component {
 
         this.onNameChange = this.onNameChange.bind(this);
         this.onIdChange = this.onIdChange.bind(this);
+
+        this.state = {
+            value: 'z',
+        };
     }
 
     onNameChange(name) {
@@ -61,7 +65,7 @@ export default class SchemaEditor extends React.Component {
                         onChange={this.onIdChange}
                         disabled={!this.props.isNew}
                     />
-                    <Dropdown />
+                    <Dropdown value={this.state.value} options={['a', 'b', 'c']} />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />
