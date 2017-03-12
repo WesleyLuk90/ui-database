@@ -113,3 +113,15 @@
         align-items: center;
     }
 }
+
+.dropdown {
+    @extend .form-control;
+    text-align: left;
+
+    &:after {
+        @extend .caret;
+        content: "";
+        float: right;
+        margin-top: 7px;
+    }
+}

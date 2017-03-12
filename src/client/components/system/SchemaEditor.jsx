@@ -5,6 +5,7 @@ import Section from '../elements/Section';
 import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
+import Dropdown from '../elements/Dropdown';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -60,6 +61,7 @@ export default class SchemaEditor extends React.Component {
                         onChange={this.onIdChange}
                         disabled={!this.props.isNew}
                     />
+                    <Dropdown />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />
