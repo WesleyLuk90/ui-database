@@ -6,9 +6,12 @@
         display: block;
         max-height: 300px;
         overflow-y: auto;
+        width: 100%;
     }
 
-    &__option {}
+    &__option--active {
+        @extend .active;
+    }
 
     & &__no-options a {
         @extend .text-muted;

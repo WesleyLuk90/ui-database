@@ -6,7 +6,6 @@ import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
 import Dropdown from '../elements/Dropdown';
-import OptionSelector from '../elements/OptionSelector';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -51,6 +50,10 @@ export default class SchemaEditor extends React.Component {
         return op;
     }
 
+    setValue(o) {
+        this.setState({ value: o });
+    }
+
     render() {
         const newFields = this.getNewFields();
         const existingFields = this.getExistingFields();
@@ -74,8 +77,7 @@ export default class SchemaEditor extends React.Component {
                         onChange={this.onIdChange}
                         disabled={!this.props.isNew}
                     />
-                    <Dropdown value={this.state.value} options={['a', 'b', 'c']} />
-                    <OptionSelector searchText="" options={this.getOptions()} />
+                    <Dropdown value={this.state.value} options={this.getOptions()} onChange={o => this.setValue(o)} />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />

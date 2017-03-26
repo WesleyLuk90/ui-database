@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from '../utils/classnames';
 import DomUtils from '../utils/DomUtils';
+import OptionSelector from './OptionSelector';
 
 export default class Dropdown extends React.Component {
     constructor(props) {
@@ -10,7 +11,7 @@ export default class Dropdown extends React.Component {
 
         this.state = {
             expanded: false,
-            filter: '',
+            searchText: '',
         };
     }
 
@@ -18,13 +19,22 @@ export default class Dropdown extends React.Component {
         document.addEventListener('click', this.handleClick);
     }
 
+    componentDidUpdate() {
+        if (this.shouldFocus) {
+            this.shouldFocus = false;
+            this.input.focus();
+        }
+    }
+
     componentWillUnmount() {
         document.removeEventListener('click', this.handleClick);
     }
 
     expand() {
+        this.shouldFocus = true;
         this.setState({ expanded: true });
     }
+
 
     setDropdown(e) {
         this.dropdown = e;
@@ -47,14 +57,28 @@ export default class Dropdown extends React.Component {
         return this.props.options;
     }
 
+    onSearch(e) {
+        this.setState({ searchText: e.target.value });
+    }
+
+    setInput(e) {
+        this.input = e;
+    }
+
+    selectOption(o) {
+        this.props.onChange(o);
+        this.setState({
+            searchText: '',
+            expanded: false,
+        });
+    }
+
     render() {
         return (<div ref={e => this.setDropdown(e)} className={classnames('dropdown', { 'dropdown--expanded': this.state.expanded })}>
-            <button className="dropdown__toggle" onClick={() => this.expand()}>Stuff</button>
+            <button className="dropdown__toggle" onClick={() => this.expand()}>{this.props.value}</button>
             <div className="dropdown__edit">
-                <input type="text" className="dropdown__input" value="Stuff" />
-                <ul className="dropdown__options">
-                    {this.getOptions().map(o => <li key={o}><a className="dropdown__option">{o}</a></li>)}
-                </ul>
+                <input type="text" ref={e => this.setInput(e)} className="dropdown__input" value={this.state.searchText} onChange={e => this.onSearch(e)} />
+                <OptionSelector options={this.props.options} searchText={this.state.searchText} onSelect={o => this.selectOption(o)} />
             </div>
         </div>);
     }
