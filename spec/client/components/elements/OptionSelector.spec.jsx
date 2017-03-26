@@ -70,4 +70,18 @@ fdescribe('OptionSelector', () => {
             .catch(fail)
             .then(done);
     });
+
+    it('should allow selecting an option', (done) => {
+        const onSelect = jasmine.createSpy('onSelect');
+        const selector = shallow(<OptionSelector onSelect={onSelect} searchText="" options={['a', 'b', 'c']} />);
+        selector.instance()
+            .componentDidMount()
+            .then(() => {
+                const li = selector.find('li');
+                li.at(1).find('a').prop('onClick')();
+                expect(onSelect).toHaveBeenCalledWith('b');
+            })
+            .catch(fail)
+            .then(done);
+    });
 });

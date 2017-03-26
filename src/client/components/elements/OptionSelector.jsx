@@ -7,6 +7,8 @@ export default class OptionSelector extends React.Component {
 
         this.state = {
             visibleOptions: [],
+            options: this.props.options,
+            searchText: this.props.searchText,
         };
     }
 
@@ -32,6 +34,13 @@ export default class OptionSelector extends React.Component {
         return this.state.visibleOptions;
     }
 
+    selectOption(e, o) {
+        if (e) {
+            e.preventDefault();
+        }
+        this.props.onSelect(o);
+    }
+
     render() {
         const visibleOptions = this.getVisibleOptions();
         return (<div className="option-selector">
@@ -54,8 +63,10 @@ OptionSelector.propTypes = {
         React.PropTypes.func,
     ]).isRequired,
     searchText: React.PropTypes.string,
+    onSelect: React.PropTypes.func,
 };
 
 OptionSelector.defaultProps = {
     searchText: '',
+    onSelect: () => {},
 };
