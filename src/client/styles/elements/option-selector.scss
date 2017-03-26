@@ -1,0 +1,16 @@
+.option-selector {
+    position: relative;
+
+    &__options {
+        @extend .dropdown-menu;
+        display: block;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    &__option {}
+
+    & &__no-options a {
+        @extend .text-muted;
+    }
+}

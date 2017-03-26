@@ -13,3 +13,4 @@ rules:
   object-shorthand: [0]
   no-plusplus: [0]
   max-len: [0]
+  jsx-a11y/href-no-hash: [0]
