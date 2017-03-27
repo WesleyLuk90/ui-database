@@ -1,0 +1,6 @@
+.multi-dropdown {
+    &__selected {
+        @extend .label;
+        @extend .label-default;
+    }
+}

@@ -36,6 +36,9 @@ describe('Schema', () => {
         const schema = Schema.create();
         expect(schema.setDescriptor(['a', 'b'])).toBe(schema);
         expect(schema.getDescriptor()).toEqual(['a', 'b']);
+
+        expect(() => schema.setDescriptor({})).toThrowError(/Expected an array of field ids but got/);
+        expect(() => schema.setDescriptor([{}])).toThrowError(/Expected a descriptor id but got/);
     });
 
     it('should serialize and deserialize to the same', () => {
@@ -43,7 +46,7 @@ describe('Schema', () => {
             .setId('a')
             .setName('b')
             .addField(Field.create('text'))
-            .setDescriptor('e');
+            .setDescriptor(['e']);
         const roundTrip = Schema.fromJSON(schema.toJSON());
         expect(roundTrip).not.toBe(schema);
         expect(roundTrip).toEqual(schema);

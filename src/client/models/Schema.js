@@ -26,6 +26,8 @@ export default class Schema {
     }
 
     setDescriptor(descriptor) {
+        assert(Array.isArray(descriptor), `Expected an array of field ids but got ${descriptor}`);
+        descriptor.forEach(d => assert(typeof d === 'string', `Expected a descriptor id but got ${d}`));
         this.descriptor = descriptor;
         return this;
     }

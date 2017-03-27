@@ -5,7 +5,7 @@ import Section from '../elements/Section';
 import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
-import Dropdown from '../elements/Dropdown';
+import MultiDropdown from '../elements/MultiDropdown';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -13,10 +13,6 @@ export default class SchemaEditor extends React.Component {
 
         this.onNameChange = this.onNameChange.bind(this);
         this.onIdChange = this.onIdChange.bind(this);
-
-        this.state = {
-            value: 'z',
-        };
     }
 
     onNameChange(name) {
@@ -42,16 +38,25 @@ export default class SchemaEditor extends React.Component {
         return this.props.schema.fields.filter(f => !f.isNew());
     }
 
-    getOptions() {
-        const op = [];
-        for (let i = 0; i < 100; i++) {
-            op.push(`${i}`);
-        }
-        return op;
+    setDescriptor(newDescriptor) {
+        const newFields = this.props.schema
+            .getFields()
+            .filter(f => newDescriptor.indexOf(f.getName()) > -1)
+            .map(f => f.getId());
+        this.props.schema.setDescriptor(newFields);
+        this.forceUpdate();
     }
 
-    setValue(o) {
-        this.setState({ value: o });
+    getDescriptorValues() {
+        const descriptor = this.props.schema.getDescriptor();
+        return this.props.schema
+            .getFields()
+            .filter(f => descriptor.indexOf(f.getId()) > -1)
+            .map(f => f.getName());
+    }
+
+    getDescriptorOptions() {
+        return this.props.schema.getFields().map(f => f.getName());
     }
 
     render() {
@@ -77,7 +82,7 @@ export default class SchemaEditor extends React.Component {
                         onChange={this.onIdChange}
                         disabled={!this.props.isNew}
                     />
-                    <Dropdown value={this.state.value} options={this.getOptions()} onChange={o => this.setValue(o)} />
+                    <MultiDropdown value={this.getDescriptorValues()} options={this.getDescriptorOptions()} onChange={newDescriptor => this.setDescriptor(newDescriptor)} />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />

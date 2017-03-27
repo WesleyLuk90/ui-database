@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import OptionSelector from '../../../../src/client/components/elements/OptionSelector';
 
-fdescribe('OptionSelector', () => {
+describe('OptionSelector', () => {
     it('should display options', (done) => {
         const selector = shallow(<OptionSelector searchText="" options={['a', 'b', 'c']} />);
         selector.instance()
