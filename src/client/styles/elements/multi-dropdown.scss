@@ -2,5 +2,52 @@
     &__selected {
         @extend .label;
         @extend .label-default;
+        margin-right: 5px;
+        flex: auto 0 0;
+        padding-bottom: 0;
+    }
+
+    &__remove {
+        background: transparent;
+        border: none;
+        padding: 5px;
+        margin-right: -5px;
+    }
+
+    &__input-container,
+    &__toggle {
+        @extend .form-control;
+        display: flex;
+        flex-wrap: wrap;
+        height: auto;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &__toggle {
+        cursor: pointer;
+    }
+
+    &__edit {
+        display: none;
+    }
+
+    &__input {
+        border: none;
+        outline: none;
+        width: 300px;
+        flex: auto 1 0;
+    }
+
+    &--expanded {
+        .multi-dropdown__toggle {
+            display: none;
+        }
+
+        .multi-dropdown__edit {
+            display: block;
+        }
     }
 }

@@ -35,7 +35,6 @@ export default class MultiDropdown extends React.Component {
         this.setState({ expanded: true });
     }
 
-
     setDropdown(e) {
         this.dropdown = e;
     }
@@ -48,13 +47,6 @@ export default class MultiDropdown extends React.Component {
             return;
         }
         this.setState({ expanded: false });
-    }
-
-    getOptions() {
-        if (typeof this.props.options === 'function') {
-            return this.props.options(this.state.filter);
-        }
-        return this.props.options;
     }
 
     onSearch(e) {
@@ -75,20 +67,31 @@ export default class MultiDropdown extends React.Component {
         });
     }
 
+    getAvailableOptions() {
+        const options = this.props.options;
+        return options.filter(o => this.props.value.indexOf(o) === -1);
+    }
+
     getCurrentValues() {
         return this.props.value.map(v => <div key={v} className="multi-dropdown__selected">
-            {v} <button className="multi-dropdown__remove">&times;</button>
+            {v} <button className="multi-dropdown__remove" onClick={() => this.removeOption(v)}>&times;</button>
         </div>);
     }
 
+    removeOption(o) {
+        const newValue = this.props.value.filter(v => v !== o);
+        this.props.onChange(newValue);
+    }
+
     render() {
-        console.log(this.props.value);
-        return (<div ref={e => this.setDropdown(e)} className={classnames('dropdown', { 'dropdown--expanded': this.state.expanded })}>
-            <div className="dropdown__toggle" onClick={() => this.expand()}>{this.getCurrentValues()}</div>
-            <div className="dropdown__edit">
-                {this.getCurrentValues()}
-                <input type="text" ref={e => this.setInput(e)} className="dropdown__input" value={this.state.searchText} onChange={e => this.onSearch(e)} />
-                <OptionSelector options={this.props.options} searchText={this.state.searchText} onSelect={o => this.selectOption(o)} />
+        return (<div ref={e => this.setDropdown(e)} className={classnames('multi-dropdown', { 'multi-dropdown--expanded': this.state.expanded })}>
+            <a className="multi-dropdown__toggle" onClick={() => this.expand()}>{this.getCurrentValues()}</a>
+            <div className="multi-dropdown__edit">
+                <div className="multi-dropdown__input-container">
+                    {this.getCurrentValues()}
+                    <input type="text" ref={e => this.setInput(e)} className="multi-dropdown__input" value={this.state.searchText} onChange={e => this.onSearch(e)} />
+                </div>
+                <OptionSelector options={this.getAvailableOptions()} searchText={this.state.searchText} onSelect={o => this.selectOption(o)} />
             </div>
         </div>);
     }
