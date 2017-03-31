@@ -74,7 +74,7 @@ export default class MultiDropdown extends React.Component {
 
     getCurrentValues() {
         return this.props.value.map(v => <div key={v} className="multi-dropdown__selected">
-            {v} <button className="multi-dropdown__remove" onClick={() => this.removeOption(v)}>&times;</button>
+            <span className="multi-dropdown__value">{v}</span> <button className="multi-dropdown__remove" onClick={() => this.removeOption(v)}>&times;</button>
         </div>);
     }
 
