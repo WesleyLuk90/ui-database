@@ -20,6 +20,7 @@
         display: flex;
         flex-wrap: wrap;
         height: auto;
+        min-height: 34px;
 
         &:hover {
             text-decoration: none;
