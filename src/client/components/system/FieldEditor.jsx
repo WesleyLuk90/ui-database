@@ -5,8 +5,16 @@ import Icon from '../elements/Icon';
 import FieldType from '../../models/FieldType';
 import DropdownField from '../elements/DropdownField';
 import FieldOptions from '../../models/FieldOptions';
+import AppModule from '../../AppModule';
 
 export default class FieldEditor extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.schemaService = this.props.appModule.get('SchemaService');
+        this.schemaList = this.schemaService.getSchemaList();
+    }
+
     onNameChange(name) {
         this.props.field.setName(name);
         this.forceUpdate();
@@ -22,18 +30,41 @@ export default class FieldEditor extends React.Component {
         this.forceUpdate();
     }
 
-    getListAdditionalOptions(field) {
-        const types = FieldType.getTypes().map(t => t.getLabel());
-        const optionName = FieldOptions.LIST_TYPE();
-        return (<DropdownField label="Type" options={types} value={field.getOption(optionName, '')} onChange={v => this.setFieldOption(optionName, v)} />);
-    }
-
     getAdditionalOptions(field) {
         switch (field.getType()) {
             case 'list':
                 return this.getListAdditionalOptions(field);
+            case 'reference':
+                return this.getReferenceAdditionalOptions(field);
             default:
                 return null;
+        }
+    }
+
+    getListAdditionalOptions(field) {
+        const types = FieldType.getTypes().map(t => t.getLabel());
+        const optionName = FieldOptions.LIST_TYPE();
+        return (<DropdownField label="Referenced Schema" options={types} value={field.getOption(optionName, '')} onChange={v => this.setFieldOption(optionName, v)} />);
+    }
+
+    getReferenceAdditionalOptions(field) {
+        this.loadSchemas();
+        const types = this.schemaList.getSchemaUniqueDescriptions();
+        const optionName = FieldOptions.SCHEMA_REFERENCE();
+        const current = this.schemaList.getSchemaById(field.getOption(optionName));
+        const currentValue = current ? current.getUniqueDescription() : '';
+        const onChange = desc => this.setFieldOption(optionName, this.schemaList.getSchemaByUniqueDescription(desc).getId());
+        return (<DropdownField
+            label="Referenced Schema"
+            options={types}
+            value={currentValue}
+            onChange={onChange}
+        />);
+    }
+
+    loadSchemas() {
+        if (!this.schemaList.isLoaded()) {
+            this.schemaList.refresh().then(() => this.forceUpdate());
         }
     }
 
@@ -52,4 +83,5 @@ export default class FieldEditor extends React.Component {
 FieldEditor.propTypes = {
     field: React.PropTypes.instanceOf(Field).isRequired,
     isNew: React.PropTypes.bool.isRequired,
+    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };

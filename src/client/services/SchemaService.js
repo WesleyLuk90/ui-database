@@ -1,5 +1,6 @@
 import assert from 'assert';
 import Schema from '../../../src/client/models/Schema';
+import SchemaList from './SchemaList';
 
 export default class SchemaService {
     constructor(httpService) {
@@ -30,6 +31,10 @@ export default class SchemaService {
 
         return this.httpService.post('/api/schema', schema.toJSON())
             .then(res => Schema.fromJSON(res.result));
+    }
+
+    getSchemaList() {
+        return new SchemaList(this);
     }
 }
 

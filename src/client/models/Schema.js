@@ -79,4 +79,8 @@ export default class Schema {
             descriptor: this.descriptor.slice(),
         };
     }
+
+    getUniqueDescription() {
+        return `${this.name} (${this.id})`;
+    }
 }

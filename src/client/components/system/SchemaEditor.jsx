@@ -6,6 +6,7 @@ import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
 import MultiDropdownField from '../elements/MultiDropdownField';
+import AppModule from '../../AppModule';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -85,10 +86,10 @@ export default class SchemaEditor extends React.Component {
                     <MultiDropdownField label="Descriptor" value={this.getDescriptorValues()} options={this.getDescriptorOptions()} onChange={newDescriptor => this.setDescriptor(newDescriptor)} />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
-                    <SchemaFieldList fields={existingFields} isNew={false} />
+                    <SchemaFieldList fields={existingFields} isNew={false} appModule={this.props.appModule} />
                 </Section>
                 <Section title="New Fields" hidden={newFields.length === 0 && !this.props.isNew}>
-                    <SchemaFieldList fields={newFields} isNew />
+                    <SchemaFieldList fields={newFields} isNew appModule={this.props.appModule} />
                 </Section>
             </div>
         </div>);
@@ -96,7 +97,7 @@ export default class SchemaEditor extends React.Component {
 }
 
 SchemaEditor.propTypes = {
-    // appModule: React.PropTypes.instanceOf(AppModule).isRequired,
+    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
     schema: React.PropTypes.instanceOf(Schema).isRequired,
     isNew: React.PropTypes.bool.isRequired,
 };
