@@ -23,5 +23,7 @@ export default function makeAppWithRoutes() {
         console.error(message);
         return Q.reject(new Error(message));
     });
+
+    appModule.get('Logger').disableLogging();
     return appModule;
 }

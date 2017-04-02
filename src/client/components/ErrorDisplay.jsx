@@ -48,7 +48,9 @@ export default class ErrorDisplay extends React.Component {
                 <div className="error-display__content">
                     {this.error().map(line => (<span key={line}>{line}<br /></span>))}
                 </div>
-                <div className="error-display__close"><button className="close-button">&times;</button></div>
+                <div className="error-display__close">
+                    <button onClick={() => this.close()} className="error-display__close-button">&times;</button>
+                </div>
             </div>
         </div>);
     }

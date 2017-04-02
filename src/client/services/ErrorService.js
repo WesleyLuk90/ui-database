@@ -1,8 +1,9 @@
 import rx from 'rx';
 
 export default class ErrorService {
-    constructor() {
+    constructor(logger) {
         this.errors = new rx.BehaviorSubject();
+        this.logger = logger.getLogger(ErrorService);
     }
 
     getErrorStream() {
@@ -10,8 +11,8 @@ export default class ErrorService {
     }
 
     handleError(e) {
-        console.log(e);
-        console.log(e.stack);
+        this.logger.error(e);
+        this.logger.error(e.stack);
         this.errors.onNext(e);
     }
 
@@ -22,6 +23,11 @@ export default class ErrorService {
     clearErrors() {
         this.errors.onNext(null);
     }
+
+    getError() {
+        return this.errors.getValue();
+    }
 }
 
 ErrorService.$name = 'ErrorService';
+ErrorService.$inject = ['Logger'];

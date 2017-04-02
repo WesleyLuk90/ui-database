@@ -1,9 +1,16 @@
 import Q from 'q';
 import RoutingService from '../../../src/client/services/RoutingService';
+import Logger from '../../../src/client/services/Logger';
 
 describe('RoutingService', () => {
+    let logger;
+    beforeEach(() => {
+        logger = new Logger();
+        logger.disableLogging();
+    });
+
     it('should have defaults', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({
             name: 'home',
@@ -19,12 +26,12 @@ describe('RoutingService', () => {
     });
 
     it('should require a name', () => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
         expect(() => router.register({ url: 'things' })).toThrowError(/State requires a name/);
     });
 
     it('should get routes', () => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
         const route = {
             name: 'page',
             url: /\/stuff\/(\w+)\/(\w+)/,
@@ -35,7 +42,7 @@ describe('RoutingService', () => {
     });
 
     it('should handle parameters', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({
             name: 'page',
@@ -51,7 +58,7 @@ describe('RoutingService', () => {
     });
 
     it('should load params', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({
             name: 'page',
@@ -78,7 +85,7 @@ describe('RoutingService', () => {
     });
 
     it('should match multiple routes', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({ name: 'a', url: '/a' });
         router.register({ name: 'b', url: '/b' });
@@ -91,7 +98,7 @@ describe('RoutingService', () => {
     });
 
     it('should allow shorthand parameters', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({ name: 'a', url: '/a/:b/:c' });
 
@@ -105,7 +112,7 @@ describe('RoutingService', () => {
     });
 
     it('should match the whole route', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         router.register({ name: 'a', url: '/a' });
         router.register({ name: 'b', url: /^\/b$/ });
@@ -120,7 +127,7 @@ describe('RoutingService', () => {
     });
 
     it('should use the default state', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
         router.register({ name: 'a', url: '/a' });
         router.register({ name: 'b', url: '/b', default: '/b' });
 
@@ -134,13 +141,13 @@ describe('RoutingService', () => {
     });
 
     it('should throw an error on duplicate name', () => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
         router.register({ name: 'a', url: '/a' });
         expect(() => router.register({ name: 'a', url: '/a' })).toThrowError(/Duplicate state name 'a'/);
     });
 
     it('should emit a stream of states', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         const aRoute = { name: 'a', url: '/a' };
         const bRoute = { name: 'b', url: '/b' };
@@ -167,7 +174,7 @@ describe('RoutingService', () => {
     });
 
     it('should resolve onEnter before loading the state', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
 
         const resolver = jasmine.createSpy('resolver');
 
@@ -188,7 +195,7 @@ describe('RoutingService', () => {
     });
 
     it('should emit errors when resolving onEnter', (done) => {
-        const router = new RoutingService();
+        const router = new RoutingService(logger);
         const spy = jasmine.createSpy('errorStream');
         router.getErrorStream().subscribe(spy);
 

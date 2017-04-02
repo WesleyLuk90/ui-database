@@ -8,7 +8,7 @@ export default class RoutingService {
         return /(:\w+)/g;
     }
 
-    constructor() {
+    constructor(logger) {
         this.states = [];
         this.currentUrl = null;
         this.currentState = null;
@@ -17,6 +17,7 @@ export default class RoutingService {
         this.stateStream = new Rx.BehaviorSubject(null);
         this.currentParamStream = new Rx.BehaviorSubject(null);
         this.errorStream = new Rx.Subject();
+        this.logger = logger.getLogger(RoutingService);
     }
 
     register(state) {
@@ -41,7 +42,7 @@ export default class RoutingService {
 
         let state = _(this.states).filter(s => url.match(s.url)).first();
         if (!state) {
-            console.log(`Failed to find a match for url ${url}`);
+            this.logger.log(`Failed to find a match for url ${url}`);
             state = _(this.states).filter(s => s.default).first();
             assert.ok(state, `Failed to match url ${url} to any state and no default state was defined`);
             assert.ok(typeof state.default === 'string');
@@ -123,3 +124,4 @@ export default class RoutingService {
 }
 
 RoutingService.$name = 'RoutingService';
+RoutingService.$inject = ['Logger'];

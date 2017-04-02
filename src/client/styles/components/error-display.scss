@@ -1,0 +1,35 @@
+.error-display {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 500px;
+    margin: auto;
+    display: none;
+
+    &--has-error {
+        display: block;
+    }
+
+    &__modal {
+        @extend .alert;
+        @extend .alert-danger;
+        height: 100px;
+        padding-right: 30px;
+    }
+
+    &__close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    &__content {
+        overflow-y: auto;
+        max-height: 100%;
+    }
+
+    &__close-button {
+        @extend .close;
+    }
+}
