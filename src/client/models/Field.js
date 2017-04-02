@@ -7,13 +7,14 @@ export default class Field {
     }
 
     static fromJSON(data) {
-        return Object.assign(Object.create(Field.prototype), data);
+        return Object.assign(new Field(), data);
     }
 
     constructor() {
         this.id = '';
         this.name = '';
         this.type = '';
+        this.options = {};
     }
 
     getType() {
@@ -55,6 +56,31 @@ export default class Field {
             id: this.id,
             name: this.name,
             type: this.type,
+            options: this.options,
         };
+    }
+
+    setOption(optionName, optionValue) {
+        assert(typeof optionName === 'string');
+        assert(typeof optionValue !== 'undefined');
+        this.options[optionName] = optionValue;
+        return this;
+    }
+
+    getOption(optionName, defaultValue) {
+        assert(typeof optionName === 'string');
+        if (defaultValue != null) {
+            if (this.options[optionName] == null) {
+                return defaultValue;
+            }
+        }
+        if (optionName in this.options) {
+            return this.options[optionName];
+        }
+        return null;
+    }
+
+    getUniqueDescription() {
+        return `${this.name} (${this.id})`;
     }
 }

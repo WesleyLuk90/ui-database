@@ -41,7 +41,7 @@ export default class SchemaEditor extends React.Component {
     setDescriptor(newDescriptor) {
         const newFields = this.props.schema
             .getFields()
-            .filter(f => newDescriptor.indexOf(f.getName()) > -1)
+            .filter(f => newDescriptor.indexOf(f.getUniqueDescription()) > -1)
             .map(f => f.getId());
         this.props.schema.setDescriptor(newFields);
         this.forceUpdate();
@@ -52,11 +52,11 @@ export default class SchemaEditor extends React.Component {
         return this.props.schema
             .getFields()
             .filter(f => descriptor.indexOf(f.getId()) > -1)
-            .map(f => f.getName());
+            .map(f => f.getUniqueDescription());
     }
 
     getDescriptorOptions() {
-        return this.props.schema.getFields().map(f => f.getName());
+        return this.props.schema.getFields().map(f => f.getUniqueDescription());
     }
 
     render() {
