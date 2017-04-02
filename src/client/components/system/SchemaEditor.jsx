@@ -5,7 +5,7 @@ import Section from '../elements/Section';
 import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
 import FieldType from '../../models/FieldType';
-import MultiDropdown from '../elements/MultiDropdown';
+import MultiDropdownField from '../elements/MultiDropdownField';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -82,7 +82,7 @@ export default class SchemaEditor extends React.Component {
                         onChange={this.onIdChange}
                         disabled={!this.props.isNew}
                     />
-                    <MultiDropdown value={this.getDescriptorValues()} options={this.getDescriptorOptions()} onChange={newDescriptor => this.setDescriptor(newDescriptor)} />
+                    <MultiDropdownField label="Descriptor" value={this.getDescriptorValues()} options={this.getDescriptorOptions()} onChange={newDescriptor => this.setDescriptor(newDescriptor)} />
                 </Section>
                 <Section title="Fields" hidden={existingFields.length === 0}>
                     <SchemaFieldList fields={existingFields} isNew={false} />
