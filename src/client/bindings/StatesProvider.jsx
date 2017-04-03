@@ -40,12 +40,8 @@ export default class StatesProvider {
         this.routingService.register({
             name: 'schemas.edit',
             url: '/system/schemas/edit/:id',
-            onEnter(match) {
-                return {
-                    view: appModule.get('SchemaService').get(match[1])
-                        .then(schema => <EditSchema appModule={appModule} schema={schema} />),
-                };
-            },
+            view: <EditSchema appModule={appModule} />,
+            onEnter: match => appModule.get('SchemaStateStore').loadSchema(match[1]),
         });
         this.routingService.register({
             name: 'documents',
