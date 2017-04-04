@@ -1,0 +1,23 @@
+.field-type-picker {
+    position: relative;
+    width: 300px;
+
+    &__toggle {
+        @extend .btn;
+        @extend .btn-default;
+        @extend .btn-block;
+
+        &:after {
+            @include font-awesome($fa-var-caret-down);
+        }
+    }
+
+    &__options {
+        @extend .dropdown-menu;
+        width: 100%;
+    }
+
+    &--expanded &__options {
+        display: block;
+    }
+}

@@ -1,16 +1,5 @@
-.schema-editor {
-    display: flex;
-    align-items: stretch;
-
-    .schema-editor__toolbox {
-        width: 300px;
-        flex: 0 0 300px;
-    }
-
-    .schema-editor__fields {
-        flex: 0 1 100%;
-    }
-}
+@import './system/schema-editor';
+@import './system/field-type-picker';
 
 .schema-list-item {
     display: flex;
