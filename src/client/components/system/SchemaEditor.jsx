@@ -59,6 +59,11 @@ export default class SchemaEditor extends React.Component {
         return this.props.schema.getFields().map(f => f.getUniqueDescription());
     }
 
+    onRemoveField(f) {
+        this.props.schema.removeField(f);
+        this.forceUpdate();
+    }
+
     render() {
         const newFields = this.getNewFields();
         const existingFields = this.getExistingFields();
@@ -82,7 +87,7 @@ export default class SchemaEditor extends React.Component {
                     <SchemaFieldList fields={existingFields} isNew={false} appModule={this.props.appModule} />
                 </Section>
                 <Section title="New Fields">
-                    <SchemaFieldList fields={newFields} isNew appModule={this.props.appModule} />
+                    <SchemaFieldList fields={newFields} isNew appModule={this.props.appModule} onRemove={f => this.onRemoveField(f)} />
                     <FieldTypePicker onSelect={f => this.addField(f)} />
                 </Section>
             </div>

@@ -26,6 +26,15 @@ describe('Schema', () => {
         expect(() => schema.addField({})).toThrow();
     });
 
+    it('should remove fields', () => {
+        const schema = Schema.create();
+        const field = Field.create('text');
+        schema.addField(field);
+
+        expect(schema.removeField(field)).toBe(schema);
+        expect(schema.getFields()).toEqual([]);
+    });
+
     it('should set and get a name', () => {
         const schema = Schema.create();
         expect(schema.setName('name')).toBe(schema);

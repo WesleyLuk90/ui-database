@@ -60,6 +60,12 @@ export default class Schema {
         return this;
     }
 
+    removeField(field) {
+        assert(field instanceof Field);
+        this.fields = this.fields.filter(f => f !== field);
+        return this;
+    }
+
     getField(fieldId) {
         assert(typeof fieldId === 'string');
         const field = _(this.fields).filter(f => f.getId() === fieldId).first();
