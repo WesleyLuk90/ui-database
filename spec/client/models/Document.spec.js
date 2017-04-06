@@ -12,6 +12,7 @@ describe('Document', () => {
         const date = new Date();
         const data = {
             id: 'some-id',
+            descriptor: 'My Description',
             data: {
                 name: 'stuff',
                 description: 'things',
@@ -26,6 +27,7 @@ describe('Document', () => {
         expect(doc.getValue('description')).toBe('things');
         expect(doc.getValue('count')).toBe(10);
         expect(doc.getValue('date')).toEqual(date);
+        expect(doc.getDescriptor('descriptor')).toEqual('My Description');
     });
 
     it('should create with just a schema', () => {

@@ -8,6 +8,7 @@ export default class Document {
 
         const doc = new Document(schema);
         doc.setId(data.id);
+        doc.setDescriptor(data.descriptor);
         schema.getFields().forEach((field) => {
             const value = data.data[field.getId()];
             if (field.getType() === 'datetime' && value != null) {
@@ -61,6 +62,15 @@ export default class Document {
         assert(this.schema.getField(fieldId));
 
         return this.data[fieldId];
+    }
+
+    setDescriptor(newDescriptor) {
+        this.descriptor = newDescriptor;
+        return this;
+    }
+
+    getDescriptor() {
+        return this.descriptor;
     }
 
     toJSON() {
