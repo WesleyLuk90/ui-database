@@ -53,8 +53,14 @@ export default class SchemaDocuments extends React.Component {
             <Section>
                 <List>
                     {this.state.documents.map(d => <ListItem key={d.getId()}>
-                        {d.getDescriptor()}
-                        <a href={this.urlFactory.get('documents.edit', d.getSchema().getId(), d.getId())}>Edit</a>
+                        <div className="document-list-item">
+                            <div className="document-list-item__description">
+                                {d.getDescriptor()}
+                            </div>
+                            <div className="document-list-item__actions">
+                                <a href={this.urlFactory.get('documents.edit', d.getSchema().getId(), d.getId())}>Edit</a>
+                            </div>
+                        </div>
                     </ListItem>)}
                 </List>
             </Section>

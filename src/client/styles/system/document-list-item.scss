@@ -1,0 +1,11 @@
+.document-list-item {
+    display: flex;
+
+    &__description {
+        flex: 1 0 auto;
+    }
+
+    &__actions {
+        flex: 0 0 auto;
+    }
+}
