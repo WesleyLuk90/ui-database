@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Calendar from './Calendar';
 import TimeSelector from './TimeSelector';
+import classnames from '../utils/classnames';
 
 const DISPLAY_FORMAT = 'YYYY-MM-DD h:mm a';
 
@@ -9,14 +10,21 @@ export default class DatetimePicker extends React.Component {
     constructor(props) {
         super(props);
 
+        const date = this.formatDate(props);
         this.state = {
-            value: this.formatDate(props),
+            value: date,
+            displayedValue: date,
             visible: false,
+            valid: true,
         };
+
+        this.onChangeDate = this.onChangeDate.bind(this);
+        this.onChangeTime = this.onChangeTime.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({ value: this.formatDate(newProps) });
+        const date = this.formatDate(newProps);
+        this.setState({ value: date, displayedValue: date });
     }
 
     getTimeComponents() {
@@ -56,8 +64,8 @@ export default class DatetimePicker extends React.Component {
         }
         const components = this.getTimeComponents();
         return (<div className="datetime-picker__popup">
-            <Calendar year={components.year} month={components.month} date={components.date} onChange={this.onChangeDate.bind(this)} />
-            <TimeSelector hour={components.hour} minute={components.minute} onChange={this.onChangeTime.bind(this)} />
+            <Calendar year={components.year} month={components.month} date={components.date} onChange={this.onChangeDate} />
+            <TimeSelector hour={components.hour} minute={components.minute} onChange={this.onChangeTime} />
         </div>);
     }
 
@@ -76,9 +84,27 @@ export default class DatetimePicker extends React.Component {
         this.props.onChange(time.toDate());
     }
 
+    onChange(e) {
+        this.setState({ displayedValue: e.target.value });
+    }
+
+    onBlur() {
+        const newDate = moment(this.state.displayedValue, [DISPLAY_FORMAT, moment.ISO_8601]);
+        if (newDate.isValid()) {
+            this.props.onChange(newDate.toDate());
+        } else {
+            this.setState({ valid: false });
+        }
+    }
+
     render() {
         return (<div className="datetime-picker">
-            <input className="datetime-picker__value" value={this.state.value} />
+            <input
+                className={classnames('datetime-picker__value', { 'datetime-picker__invalid': !this.state.valid })}
+                value={this.state.displayedValue}
+                onChange={e => this.onChange(e)}
+                onBlur={e => this.onBlur(e)}
+            />
             <span className="datetime-picker__input-addon">
                 <button className="datetime-picker__toggle" onClick={() => this.togglePopup()}><span className="fa fa-calendar" /></button>
             </span>

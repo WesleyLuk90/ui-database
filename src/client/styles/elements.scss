@@ -1,5 +1,6 @@
 @import "elements/option-selector";
 @import "elements/multi-dropdown";
+@import "elements/datetime-picker";
 
 .page-layout {
     &__title {
@@ -74,35 +75,6 @@
         font-size: 1.5em;
         padding: 7px 0;
         font-weight: bold;
-    }
-}
-
-.datetime-picker {
-    @extend .input-group;
-    position: relative;
-
-    &__value {
-        @extend .form-control;
-    }
-
-    &__input-addon {
-        @extend .input-group-btn;
-    }
-
-    &__toggle {
-        @extend .btn;
-    }
-
-    &__popup {
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: $z-relative-popup;
-        @extend .panel;
-        @extend .panel-default;
-        @extend .panel-body;
-        display: flex;
-        align-items: center;
     }
 }
 

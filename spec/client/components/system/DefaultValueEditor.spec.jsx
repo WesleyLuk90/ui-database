@@ -4,6 +4,7 @@ import DefaultValueEditor from '../../../../src/client/components/system/Default
 import FieldType from '../../../../src/client/models/FieldType';
 import TextInputField from '../../../../src/client/components/fields/TextInputField';
 import NumberInputField from '../../../../src/client/components/fields/NumberInputField';
+import DatetimeField from '../../../../src/client/components/fields/DatetimeField';
 
 describe('DefaultValueEditor', () => {
     it('should handle text fields', () => {
@@ -30,5 +31,21 @@ describe('DefaultValueEditor', () => {
         numberField.prop('onChange')(456);
         expect(onChange).toHaveBeenCalledWith(456);
         expect(numberField.prop('label')).toBe('ABC');
+    });
+
+    it('should handle datetime fields', () => {
+        const field = FieldType.getType('datetime').newField().setName('ABC');
+        const onChange = jasmine.createSpy('onChange');
+        const date = new Date();
+        const editor = shallow(<DefaultValueEditor field={field} value={date} onChange={onChange} />);
+
+        const newDate = new Date();
+
+        expect(editor.find(DatetimeField)).toBePresent();
+        const datetimeField = editor.find(DatetimeField);
+        expect(datetimeField.prop('value')).toBe(date);
+        datetimeField.prop('onChange')(newDate);
+        expect(onChange).toHaveBeenCalledWith(newDate);
+        expect(datetimeField.prop('label')).toBe('ABC');
     });
 });

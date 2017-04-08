@@ -1,0 +1,32 @@
+.datetime-picker {
+    @extend .input-group;
+    position: relative;
+
+    &__value {
+        @extend .form-control;
+    }
+
+    &__invalid {
+        border-color: $border-color-invalid;
+    }
+
+    &__input-addon {
+        @extend .input-group-btn;
+    }
+
+    &__toggle {
+        @extend .btn;
+    }
+
+    &__popup {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: $z-relative-popup;
+        @extend .panel;
+        @extend .panel-default;
+        @extend .panel-body;
+        display: flex;
+        align-items: center;
+    }
+}
