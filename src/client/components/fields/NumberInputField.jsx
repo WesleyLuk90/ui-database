@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-export default class NumberInput extends React.Component {
+export default class NumberInputField extends React.Component {
     constructor(props) {
         super(props);
-        this.id = `number-input__${_.uniqueId()}`;
+        this.id = `number-input-field__${_.uniqueId()}`;
     }
 
     onChange(e) {
@@ -12,11 +12,11 @@ export default class NumberInput extends React.Component {
     }
 
     render() {
-        return (<div className="number-input">
-            <label className="number-input__label" htmlFor={this.id}>{this.props.label}</label>
+        return (<div className="number-input-field">
+            <label className="number-input-field__label" htmlFor={this.id}>{this.props.label}</label>
             <input
                 type="number"
-                className="number-input__control"
+                className="number-input-field__control"
                 id={this.id}
                 name={this.id}
                 onChange={e => this.onChange(e)}
@@ -27,14 +27,14 @@ export default class NumberInput extends React.Component {
     }
 }
 
-NumberInput.propTypes = {
+NumberInputField.propTypes = {
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.number,
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
 };
 
-NumberInput.defaultProps = {
+NumberInputField.defaultProps = {
     onChange: null,
     value: null,
     placeholder: null,

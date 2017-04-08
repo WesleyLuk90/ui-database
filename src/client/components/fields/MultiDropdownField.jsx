@@ -1,5 +1,6 @@
 import React from 'react';
-import MultiDropdown from './MultiDropdown';
+import MultiDropdown from '../elements/MultiDropdown';
+
 
 export default class MultiDropdownField extends React.Component {
     render() {

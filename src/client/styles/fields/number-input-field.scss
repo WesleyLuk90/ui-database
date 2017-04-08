@@ -1,0 +1,9 @@
+.number-input-field {
+    @extend .form-group;
+
+    &__label {}
+
+    &__control {
+        @extend .form-control;
+    }
+}

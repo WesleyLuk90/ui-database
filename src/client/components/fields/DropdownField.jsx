@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from './Dropdown';
+import Dropdown from '../elements/Dropdown';
 
 export default class DropdownField extends React.Component {
     render() {

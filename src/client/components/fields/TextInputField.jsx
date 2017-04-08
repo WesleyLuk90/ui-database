@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-export default class TextInput extends React.Component {
+export default class TextInputField extends React.Component {
     constructor(props) {
         super(props);
-        this.id = `text-input__${_.uniqueId()}`;
+        this.id = `text-input-field__${_.uniqueId()}`;
     }
 
     onChange(e) {
@@ -14,11 +14,11 @@ export default class TextInput extends React.Component {
     }
 
     render() {
-        return (<div className="text-input">
-            <label className="text-input__label" htmlFor={this.id}>{this.props.label}</label>
+        return (<div className="text-input-field">
+            <label className="text-input-field__label" htmlFor={this.id}>{this.props.label}</label>
             <input
                 type="text"
-                className="text-input__control"
+                className="text-input-field__control"
                 id={this.id}
                 name={this.id}
                 onChange={e => this.onChange(e)}
@@ -30,7 +30,7 @@ export default class TextInput extends React.Component {
     }
 }
 
-TextInput.propTypes = {
+TextInputField.propTypes = {
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
@@ -38,7 +38,7 @@ TextInput.propTypes = {
     disabled: React.PropTypes.bool,
 };
 
-TextInput.defaultProps = {
+TextInputField.defaultProps = {
     onChange: null,
     placeholder: null,
     disabled: false,

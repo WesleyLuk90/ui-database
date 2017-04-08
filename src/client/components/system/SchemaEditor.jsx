@@ -1,11 +1,11 @@
 import React from 'react';
 import Schema from '../../models/Schema';
 import Section from '../elements/Section';
-import TextInput from '../elements/TextInput';
 import SchemaFieldList from './SchemaFieldList';
-import MultiDropdownField from '../elements/MultiDropdownField';
 import AppModule from '../../AppModule';
 import FieldTypePicker from './FieldTypePicker';
+import MultiDropdownField from '../fields/MultiDropdownField';
+import TextInputField from '../fields/TextInputField';
 
 export default class SchemaEditor extends React.Component {
     constructor(props) {
@@ -70,12 +70,12 @@ export default class SchemaEditor extends React.Component {
         return (<div className="schema-editor">
             <div className="schema-editor__fields">
                 <Section title="Schema Info">
-                    <TextInput
+                    <TextInputField
                         label="Name"
                         value={this.props.schema.name}
                         onChange={this.onNameChange}
                     />
-                    <TextInput
+                    <TextInputField
                         label="Internal ID"
                         value={this.props.schema.id}
                         onChange={this.onIdChange}

@@ -1,12 +1,12 @@
 import React from 'react';
-import TextInput from '../elements/TextInput';
 import Field from '../../models/Field';
 import Icon from '../elements/Icon';
 import FieldType from '../../models/FieldType';
-import DropdownField from '../elements/DropdownField';
 import FieldOptions from '../../models/FieldOptions';
 import AppModule from '../../AppModule';
 import Button from '../elements/Button';
+import DropdownField from '../fields/DropdownField';
+import TextInputField from '../fields/TextInputField';
 
 export default class FieldEditor extends React.Component {
     constructor(props) {
@@ -86,8 +86,8 @@ export default class FieldEditor extends React.Component {
                 <Icon icon={fieldType.getIcon()} /> {field.getName()} <small>{fieldType.getLabel()}</small>
                 {this.getRemoveButton()}
             </h3>
-            <TextInput label="Name" value={field.getName()} onChange={v => this.onNameChange(v)} />
-            <TextInput label="Id" value={field.getId()} onChange={v => this.onIdChange(v)} disabled={!this.props.isNew} />
+            <TextInputField label="Name" value={field.getName()} onChange={v => this.onNameChange(v)} />
+            <TextInputField label="Id" value={field.getId()} onChange={v => this.onIdChange(v)} disabled={!this.props.isNew} />
             {this.getAdditionalOptions(field)}
         </div>);
     }

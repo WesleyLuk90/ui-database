@@ -64,17 +64,6 @@
     }
 }
 
-.number-input,
-.text-input {
-    @extend .form-group;
-
-    &__label {}
-
-    &__control {
-        @extend .form-control;
-    }
-}
-
 .vertical-scroll-selector {
     width: 50px;
     display: flex;

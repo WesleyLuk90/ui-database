@@ -1,8 +1,9 @@
 import React from 'react';
 import Field from '../../models/Field';
-import TextInput from '../elements/TextInput';
 import DatetimePicker from '../elements/DatetimePicker';
-import NumberInput from '../elements/NumberInput';
+import NumberInputField from '../fields/NumberInputField';
+import TextInputField from '../fields/TextInputField';
+
 
 export default class DefaultValueEditor extends React.Component {
 
@@ -10,14 +11,14 @@ export default class DefaultValueEditor extends React.Component {
         const field = this.props.field;
         const fieldType = field.getType();
         if (fieldType === 'text') {
-            return (<TextInput
+            return (<TextInputField
                 label={field.getName()}
                 placeholder={field.getName()}
                 value={this.props.value || ''}
                 onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'number') {
-            return (<NumberInput
+            return (<NumberInputField
                 label={field.getName()}
                 placeholder={field.getName()}
                 value={this.props.value || null}
