@@ -39,10 +39,11 @@
         "webpack-livereload-plugin": "^0.10.0"
     },
     "scripts": {
-        "dev": "concurrently --raw --kill-others \"npm run watch-build\" \"npm run karma-test\" \"npm run start\"",
+        "dev": "concurrently --raw --kill-others \"npm run watch-build\" \"npm run karma-dev\" \"npm run start\"",
         "test": "jasmine",
         "watch-build": "webpack --watch --config webpack.config.js",
         "start": "node src/server/index.js",
+        "karma-dev": "karma start karma.dev.conf.js",
         "karma-test": "karma start karma.conf.js"
     },
     "dependencies": {
