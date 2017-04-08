@@ -1,4 +1,5 @@
 .document-list-item {
+    @extend .list-item;
     display: flex;
 
     &__description {

@@ -7,7 +7,7 @@ import Schema from '../../models/Schema';
 import ActionBar from '../elements/ActionBar';
 import ActionBarRight from '../elements/ActionBarRight';
 import Button from '../elements/Button';
-import ListItem from '../elements/ListItem';
+import DocumentListItem from './DocumentListItem';
 
 export default class SchemaDocuments extends React.Component {
     constructor(props) {
@@ -52,16 +52,8 @@ export default class SchemaDocuments extends React.Component {
             </Section>
             <Section>
                 <List>
-                    {this.state.documents.map(d => <ListItem key={d.getId()}>
-                        <div className="document-list-item">
-                            <div className="document-list-item__description">
-                                {d.getDescriptor()}
-                            </div>
-                            <div className="document-list-item__actions">
-                                <a href={this.urlFactory.get('documents.edit', d.getSchema().getId(), d.getId())}>Edit</a>
-                            </div>
-                        </div>
-                    </ListItem>)}
+                    {this.state.documents
+                        .map(d => <DocumentListItem key={d.getId()} appModule={this.props.appModule} document={d} />)}
                 </List>
             </Section>
         </PageLayout>);

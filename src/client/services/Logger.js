@@ -25,7 +25,12 @@ export default class Logger {
 
     error(...args) {
         if (!this.isDisabled()) {
-            console.error(...args);
+            if (args.length === 1 && args[0] instanceof Error) {
+                console.error(args[0]);
+                console.error(args[0].stack);
+            } else {
+                console.error(...args);
+            }
         }
     }
 
