@@ -1,8 +1,8 @@
 import React from 'react';
 import Field from '../../models/Field';
-import DatetimePicker from '../elements/DatetimePicker';
 import NumberInputField from '../fields/NumberInputField';
 import TextInputField from '../fields/TextInputField';
+import DatetimeField from '../fields/DatetimeField';
 
 
 export default class DefaultValueEditor extends React.Component {
@@ -25,7 +25,11 @@ export default class DefaultValueEditor extends React.Component {
                 onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'datetime') {
-            return (<DatetimePicker value={this.props.value} onChange={v => this.props.onChange(v)} />);
+            return (<DatetimeField
+                label={field.getName()}
+                value={this.props.value}
+                onChange={v => this.props.onChange(v)}
+            />);
         }
         return `No Input for ${fieldType}`;
     }
