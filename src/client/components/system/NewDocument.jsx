@@ -45,7 +45,7 @@ export default class NewDocument extends React.Component {
                 </ActionBar>
             </Section>
             <Section>
-                <DefaultDocumentEditor document={this.state.document} />
+                <DefaultDocumentEditor document={this.state.document} appModule={this.props.appModule} />
             </Section>
         </PageLayout>);
     }

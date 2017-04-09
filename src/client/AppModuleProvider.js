@@ -17,6 +17,7 @@ import LocationService from './services/LocationService';
 import StatesProvider from './bindings/StatesProvider';
 import SchemaStateStore from './stores/SchemaStateStore';
 import DocumentDescriptionService from './components/system/DocumentDescriptionService';
+import ReferenceFieldValueService from './services/ReferenceFieldValueService';
 
 Bottle.config.strict = true;
 
@@ -39,6 +40,7 @@ export default class AppModuleProvider {
         bottle.register(UrlFactory);
         bottle.register(SchemaStateStore);
         bottle.register(DocumentDescriptionService);
+        bottle.register(ReferenceFieldValueService);
         bottle.constant('superagent', superagent);
         bottle.register(Logger);
         return new AppModule(bottle);

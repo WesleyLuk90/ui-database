@@ -50,13 +50,6 @@ export default class Dropdown extends React.Component {
         this.setState({ expanded: false });
     }
 
-    getOptions() {
-        if (typeof this.props.options === 'function') {
-            return this.props.options(this.state.filter);
-        }
-        return this.props.options;
-    }
-
     onSearch(e) {
         this.setState({ searchText: e.target.value });
     }

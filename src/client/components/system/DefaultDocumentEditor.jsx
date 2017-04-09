@@ -3,6 +3,7 @@ import DefaultValueEditor from './DefaultValueEditor';
 import List from '../elements/List';
 import ListItem from '../elements/ListItem';
 import Document from '../../models/Document';
+import AppModule from '../../AppModule';
 
 export default class DefaultDocumentEditor extends React.Component {
 
@@ -23,7 +24,7 @@ export default class DefaultDocumentEditor extends React.Component {
         return (<div className="default-document-editor">
             <List>
                 {this.getFields().map(f => <ListItem key={f.getId()}>
-                    <DefaultValueEditor field={f} value={this.getFieldValue(f)} onChange={v => this.setFieldValue(f, v)} />
+                    <DefaultValueEditor field={f} value={this.getFieldValue(f)} onChange={v => this.setFieldValue(f, v)} appModule={this.props.appModule} />
                 </ListItem>)}
             </List>
         </div>);
@@ -32,4 +33,5 @@ export default class DefaultDocumentEditor extends React.Component {
 
 DefaultDocumentEditor.propTypes = {
     document: React.PropTypes.instanceOf(Document).isRequired,
+    appModule: React.PropTypes.instanceOf(AppModule).isRequired,
 };
