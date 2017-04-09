@@ -41,6 +41,13 @@ export default class DocumentService {
             .then(res => res.result.map(d => Document.fromJSON(d, schema)));
     }
 
+    search(schema, searchString) {
+        assert(schema instanceof Schema);
+
+        return this.httpService.get(`/api/document/${schema.getId()}/`, { search: searchString })
+            .then(res => res.result.map(d => Document.fromJSON(d, schema)));
+    }
+
     count(schema) {
         assert(schema instanceof Schema);
 

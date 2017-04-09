@@ -1,6 +1,7 @@
 import Q from 'q';
 import AppModuleProvider from '../../../src/client/AppModuleProvider';
 
+/* eslint-disable no-console */
 export default function makeAppWithRoutes() {
     const appModule = AppModuleProvider.create();
 
