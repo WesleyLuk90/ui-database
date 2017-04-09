@@ -3,17 +3,10 @@ import Field from '../../models/Field';
 import NumberInputField from '../fields/NumberInputField';
 import TextInputField from '../fields/TextInputField';
 import DatetimeField from '../fields/DatetimeField';
-import DropdownField from '../fields/DropdownField';
 import AppModule from '../../AppModule';
-import FieldOptions from '../../models/FieldOptions';
+import DefaultReferenceEditor from './DefaultReferenceEditor';
 
 export default class DefaultValueEditor extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.referenceFieldValueService = this.props.appModule.get('ReferenceFieldValueService');
-    }
 
     getValueInput() {
         const field = this.props.field;
@@ -39,12 +32,7 @@ export default class DefaultValueEditor extends React.Component {
                 onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'reference') {
-            return (<DropdownField
-                label={field.getName()}
-                value="abc"
-                options={this.referenceFieldValueService.optionsGetter(field.getOption(FieldOptions.SCHEMA_REFERENCE()))}
-                onChange={v => this.props.onChange(v)}
-            />);
+            return (<DefaultReferenceEditor field={field} appModule={this.props.appModule} />);
         }
         return `No Input for ${fieldType}`;
     }

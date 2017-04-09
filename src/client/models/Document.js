@@ -1,5 +1,6 @@
 import assert from 'assert';
 import Schema from './Schema';
+import DocumentReference from './DocumentReference';
 
 export default class Document {
     static fromJSON(data, schema) {
@@ -13,6 +14,8 @@ export default class Document {
             const value = data.data[field.getId()];
             if (field.getType() === 'datetime' && value != null) {
                 doc.setValue(field.getId(), new Date(value));
+            } else if (field.getType() === 'reference' && value != null) {
+                doc.setValue(field.getId(), DocumentReference.fromJSON(value));
             } else {
                 doc.setValue(field.getId(), value);
             }
@@ -77,8 +80,11 @@ export default class Document {
         const data = {};
         const schema = this.getSchema();
         schema.getFields().forEach((field) => {
-            if (this.data[field.getId()] == null) {
+            const value = this.data[field.getId()];
+            if (value == null) {
                 data[field.getId()] = null;
+            } else if (field.getType() === 'reference') {
+                data[field.getId()] = value.toJSON();
             } else {
                 data[field.getId()] = this.data[field.getId()];
             }

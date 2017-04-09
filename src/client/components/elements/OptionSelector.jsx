@@ -23,9 +23,12 @@ export default class OptionSelector extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        window.removeEventListener('keydown', this.handleKeyDown);
         return this.calculateOptions(newProps)
             .then(options => this.setState({ visibleOptions: options }));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     selectedIndexWithOffset(offset) {

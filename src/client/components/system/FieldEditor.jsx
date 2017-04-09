@@ -12,8 +12,7 @@ export default class FieldEditor extends React.Component {
     constructor(props) {
         super(props);
 
-        this.schemaService = this.props.appModule.get('SchemaService');
-        this.schemaList = this.schemaService.getSchemaList();
+        this.schemaList = this.props.appModule.get('SchemaList');
     }
 
     onNameChange(name) {

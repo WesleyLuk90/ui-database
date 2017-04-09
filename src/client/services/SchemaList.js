@@ -19,6 +19,14 @@ export default class SchemaList {
             });
     }
 
+    getAsync(id) {
+        if (!this.isLoaded()) {
+            return this.refresh()
+                .then(() => this.getSchemaById(id));
+        }
+        return Promise.resolve(this.getSchemaById(id));
+    }
+
     getSchemaById(id) {
         return _(this.schemas)
             .filter(schema => schema.getId() === id)
@@ -35,3 +43,6 @@ export default class SchemaList {
         return this.schemas.map(s => s.getUniqueDescription());
     }
 }
+
+SchemaList.$name = 'SchemaList';
+SchemaList.$inject = ['SchemaService'];

@@ -17,7 +17,7 @@ export default class FieldType {
     }
 
     static getType(type) {
-        return _(FieldType.getTypes()).filter(f => f.getType() === type).first();
+        return _(FieldType.getTypes()).filter(f => f.getId() === type).first();
     }
 
     static getTypeChecked(type) {
@@ -32,7 +32,7 @@ export default class FieldType {
         this.icon = icon;
     }
 
-    getType() {
+    getId() {
         return this.type;
     }
 
@@ -45,11 +45,11 @@ export default class FieldType {
     }
 
     newField() {
-        return Field.create(this.getType());
+        return Field.create(this.getId());
     }
 
     equals(type) {
         assert(type === null || type instanceof FieldType);
-        return this.getType() === type.getType();
+        return this.getId() === type.getId();
     }
 }

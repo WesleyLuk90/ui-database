@@ -9,6 +9,6 @@ describe('FieldType', () => {
     it('should get types', () => {
         const type = FieldType.getType('text');
 
-        expect(type.getType()).toBe('text');
+        expect(type.getId()).toBe('text');
     });
 });

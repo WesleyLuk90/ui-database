@@ -1,6 +1,7 @@
 import Schema from '../../../src/client/models/Schema';
 import FieldType from '../../../src/client/models/FieldType';
 import Document from '../../../src/client/models/Document';
+import DocumentReference from '../../../src/client/models/DocumentReference';
 
 describe('Document', () => {
     it('should create from json', () => {
@@ -58,6 +59,33 @@ describe('Document', () => {
                 name: 'some name',
                 description: null,
                 count: null,
+            },
+        });
+    });
+
+    it('should serialize document references', () => {
+        const schema = new Schema();
+        schema.addField(FieldType.getType('reference').newField().setId('some_ref'));
+
+        const doc = Document.fromJSON({
+            id: 'abc',
+            data: {
+                some_ref: {
+                    schemaId: 'other_schema',
+                    documentId: 'some_id',
+                },
+            },
+        }, schema);
+
+        expect(doc.getValue('some_ref')).toEqual(DocumentReference.create('other_schema', 'some_id'));
+
+        expect(doc.toJSON()).toEqual({
+            id: 'abc',
+            data: {
+                some_ref: {
+                    schemaId: 'other_schema',
+                    documentId: 'some_id',
+                },
             },
         });
     });
