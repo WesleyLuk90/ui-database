@@ -3,7 +3,7 @@ import Document from '../../models/Document';
 
 export default class DocumentDescriptionService {
     getDescription(doc) {
-        assert(doc instanceof Document);
+        assert(doc instanceof Document, 'Expected a document');
 
         const descriptor = doc.getDescriptor();
         if (descriptor) {

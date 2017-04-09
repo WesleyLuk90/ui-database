@@ -15,10 +15,27 @@ class ReferenceOptions {
         return searchString => this.getOptions(searchString);
     }
 
+    addOptions(options) {
+        options.forEach((option) => {
+            this.cachedOptionsById.set(option.getId(), option);
+        });
+    }
+
+    labelMatchesPredicate(label) {
+        return o => this.documentDescriptionService.getDescription(o) === label;
+    }
+
+    getOptionByLabel(label) {
+        return Array.from(this.cachedOptionsById.values()).filter(this.labelMatchesPredicate(label))[0];
+    }
+
     getOptions(searchString) {
         return this.schemaList.getAsync(this.schemaId)
             .then(schema => this.documentService.search(schema, searchString))
-            .then(docs => docs.map(d => this.documentDescriptionService.getDescription(d)));
+            .then((docs) => {
+                this.addOptions(docs);
+                return docs.map(d => this.documentDescriptionService.getDescription(d));
+            });
     }
 }
 

@@ -8,6 +8,10 @@ describe('DocumentDescriptionService', () => {
         descriptionService = new DocumentDescriptionService();
     });
 
+    it('should throw an error if the value is not a document', () => {
+        expect(() => descriptionService.getDescription({})).toThrowError(/Expected a document/);
+    });
+
     it('should use the descriptor as the description', () => {
         const schema = Schema.create().setName('My Schema');
         const doc = Document.fromSchema(schema).setDescriptor('abc');
