@@ -76,6 +76,10 @@ export default class Document {
         return this.descriptor;
     }
 
+    toReference() {
+        return DocumentReference.create(this.getSchema().getId(), this.getId());
+    }
+
     toJSON() {
         const data = {};
         const schema = this.getSchema();

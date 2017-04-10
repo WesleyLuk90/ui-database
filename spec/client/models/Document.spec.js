@@ -89,4 +89,15 @@ describe('Document', () => {
             },
         });
     });
+
+    it('should convert to a reference', () => {
+        const schema = new Schema().setId('bed');
+        const doc = Document.fromSchema(schema).setId('abc');
+
+        const ref = doc.toReference();
+        expect(ref).toEqual(jasmine.any(DocumentReference));
+
+        expect(ref.getSchemaId()).toBe('bed');
+        expect(ref.getDocumentId()).toBe('abc');
+    });
 });

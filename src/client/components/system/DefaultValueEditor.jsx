@@ -32,7 +32,12 @@ export default class DefaultValueEditor extends React.Component {
                 onChange={v => this.props.onChange(v)}
             />);
         } else if (fieldType === 'reference') {
-            return (<DefaultReferenceEditor field={field} appModule={this.props.appModule} />);
+            return (<DefaultReferenceEditor
+                field={field}
+                value={this.props.value}
+                onChange={v => this.props.onChange(v)}
+                appModule={this.props.appModule}
+            />);
         }
         return `No Input for ${fieldType}`;
     }
