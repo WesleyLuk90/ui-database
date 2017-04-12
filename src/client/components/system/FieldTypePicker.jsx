@@ -59,7 +59,7 @@ export default class FieldTypePicker extends React.Component {
             <button className="field-type-picker__toggle" onClick={e => this.toggleExpanded(e)}>Add Field</button>
             <ul className="field-type-picker__options">
                 {FieldType.getTypes().map(f =>
-                    <li key={f.getType()}>
+                    <li key={f.getId()}>
                         <a href="#" onClick={e => this.selectField(e, f)}><Icon icon={f.getIcon()} /> {f.getLabel()}</a>
                     </li>)}
             </ul>
