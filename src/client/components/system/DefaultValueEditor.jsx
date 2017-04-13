@@ -5,6 +5,7 @@ import TextInputField from '../fields/TextInputField';
 import DatetimeField from '../fields/DatetimeField';
 import AppModule from '../../AppModule';
 import DefaultReferenceEditor from './DefaultReferenceEditor';
+import DefaultListEditor from './DefaultListEditor';
 
 export default class DefaultValueEditor extends React.Component {
 
@@ -33,6 +34,13 @@ export default class DefaultValueEditor extends React.Component {
             />);
         } else if (fieldType === 'reference') {
             return (<DefaultReferenceEditor
+                field={field}
+                value={this.props.value}
+                onChange={v => this.props.onChange(v)}
+                appModule={this.props.appModule}
+            />);
+        } else if (fieldType === 'list') {
+            return (<DefaultListEditor
                 field={field}
                 value={this.props.value}
                 onChange={v => this.props.onChange(v)}

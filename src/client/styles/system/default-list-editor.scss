@@ -1,0 +1,8 @@
+.default-list-editor {
+    @extend .list-group;
+
+    &__controls,
+    &__item {
+        @extend .list-group-item;
+    }
+}
