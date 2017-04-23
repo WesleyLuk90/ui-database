@@ -16,4 +16,14 @@ describe('Dropdown', () => {
         expect(optionSelector).toBePresent();
         expect(optionSelector.prop('options')).toBe(getter);
     });
+
+    it('should display a placeholder', () => {
+        const dropdown = shallow(<Dropdown value="" options={['a', 'b']} />);
+        expect(dropdown.find('.dropdown__placeholder')).toBePresent();
+        expect(dropdown.find('.dropdown__placeholder').text()).toBe('Select a value...');
+        dropdown.setProps({ placeholder: 'abc' });
+        expect(dropdown.find('.dropdown__placeholder').text()).toBe('abc');
+        dropdown.setProps({ value: 'c' });
+        expect(dropdown.find('.dropdown__placeholder')).not.toBePresent();
+    });
 });

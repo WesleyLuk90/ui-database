@@ -9,6 +9,7 @@ export default class DropdownField extends React.Component {
                 options={this.props.options}
                 value={this.props.value}
                 onChange={this.props.onChange}
+                placeholder={this.props.placeholder}
             />
         </div>);
     }
@@ -21,8 +22,10 @@ DropdownField.propTypes = {
     ]).isRequired,
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
+    placeholder: React.PropTypes.string,
 };
 
 DropdownField.defaultProps = {
     onChange: () => {},
+    placeholder: null,
 };

@@ -46,12 +46,15 @@ export default class DefaultReferenceEditor extends React.Component {
 
     render() {
         const field = this.props.field;
-        return (<DropdownField
-            label={field.getName()}
-            value={this.state.valueLabel}
-            options={this.optionsCache.optionsProvider()}
-            onChange={v => this.onChange(v)}
-        />);
+        return (<div className="default-reference-editor">
+            <DropdownField
+                label={field.getName()}
+                value={this.state.valueLabel}
+                options={this.optionsCache.optionsProvider()}
+                onChange={v => this.onChange(v)}
+                placeholder={`Select a ${field.getOption(FieldOptions.SCHEMA_REFERENCE())}`}
+            />
+        </div>);
     }
 }
 

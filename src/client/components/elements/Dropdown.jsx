@@ -68,7 +68,11 @@ export default class Dropdown extends React.Component {
 
     render() {
         return (<div ref={e => this.setDropdown(e)} className={classnames('dropdown', { 'dropdown--expanded': this.state.expanded })}>
-            <button className="dropdown__toggle" onClick={() => this.expand()}>{this.props.value}</button>
+            <button className="dropdown__toggle" onClick={() => this.expand()}>
+                {this.props.value ?
+                    this.props.value :
+                    <span className="dropdown__placeholder">{this.props.placeholder || 'Select a value...'}</span>}
+            </button>
             <div className="dropdown__edit">
                 <input type="text" ref={e => this.setInput(e)} className="dropdown__input" value={this.state.searchText} onChange={e => this.onSearch(e)} />
                 <OptionSelector options={this.props.options} searchText={this.state.searchText} onSelect={o => this.selectOption(o)} />
@@ -83,9 +87,11 @@ Dropdown.propTypes = {
         React.PropTypes.func,
     ]).isRequired,
     value: React.PropTypes.string.isRequired,
+    placeholder: React.PropTypes.string,
     onChange: React.PropTypes.func,
 };
 
 Dropdown.defaultProps = {
     onChange: () => {},
+    placeholder: null,
 };

@@ -1,6 +1,7 @@
 @import "elements/option-selector";
 @import "elements/multi-dropdown";
 @import "elements/datetime-picker";
+@import "elements/dropdown";
 
 .page-layout {
     &__title {
@@ -75,57 +76,5 @@
         font-size: 1.5em;
         padding: 7px 0;
         font-weight: bold;
-    }
-}
-
-.dropdown {
-    &--expanded {
-        .dropdown__toggle {
-            display: none;
-        }
-
-        .dropdown__edit {
-            display: block;
-        }
-    }
-
-    &__toggle {
-        @extend .form-control;
-        text-align: left;
-
-        &:after {
-            @extend .caret;
-            content: "";
-            float: right;
-            margin-top: 7px;
-        }
-    }
-
-    &__edit {
-        display: none;
-        position: relative;
-    }
-
-    &__options {
-        @extend .dropdown-menu;
-        position: absolute;
-        z-index: 1;
-        top: 100%;
-        left: 0;
-        right: 0;
-        max-height: 300px;
-        overflow: auto;
-        background-color: white;
-        display: block;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    &__option {
-        cursor: pointer;
-    }
-
-    &__input {
-        @extend .form-control;
     }
 }
