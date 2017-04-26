@@ -1,4 +1,5 @@
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
     entry: './src/client/index',
@@ -8,11 +9,20 @@ module.exports = {
         publicPath: '/build/',
     },
     devtool: 'eval-source-map',
+    devServer: {
+        contentBase: path.join(__dirname, 'public'),
+        inline: true,
+        port: 3001,
+        hot: true,
+        proxy: {
+            '/api': 'http://localhost:3000',
+        },
+    },
     module: {
         rules: [{
             test: /\.(js|jsx)$/,
             exclude: /(node_modules|bower_components)/,
-            loader: 'react-hot-loader!babel-loader',
+            loader: 'babel-loader',
         }, {
             test: /\.css$/,
             loader: 'style-loader!css-loader',
@@ -25,7 +35,7 @@ module.exports = {
         }],
     },
     plugins: [
-        new LiveReloadPlugin({ appendScriptTag: true }),
+        new webpack.HotModuleReplacementPlugin(),
     ],
     resolve: {
         extensions: ['.js', '.jsx'],
