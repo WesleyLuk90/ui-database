@@ -57,6 +57,6 @@
         "mongodb": "^2.2.22",
         "rx": "^4.1.0",
         "superagent": "^3.4.1",
-        "webpack-dev-server": "^2.4.5"
+        "webpack-dev-server": "^3.1.11"
     }
 }
